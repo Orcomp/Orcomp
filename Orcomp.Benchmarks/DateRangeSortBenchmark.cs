@@ -20,7 +20,7 @@ namespace Orcomp.Benchmarks
             return dateRanges.OrderBy(x => x).ToList();
         }
 
-        public static Tuple<string, double, double, double> Run(List<DateRange> benchmarkData, string contestant)
+        public static Tuple<string, double, double, double> Run(List<DateRange> benchmarkData, string contestant, Func<List<DateRange>, IEnumerable<DateTime>> entry)
         {
             var numberOfIterations = 20;
 
@@ -45,7 +45,7 @@ namespace Orcomp.Benchmarks
 
                     sw2.Reset();
                     sw2.Start();
-                    var sortedDateTimes = benchmarkData.GetSortedDateTimes(contestant);
+                    var sortedDateTimes = entry(benchmarkData);
                     sw2.Stop();
 
                     //Console.WriteLine("Loop " + i +  " - Elasped time: " + sw2.ElapsedMilliseconds);

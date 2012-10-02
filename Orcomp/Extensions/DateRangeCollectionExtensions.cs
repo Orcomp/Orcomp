@@ -10,11 +10,8 @@ namespace Orcomp.Extensions
 {
     public static class DateRangeCollectionExtensions
     {
-        public static IEnumerable<DateTime> GetSortedDateTimes(this IEnumerable<DateRange> orderedDateRanges, string contestant)
+        public static IEnumerable<DateTime> GetSortedDateTimesMoustafaS(this IEnumerable<DateRange> orderedDateRanges)
         {
-            #region MoustafaS
-            if ( contestant == "MoustafaS" )
-            {
                 var dates = orderedDateRanges.ToArray();
                 int c = orderedDateRanges.Count();
                 var dateTimes = new DateTime[2 * c];
@@ -56,12 +53,9 @@ namespace Orcomp.Extensions
                 else if (eIndex < c)
                     Array.Copy(endings, eIndex, dateTimes, arrIndex, c - eIndex);
                 return dateTimes;
-            }
-            #endregion
-
-            #region Zaher
-            if ( contestant == "Zaher" )
-            {
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesZaher(this IEnumerable<DateRange> orderedDateRanges)
+        {
                 // This code is optimized for the standard algorithm defined in the Orcomp.Benchmarks project
                 // Get the length of the list.
                 var odr = orderedDateRanges as List<DateRange>;
@@ -117,13 +111,9 @@ namespace Orcomp.Extensions
                 }
                 // Done, return the sorted array.
                 return sorted;
-            }
-            #endregion
-
-            #region aus1
-
-            if ( contestant == "aus1" )
-            {
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesAus1(this IEnumerable<DateRange> orderedDateRanges)
+        {
                 int dateTimeCount = orderedDateRanges.Count<DateRange>();
                 DateTime[] dateTimeEnd = new DateTime[dateTimeCount];
                 int idx = 0;
@@ -167,13 +157,10 @@ namespace Orcomp.Extensions
                     ++endIdx;
                 }
                 return result;
-            }
-            #endregion
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesRenze(this IEnumerable<DateRange> orderedDateRanges)
+        {
 
-            #region Renze
-
-            if ( contestant == "Renze" )
-            {
                 var result = new DateTime[orderedDateRanges.Count() * 2];
                 int r = -1;
                 var enumStart = orderedDateRanges.GetEnumerator();
@@ -225,13 +212,9 @@ namespace Orcomp.Extensions
                     enumEnd.MoveNext();
                 }
                 return result;
-            }
-            #endregion
-
-            #region V_Tom_R
-
-            if ( contestant == "V_Tom_R" )
-            {
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesV_Tom_R(this IEnumerable<DateRange> orderedDateRanges)
+        {
                 int currentPosition = 0;
                 int startIndex = 0;
                 int endIndex = 0;
@@ -276,44 +259,37 @@ namespace Orcomp.Extensions
                     }
                 }
                 return dateTimes;
-            }
-            #endregion
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesSoftwareBender(this IEnumerable<DateRange> orderedDateRanges)
+        {
 
-            #region SoftwareBender
+            List<DateRange> list = orderedDateRanges.ToList();
+            int len = list.Count;
+            DateTime[] result = new DateTime[2 * len];
 
-            if ( contestant == "SoftwareBender" )
+            for (int i = 0, p = 0, first = len, end = len; i < len; i++)
             {
-                List<DateRange> list = orderedDateRanges.ToList();
-                int len = list.Count;
-                DateTime[] result = new DateTime[2 * len];
+                DateTime startTime = list[i].StartTime, endTime = list[i].EndTime;
 
-                for (int i = 0, p = 0, first = len, end = len; i < len; i++)
+                while (end - first > 0 && result[first] <= startTime)
                 {
-                    DateTime startTime = list[i].StartTime, endTime = list[i].EndTime;
-
-                    while (end - first > 0 && result[first] <= startTime)
-                    {
-                        result[p++] = result[first++];
-                    }
-
-                    result[p++] = startTime;
-
-                    result[end] = endTime;
-
-                    for (int j = end++; j >= first && result[j - 1] > result[j]; j--)
-                    {
-                        Swap(ref result[j - 1], ref result[j]);
-                    }
+                    result[p++] = result[first++];
                 }
 
-                return result;
+                result[p++] = startTime;
+
+                result[end] = endTime;
+
+                for (int j = end++; j >= first && result[j - 1] > result[j]; j--)
+                {
+                    Swap(ref result[j - 1], ref result[j]);
+                }
             }
-            #endregion
 
-            #region ErwinReid
-
-            if ( contestant == "ErwinReid" )
-            {
+            return result;
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesErwinReid(this IEnumerable<DateRange> orderedDateRanges)
+        {
                 var l = orderedDateRanges.Count<DateRange>();
 
                 var en = new DateTime[l];
@@ -376,23 +352,16 @@ namespace Orcomp.Extensions
                 }*/
 
                 return res;
-            }
-            #endregion
-
-            #region Mihai
-
-            if ( contestant == "Mihai" )
-            {
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesMihai(this IEnumerable<DateRange> orderedDateRanges)
+        {
                 return AreEndTimesSorted(orderedDateRanges)
                       ? FastMerge(orderedDateRanges.ToArray())
                       : NormalSort(orderedDateRanges);
-            }
-            #endregion
 
-            #region bawr
-
-            if ( contestant == "bawr" )
-            {
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesBawr(this IEnumerable<DateRange> orderedDateRanges)
+        {
                 var source = orderedDateRanges as List<DateRange>;
                 var output = new long[2 * source.Count()];
 
@@ -401,14 +370,11 @@ namespace Orcomp.Extensions
                     output = MergeAny(source, output);
                 }
 
-                return output.Select(t => new DateTime(t)).ToArray();
-            }
-            #endregion bawr
+                return output.Select(t => new DateTime(t));
 
-            #region c6c
-
-            if ( contestant == "c6c" )
-            {
+        }
+        public static IEnumerable<DateTime> GetSortedDateTimesC6c(this IEnumerable<DateRange> orderedDateRanges)
+        {
                 var dateRanges = orderedDateRanges.ToArray();
                 var startDateTimes = new DateTime[dateRanges.Length];
                 var endDateTimes = new DateTime[dateRanges.Length];
@@ -421,10 +387,6 @@ namespace Orcomp.Extensions
                 if (!CheckSorted(endDateTimes))
                     Array.Sort(endDateTimes);
                 return MergeSortedArrays(startDateTimes, endDateTimes);
-            }
-            #endregion
-
-            throw new ArgumentException("Contestant: " + contestant + ", does not have code to execute.");
         }
 
         #region Zaher
@@ -889,5 +851,28 @@ namespace Orcomp.Extensions
             return resultList;
         }
         #endregion
+
+        public static IEnumerable<DateTime> GetSortedDateTimes( List<DateRange> orderedDateRanges, string contestant )
+        {
+
+            var contestants = new Dictionary<string, Func<List<DateRange>, IEnumerable<DateTime>>>();
+            contestants.Add("MoustafaS", GetSortedDateTimesMoustafaS);
+            contestants.Add("Zaher", GetSortedDateTimesZaher);
+            contestants.Add("aus1", GetSortedDateTimesAus1);
+            contestants.Add("Renze", GetSortedDateTimesRenze);
+            contestants.Add("V_Tom_R", GetSortedDateTimesV_Tom_R);
+            contestants.Add("SoftwareBender", GetSortedDateTimesSoftwareBender);
+            contestants.Add("ErwinReid", GetSortedDateTimesErwinReid);
+            contestants.Add("Mihai", GetSortedDateTimesMihai);
+            contestants.Add("bawr", GetSortedDateTimesBawr);
+            contestants.Add("c6c", GetSortedDateTimesC6c);
+
+            if(contestants.ContainsKey( contestant ))
+            {
+                return contestants[contestant]( orderedDateRanges );
+            }
+
+            return null;
+        }
     }
 }
