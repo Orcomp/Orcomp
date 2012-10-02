@@ -31,7 +31,7 @@ namespace RandomtestCases
                     IEnumerable<DateTime> Submission = null;
                     try
                     {
-                        Submission= Orcomp.Extensions.DateRangeCollectionExtensions.GetSortedDateTimes(orderedDateRanges, contestant);
+                        Submission= Orcomp.Submissions.GetSortedDateTimes.Run(orderedDateRanges, contestant);
                     }
                     catch (Exception)
                     { };

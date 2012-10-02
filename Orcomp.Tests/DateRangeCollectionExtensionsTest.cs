@@ -34,7 +34,7 @@ namespace Orcomp.Tests
             orderedDateRanges.Add(new DateRange(dateNow.AddMinutes(90), dateNow.AddMinutes(110)));  //                                          +--------------+
             orderedDateRanges.Add(new DateRange(dateNow.AddMinutes(120), dateNow.AddMinutes(140))); //                                                            +-----------+
 
-            var result = orderedDateRanges.GetSortedDateTimesAus1();
+            var result = orderedDateRanges.GetSortedDateTimes();
 
             var correctDateTimes = new List<DateTime>();
             orderedDateRanges.ForEach(x => correctDateTimes.AddRange(new List<DateTime> { x.StartTime, x.EndTime }));
@@ -42,15 +42,16 @@ namespace Orcomp.Tests
 
             Assert.Equal( correctDateTimes, result);
         }
+
         [TestMethod]
-        public void GetSortedDateTimes_SimpleInput_Zaher()
+        public void GetSortedDateTimes_SimpleInput()
         {
             DateTime dateNow = DateTime.Now;
 
             var orderedDateRanges = new List<DateRange>();
             orderedDateRanges.Add(new DateRange(dateNow, dateNow.AddMinutes(9)));            
             orderedDateRanges.Add(new DateRange(dateNow.AddMinutes(69), dateNow.AddMinutes(69)));
-            var result = orderedDateRanges.GetSortedDateTimesZaher();
+            var result = orderedDateRanges.GetSortedDateTimes();
 
             var correctDateTimes = new List<DateTime>();
             orderedDateRanges.ForEach(x => correctDateTimes.AddRange(new List<DateTime> { x.StartTime, x.EndTime }));
@@ -58,47 +59,17 @@ namespace Orcomp.Tests
 
             Assert.Equal(correctDateTimes, result);
         }
+
         [TestMethod]
-        public void GetSortedDateTimes_SimpleInput_ErwinReid()
+        public void GetSortedDateTimes_RandomEndTimes()
         {
-            DateTime dateNow = DateTime.Now;
+            var date = DateTime.Now;
 
-            var orderedDateRanges = new List<DateRange>();
-            orderedDateRanges.Add(new DateRange(dateNow, dateNow.AddMinutes(9)));
-            orderedDateRanges.Add(new DateRange(dateNow.AddMinutes(69), dateNow.AddMinutes(69)));
-            var result = orderedDateRanges.GetSortedDateTimesErwinReid();
+            var r = new Random(1);
+            var count = 100000;
+            var orderedDateRanges = Enumerable.Range( 1, count ).Select( x => new DateRange( date.AddMinutes( x ), date.AddMinutes( x + r.Next( 0, 100 ) ) ) ).OrderBy( x => x ).ToList();
 
-            var correctDateTimes = new List<DateTime>();
-            orderedDateRanges.ForEach(x => correctDateTimes.AddRange(new List<DateTime> { x.StartTime, x.EndTime }));
-            correctDateTimes.Sort();
-
-            Assert.Equal(correctDateTimes, result);
-        }
-        [TestMethod]
-        public void GetSortedDateTimes_SimpleInput_Mihai()
-        {
-            DateTime dateNow = DateTime.Now;
-
-            var orderedDateRanges = new List<DateRange>();
-            orderedDateRanges.Add(new DateRange(dateNow, dateNow.AddMinutes(9)));
-            orderedDateRanges.Add(new DateRange(dateNow.AddMinutes(69), dateNow.AddMinutes(69)));
-            var result = orderedDateRanges.GetSortedDateTimesMihai();
-
-            var correctDateTimes = new List<DateTime>();
-            orderedDateRanges.ForEach(x => correctDateTimes.AddRange(new List<DateTime> { x.StartTime, x.EndTime }));
-            correctDateTimes.Sort();
-
-            Assert.Equal(correctDateTimes, result);
-        }
-        [TestMethod]
-        public void GetSortedDateTimes_SimpleInput_bawr()
-        {
-            DateTime dateNow = DateTime.Now;
-
-            var orderedDateRanges = new List<DateRange>();
-            orderedDateRanges.Add(new DateRange(dateNow, dateNow.AddMinutes(9)));
-            orderedDateRanges.Add(new DateRange(dateNow.AddMinutes(69), dateNow.AddMinutes(69)));
-            var result = orderedDateRanges.GetSortedDateTimesBawr();
+            var result = orderedDateRanges.GetSortedDateTimes();
 
             var correctDateTimes = new List<DateTime>();
             orderedDateRanges.ForEach(x => correctDateTimes.AddRange(new List<DateTime> { x.StartTime, x.EndTime }));
