@@ -16,7 +16,7 @@ namespace Orcomp.Benchmarks
         {
             // ListWeaverBenchmark.Run();
 
-            DateRangeSortBenchmark.Run();
+            DateRangeSortBenchmark.RunMulti();
 
         }
     }
