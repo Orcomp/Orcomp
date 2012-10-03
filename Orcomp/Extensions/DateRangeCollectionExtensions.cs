@@ -18,9 +18,7 @@ namespace Orcomp.Extensions
         /// <returns></returns>
         public static IEnumerable<DateTime> GetSortedDateTimes(this List<DateRange> orderedDateRanges)
         {
-            //throw new NotImplementedException();
-
-            return Submissions.GetSortedDateTimes.Aus1( orderedDateRanges );
+            throw new NotImplementedException();
         }
     }
 }
