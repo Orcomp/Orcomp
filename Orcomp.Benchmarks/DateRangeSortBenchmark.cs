@@ -16,7 +16,7 @@ namespace Orcomp.Benchmarks
 
         static DateRangeSortBenchmark()
         {
-            var numberOfDateRanges = 1000000; // Must be square rootable
+            var numberOfDateRanges = 40000; // Must be square rootable
 
             BenchmarkData = new Dictionary<string, IEnumerable<DateRange>>();
             BenchmarkData.Add("Sorted EndTimes", GetDateRangesEndTimesSorted(numberOfDateRanges));
