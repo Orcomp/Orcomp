@@ -46,12 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\DateRangeEfficiency.cs" />
     <Compile Include="Entities\Constraint.cs" />
     <Compile Include="Entities\DateRange.cs" />
+    <Compile Include="Entities\Edge.cs" />
+    <Compile Include="Entities\EdgeType.cs" />
+    <Compile Include="Entities\FixedEdge.cs" />
     <Compile Include="Entities\LevelIndicator.cs" />
     <Compile Include="Extensions\DateRangeCollectionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Extensions\DateRangeExtensions.cs" />
     <Compile Include="Submissions\GetSortedDateTimes.cs" />
     <Compile Include="Utilities\MathUtils.cs" />
     <Compile Include="Entities\Task.cs" />
