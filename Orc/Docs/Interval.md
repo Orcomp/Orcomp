@@ -30,29 +30,29 @@ An EndPoint is aware of the interval it belongs to.
 The main purpose of using intervals is to query their relationships (most noteably whether they overlap or not)
 
 Starts Before Start, Ends before End
-> +-----------+
->     +------------+
+>    +-----------+
+>       +------------+
 
 Starts Before Start, Ends after End (Contains)
-> +---------------+
->     +------+
+>    +---------------+
+>      +------+
 
 
 Starts After Start, Ends before End (During, or IsContained)
->     +------------+
->   +-----------------+
+>        +------------+
+>     +-----------------+
 
 Starts After End
 >              +----------+
->  +-----+
+>     +-----+
 
 Ends Before Start
-> +------+
->           +-------+
+>     +------+
+>              +-------+
 
 Starts At Start, Ends at End
->  +---------+
->  +---------+
+>    +---------+
+>    +---------+
 
 # EndPoint
 
