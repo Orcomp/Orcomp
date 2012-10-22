@@ -14,15 +14,16 @@ namespace Orcomp.Submissions
         static GetSortedDateTimes()
         {
             Contestants = new Dictionary<string, Func<List<DateRange>, IEnumerable<DateTime>>>();
-            Contestants.Add("MoustafaS", MoustafaS);
+            //Contestants.Add("MoustafaS", MoustafaS);
             Contestants.Add("Zaher", Zaher);
-            Contestants.Add("aus1", Aus1);
+            //Contestants.Add("aus1", Aus1);
             Contestants.Add("Renze", Renze);
-            Contestants.Add("V_Tom_R", V_Tom_R);
-            Contestants.Add("SoftwareBender", SoftwareBender);
-            Contestants.Add("ErwinReid", ErwinReid);
-            Contestants.Add("Mihai", Mihai);
-            Contestants.Add("bawr", Bawr);
+            Contestants.Add("RenzeExtended", RenzeExtended);
+            //Contestants.Add("V_Tom_R", V_Tom_R);
+            //Contestants.Add("SoftwareBender", SoftwareBender);
+            //Contestants.Add("ErwinReid", ErwinReid);
+            //Contestants.Add("Mihai", Mihai);
+            //Contestants.Add("bawr", Bawr);
             Contestants.Add("c6c", C6c);
         }
 
@@ -239,6 +240,71 @@ namespace Orcomp.Submissions
             {
                 AddEndTime(result, t - 1, enumEnd.Current.EndTime);
                 enumEnd.MoveNext();
+            }
+            return result;
+        }
+
+        public static IEnumerable<DateTime> RenzeExtended(this List<DateRange> orderedDateRanges)
+        {
+            Action<DateTime[], int, DateTime> MyAddEndTime =
+            delegate(DateTime[] resultIn, int rIn, DateTime endValueIn)
+            {
+                int n = rIn;
+                while (resultIn[n] > endValueIn)
+                {
+                    resultIn[n + 1] = resultIn[n];
+                    --n;
+                }
+                // result[n] <= endValue, result[n+1] does not contain a relevant value.
+                resultIn[n + 1] = endValueIn;
+            };
+            var inp = orderedDateRanges.ToArray();
+            var result = new DateTime[inp.Count() * 2];
+            int r = -1;
+            var enumStart = 0;
+            var enumEnd = 0;
+            if (enumStart == inp.Length)
+            {
+                return result;
+            }
+            var startValue = inp[enumStart].StartTime;
+            var endValue = inp[enumEnd].EndTime;
+            while (true)
+            {
+                int comp = DateTime.Compare(startValue, endValue);
+                if (comp == 0)
+                {
+                    result[++r] = endValue;
+                    result[++r] = startValue;
+                    enumEnd++;
+                    if (++enumStart != inp.Length)
+                    {
+                        startValue = inp[enumStart].StartTime;
+                        endValue = inp[enumEnd].EndTime;
+                        continue;
+                    }
+                    break;
+                }
+                else if (comp < 0)
+                {
+                    result[++r] = startValue;
+                    if (++enumStart != inp.Length)
+                    {
+                        startValue = inp[enumStart].StartTime;
+                        continue;
+                    }
+                    break;
+                }
+                else
+                {
+                    MyAddEndTime(result, r++, endValue);
+                    ++enumEnd;
+                    endValue = inp[enumEnd].EndTime;
+                }
+            }
+            for (int t = r + 1; t < result.Length; t++)
+            {
+                MyAddEndTime(result, t - 1, inp[enumEnd++].EndTime);
             }
             return result;
         }
