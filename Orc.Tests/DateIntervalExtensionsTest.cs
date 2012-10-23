@@ -10,17 +10,15 @@ namespace Orc.Tests
 {
     using System;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Orc.Entities;
     using Orc.Extensions;
 
-    using Assert = Xunit.Assert;
-
     /// <summary>
     /// The date interval extensions test.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class DateIntervalExtensionsTest
     {
         #region GetOverlap
@@ -28,7 +26,7 @@ namespace Orc.Tests
         /// <summary>
         /// The get overlap_ date interval before date interval_ return null.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalBeforeDateInterval_ReturnNull()
         {
             // Arrange
@@ -49,7 +47,7 @@ namespace Orc.Tests
         /// <summary>
         /// The get overlap_ date interval after date interval_ return null.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalAfterDateInterval_ReturnNull()
         {
             // Arrange
@@ -70,7 +68,7 @@ namespace Orc.Tests
         /// <summary>
         /// The get overlap_ date interval before date interval interesct_ return null.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalBeforeDateIntervalInteresct_ReturnNull()
         {
             // Arrange
@@ -90,7 +88,7 @@ namespace Orc.Tests
         /// <summary>
         /// The get overlap_ date interval after date interval interect_ return null.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalAfterDateIntervalInterect_ReturnNull()
         {
             // Arrange
@@ -110,7 +108,7 @@ namespace Orc.Tests
         /// <summary>
         /// The get overlap_ date interval start before end in_ return correct date interval.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalStartBeforeEndIn_ReturnCorrectDateInterval()
         {
             // Arrange
@@ -126,13 +124,13 @@ namespace Orc.Tests
             DateInterval correctResult = new DateInterval(t2, t3);
 
             // Assert
-            Assert.Equal(correctResult, result);
+            Assert.AreEqual(correctResult, result);
         }
 
         /// <summary>
         /// The get overlap_ date interval start before end after_ return correct date interval.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalStartBeforeEndAfter_ReturnCorrectDateInterval()
         {
             // Arrange
@@ -148,13 +146,13 @@ namespace Orc.Tests
             DateInterval correctResult = new DateInterval(t2, t3);
 
             // Assert
-            Assert.Equal(correctResult, result);
+            Assert.AreEqual(correctResult, result);
         }
 
         /// <summary>
         /// The get overlap_ date interval start in end in_ return correct date interval.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalStartInEndIn_ReturnCorrectDateInterval()
         {
             // Arrange
@@ -170,13 +168,13 @@ namespace Orc.Tests
             DateInterval correctResult = new DateInterval(t2, t3);
 
             // Assert
-            Assert.Equal(correctResult, result);
+            Assert.AreEqual(correctResult, result);
         }
 
         /// <summary>
         /// The get overlap_ date interval start interesct end intersect_ return correct date interval.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalStartInteresctEndIntersect_ReturnCorrectDateInterval()
         {
             // Arrange
@@ -190,13 +188,13 @@ namespace Orc.Tests
             DateInterval correctResult = new DateInterval(t1, t2);
 
             // Assert
-            Assert.Equal(correctResult, result);
+            Assert.AreEqual(correctResult, result);
         }
 
         /// <summary>
         /// The get overlap_ date interval start in end after_ return correct date interval.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void GetOverlap_DateIntervalStartInEndAfter_ReturnCorrectDateInterval()
         {
             // Arrange
@@ -212,7 +210,7 @@ namespace Orc.Tests
             DateInterval correctResult = new DateInterval(t2, t3);
 
             // Assert
-            Assert.Equal(correctResult, result);
+            Assert.AreEqual(correctResult, result);
         }
 
         #endregion

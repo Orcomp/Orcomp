@@ -12,24 +12,22 @@ namespace Orc.Tests
     using System;
     using System.Collections.Generic;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Orc.Entities;
     using Orc.Extensions;
     using Orc.Interface;
 
-    using Assert = Xunit.Assert;
-
     /// <summary>
     /// The date interval collection test.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class DateIntervalCollectionTest
     {
         /// <summary>
         /// The date edges_ add multiple date intervals_ return sorted date edges.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void DateEdges_AddMultipleDateIntervals_ReturnSortedDateEdges()
         {
             var dateIntervalCollection = new DateIntervalCollection();
@@ -59,7 +57,7 @@ namespace Orc.Tests
             dateIntervalList.ForEach(x => correctResult.AddRange(x.GetEndPoints()));
             correctResult.Sort();
 
-            Assert.Equal(correctResult, result);
+            Assert.AreEqual(correctResult, result);
         }
     }
 }

@@ -11,16 +11,14 @@ namespace Orc.Tests
 {
     using System;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Orc.Entities;
-
-    using Assert = Xunit.Assert;
 
     /// <summary>
     /// The date interval test.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class DateIntervalTest
     {
         #region Intersects
@@ -28,7 +26,7 @@ namespace Orc.Tests
         /// <summary>
         /// The intersects_ date before date interval_ return false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Intersects_DateBeforeDateInterval_ReturnFalse()
         {
             // Arrange
@@ -46,7 +44,7 @@ namespace Orc.Tests
         /// <summary>
         /// The intersects_ date after date interval_ return false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Intersects_DateAfterDateInterval_ReturnFalse()
         {
             // Arrange
@@ -64,7 +62,7 @@ namespace Orc.Tests
         /// <summary>
         /// The intersects_ date in date interval_ return true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Intersects_DateInDateInterval_ReturnTrue()
         {
             // Arrange
@@ -82,7 +80,7 @@ namespace Orc.Tests
         /// <summary>
         /// The intersects_ date on start date interval_ return true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Intersects_DateOnStartDateInterval_ReturnTrue()
         {
             // Arrange
@@ -100,7 +98,7 @@ namespace Orc.Tests
         /// <summary>
         /// The intersects_ date on end date interval_ return false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Intersects_DateOnEndDateInterval_ReturnFalse()
         {
             // Arrange
@@ -118,7 +116,7 @@ namespace Orc.Tests
         /// <summary>
         /// The intersects_ date on end date interval end date inclusive_ return true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Intersects_DateOnEndDateIntervalEndDateInclusive_ReturnTrue()
         {
             // Arrange
@@ -140,7 +138,7 @@ namespace Orc.Tests
         /// <summary>
         /// The overlaps_ date interval before date interval_ return false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Overlaps_DateIntervalBeforeDateInterval_ReturnFalse()
         {
             // Arrange
@@ -162,7 +160,7 @@ namespace Orc.Tests
         /// <summary>
         /// The overlaps_ date interval after date interval_ return false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Overlaps_DateIntervalAfterDateInterval_ReturnFalse()
         {
             // Arrange
@@ -183,7 +181,7 @@ namespace Orc.Tests
         /// <summary>
         /// The overlaps_ date interval inside date interval_ return true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Overlaps_DateIntervalInsideDateInterval_ReturnTrue()
         {
             // Arrange
@@ -209,7 +207,7 @@ namespace Orc.Tests
         /// <summary>
         /// The equal_ date interval with same start and end dates_ return true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Equal_DateIntervalWithSameStartAndEndDates_ReturnTrue()
         {
             // Arrange
@@ -228,7 +226,7 @@ namespace Orc.Tests
         /// <summary>
         /// The equal_ date interval with same start and end dates include end points_ return true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Equal_DateIntervalWithSameStartAndEndDatesIncludeEndPoints_ReturnTrue()
         {
             // Arrange
@@ -247,7 +245,7 @@ namespace Orc.Tests
         /// <summary>
         /// The equal_ date interval with same start and end dates exclude end points_ return true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Equal_DateIntervalWithSameStartAndEndDatesExcludeEndPoints_ReturnTrue()
         {
             // Arrange
@@ -266,7 +264,7 @@ namespace Orc.Tests
         /// <summary>
         /// The equal_ date interval with same start and different end dates_ return false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Equal_DateIntervalWithSameStartAndDifferentEndDates_ReturnFalse()
         {
             // Arrange
@@ -286,7 +284,7 @@ namespace Orc.Tests
         /// <summary>
         /// The equal_ date interval with different start and same end dates_ return false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Equal_DateIntervalWithDifferentStartAndSameEndDates_ReturnFalse()
         {
             // Arrange
@@ -310,7 +308,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and same end dates_ returns zero.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndSameEndDates_ReturnsZero()
         {
             // Arrange
@@ -329,7 +327,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and different end dates_ returns shortest duration first.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndDifferentEndDates_ReturnsShortestDurationFirst()
         {
             // Arrange
@@ -349,7 +347,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and different end dates_ returns shortest duration first reversed.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndDifferentEndDates_ReturnsShortestDurationFirstReversed()
         {
             // Arrange
@@ -369,7 +367,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with different start and different end dates_ returns earliest start.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithDifferentStartAndDifferentEndDates_ReturnsEarliestStart()
         {
             // Arrange
@@ -393,7 +391,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and same end dates_ returns true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndSameEndDates_ReturnsTrue()
         {
             // Arrange
@@ -412,7 +410,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and same end dates include start include end_ returns true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndSameEndDatesIncludeStartIncludeEnd_ReturnsTrue()
         {
             // Arrange
@@ -431,7 +429,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and same end dates exclude start include end_ returns true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndSameEndDatesExcludeStartIncludeEnd_ReturnsTrue()
         {
             // Arrange
@@ -450,7 +448,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and same end dates exclude both_ returns true.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndSameEndDatesExcludeBoth_ReturnsTrue()
         {
             // Arrange
@@ -469,7 +467,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and same end different inclusions_ returns false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndSameEndDifferentInclusions_ReturnsFalse()
         {
             // Arrange
@@ -488,7 +486,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and same end different inclusions 2_ returns false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndSameEndDifferentInclusions2_ReturnsFalse()
         {
             // Arrange
@@ -507,7 +505,7 @@ namespace Orc.Tests
         /// <summary>
         /// The compare to_ date interval with same start and same end different inclusions 3_ returns false.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void CompareTo_DateIntervalWithSameStartAndSameEndDifferentInclusions3_ReturnsFalse()
         {
             // Arrange

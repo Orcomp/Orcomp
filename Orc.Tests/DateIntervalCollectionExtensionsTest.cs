@@ -12,23 +12,21 @@ namespace Orc.Tests
     using System;
     using System.Collections.Generic;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Orc.Entities;
     using Orc.Extensions;
 
-    using Assert = Xunit.Assert;
-
     /// <summary>
     /// The date interval collection extensions test.
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class DateIntervalCollectionExtensionsTest
     {
         /// <summary>
         /// The overlaps with_ multiple date intervals_ return correct answer.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void OverlapsWith_MultipleDateIntervals_ReturnCorrectAnswer()
         {
             var dateIntervalCollection = new DateIntervalCollection();
@@ -50,13 +48,13 @@ namespace Orc.Tests
 
             var result = dateIntervalCollection.OverlapsWith(dateInterval4);
 
-            Assert.Equal(correctResult, result);
+            Assert.AreEqual(correctResult, result);
         }
 
         /// <summary>
         /// The overlaps with_ multiple date intervals_ return correct answer 2.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void OverlapsWith_MultipleDateIntervals_ReturnCorrectAnswer2()
         {
             var dateIntervalCollection = new DateIntervalCollection();
@@ -78,7 +76,7 @@ namespace Orc.Tests
 
             var result = dateIntervalCollection.OverlapsWith(dateInterval3);
 
-            Assert.Equal(correctResult, result);
+            Assert.AreEqual(correctResult, result);
         }
     }
 }
