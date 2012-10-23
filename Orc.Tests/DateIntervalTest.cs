@@ -21,6 +21,23 @@ namespace Orc.Tests
     [TestFixture]
     public class DateIntervalTest
     {
+        private DateTime now;
+
+        private DateTime inOneHour;
+
+        private DateTime inTwoHours;
+
+        private DateTime inThreeHours;
+
+        [SetUp]
+        public void Setup()
+        {
+            now = DateTime.Now;
+            inOneHour = now.AddHours(1);
+            inTwoHours = now.AddHours(2);
+            inThreeHours = now.AddHours(3);
+        }
+
         #region Intersects
 
         /// <summary>
@@ -30,12 +47,10 @@ namespace Orc.Tests
         public void Intersects_DateBeforeDateInterval_ReturnFalse()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval = new DateInterval(t1, t2);
+            var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool intersect = dateInterval.Intersects(t1.AddHours(-1));
+            bool intersect = dateInterval.Intersects(now.AddHours(-1));
 
             // Assert
             Assert.False(intersect);
@@ -48,12 +63,10 @@ namespace Orc.Tests
         public void Intersects_DateAfterDateInterval_ReturnFalse()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval = new DateInterval(t1, t2);
+            var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(t1.AddHours(2));
+            bool interesct = dateInterval.Intersects(now.AddHours(2));
 
             // Assert
             Assert.False(interesct);
@@ -66,12 +79,10 @@ namespace Orc.Tests
         public void Intersects_DateInDateInterval_ReturnTrue()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval = new DateInterval(t1, t2);
+            var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(t1.AddHours(0.5));
+            bool interesct = dateInterval.Intersects(now.AddHours(0.5));
 
             // Assert
             Assert.True(interesct);
@@ -84,12 +95,10 @@ namespace Orc.Tests
         public void Intersects_DateOnStartDateInterval_ReturnTrue()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval = new DateInterval(t1, t2);
+            var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(t1);
+            bool interesct = dateInterval.Intersects(now);
 
             // Assert
             Assert.True(interesct);
@@ -102,12 +111,10 @@ namespace Orc.Tests
         public void Intersects_DateOnEndDateInterval_ReturnFalse()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval = new DateInterval(t1, t2);
+            var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(t2);
+            bool interesct = dateInterval.Intersects(inOneHour);
 
             // Assert
             Assert.False(interesct);
@@ -120,12 +127,10 @@ namespace Orc.Tests
         public void Intersects_DateOnEndDateIntervalEndDateInclusive_ReturnTrue()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval = new DateInterval(t1, t2, isMaxInclusive: true);
+            var dateInterval = new DateInterval(now, inOneHour, isMaxInclusive: true);
 
             // Act
-            bool interesct = dateInterval.Intersects(t2);
+            bool interesct = dateInterval.Intersects(inOneHour);
 
             // Assert
             Assert.True(interesct);
@@ -142,19 +147,14 @@ namespace Orc.Tests
         public void Overlaps_DateIntervalBeforeDateInterval_ReturnFalse()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            DateTime t3 = t1.AddHours(2);
-            DateTime t4 = t1.AddHours(3);
-
-            var dateInterval = new DateInterval(t3, t4);
-            var beforeDateInterval = new DateInterval(t1, t2);
+            var dateInterval = new DateInterval(inTwoHours, inThreeHours);
+            var beforeDateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool result = dateInterval.Overlaps(beforeDateInterval);
+            bool overlaps = dateInterval.Overlaps(beforeDateInterval);
 
             // Assert
-            Assert.False(result);
+            Assert.False(overlaps);
         }
 
         /// <summary>
@@ -164,18 +164,14 @@ namespace Orc.Tests
         public void Overlaps_DateIntervalAfterDateInterval_ReturnFalse()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            DateTime t3 = t1.AddHours(2);
-            DateTime t4 = t1.AddHours(3);
-            var dateInterval = new DateInterval(t1, t2);
-            var afterDateInterval = new DateInterval(t3, t4);
+            var dateInterval = new DateInterval(now, inOneHour);
+            var afterDateInterval = new DateInterval(inTwoHours, inThreeHours);
 
             // Act
-            bool result = dateInterval.Overlaps(afterDateInterval);
+            bool overlaps = dateInterval.Overlaps(afterDateInterval);
 
             // Assert
-            Assert.False(result);
+            Assert.False(overlaps);
         }
 
         /// <summary>
@@ -185,19 +181,14 @@ namespace Orc.Tests
         public void Overlaps_DateIntervalInsideDateInterval_ReturnTrue()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            DateTime t3 = t1.AddHours(2);
-            DateTime t4 = t1.AddHours(3);
-
-            var dateInterval = new DateInterval(t1, t4);
-            var afterDateInterval = new DateInterval(t2, t3);
+            var dateInterval = new DateInterval(now, inThreeHours);
+            var afterDateInterval = new DateInterval(inOneHour, inTwoHours);
 
             // Act
-            bool result = dateInterval.Overlaps(afterDateInterval);
+            bool overlaps = dateInterval.Overlaps(afterDateInterval);
 
             // Assert
-            Assert.True(result);
+            Assert.True(overlaps);
         }
 
         #endregion
@@ -211,16 +202,14 @@ namespace Orc.Tests
         public void Equal_DateIntervalWithSameStartAndEndDates_ReturnTrue()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2);
-            var dateInterval2 = new DateInterval(t1, t2);
+            var dateInterval1 = new DateInterval(now, inOneHour);
+            var dateInterval2 = new DateInterval(now, inOneHour);
 
             // Act
-            bool result = dateInterval1.Equals(dateInterval2);
+            bool equals = dateInterval1.Equals(dateInterval2);
 
             // Assert
-            Assert.True(result);
+            Assert.True(equals);
         }
 
         /// <summary>
@@ -230,16 +219,14 @@ namespace Orc.Tests
         public void Equal_DateIntervalWithSameStartAndEndDatesIncludeEndPoints_ReturnTrue()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2, true, true);
-            var dateInterval2 = new DateInterval(t1, t2, true, true);
+            var dateInterval1 = new DateInterval(now, inOneHour, true, true);
+            var dateInterval2 = new DateInterval(now, inOneHour, true, true);
 
             // Act
-            bool result = dateInterval1.Equals(dateInterval2);
+            bool equals = dateInterval1.Equals(dateInterval2);
 
             // Assert
-            Assert.True(result);
+            Assert.True(equals);
         }
 
         /// <summary>
@@ -249,16 +236,14 @@ namespace Orc.Tests
         public void Equal_DateIntervalWithSameStartAndEndDatesExcludeEndPoints_ReturnTrue()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2, false, false);
-            var dateInterval2 = new DateInterval(t1, t2, false, false);
+            var dateInterval1 = new DateInterval(now, inOneHour, false, false);
+            var dateInterval2 = new DateInterval(now, inOneHour, false, false);
 
             // Act
-            bool result = dateInterval1.Equals(dateInterval2);
+            bool equals = dateInterval1.Equals(dateInterval2);
 
             // Assert
-            Assert.True(result);
+            Assert.True(equals);
         }
 
         /// <summary>
@@ -268,17 +253,14 @@ namespace Orc.Tests
         public void Equal_DateIntervalWithSameStartAndDifferentEndDates_ReturnFalse()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            DateTime t3 = t1.AddHours(3);
-            var dateInterval1 = new DateInterval(t1, t2);
-            var dateInterval2 = new DateInterval(t1, t3);
+            var dateInterval1 = new DateInterval(now, inOneHour);
+            var dateInterval2 = new DateInterval(now, inThreeHours);
 
             // Act
-            bool result = dateInterval1.Equals(dateInterval2);
+            bool equals = dateInterval1.Equals(dateInterval2);
 
             // Assert
-            Assert.False(result);
+            Assert.False(equals);
         }
 
         /// <summary>
@@ -288,22 +270,57 @@ namespace Orc.Tests
         public void Equal_DateIntervalWithDifferentStartAndSameEndDates_ReturnFalse()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            DateTime t3 = t1.AddHours(3);
-            var dateInterval1 = new DateInterval(t1, t3);
-            var dateInterval2 = new DateInterval(t2, t3);
+            var dateInterval1 = new DateInterval(now, inThreeHours);
+            var dateInterval2 = new DateInterval(inOneHour, inThreeHours);
 
             // Act
-            bool result = dateInterval1.Equals(dateInterval2);
+            bool equals = dateInterval1.Equals(dateInterval2);
 
             // Assert
-            Assert.False(result);
+            Assert.False(equals);
+        }
+
+        /// <summary>
+        /// The equal_ date interval with same start and same end dates exclude start include end_ returns true.
+        /// </summary>
+        [Test]
+        public void Equal_DateIntervalWithSameStartAndSameEndDatesExcludeStartIncludeEnd_ReturnsTrue()
+        {
+            // Arrange
+            var dateInterval1 = new DateInterval(now, inOneHour, false, true);
+            var dateInterval2 = new DateInterval(now, inOneHour, false, true);
+
+            // Act
+            bool value = dateInterval1.Equals(dateInterval2);
+
+            // Assert   
+            Assert.True(value);
+        }
+
+        /// <summary>
+        /// The equal_ date interval with same start and same end different inclusions_ returns false.
+        /// </summary>
+        [TestCase(true, false, false, false)]
+        [TestCase(true, true, false, false)]
+        [TestCase(true, true, true, false)]
+        public void Equal_DateIntervalWithSameStartAndSameEndDifferentInclusions_ReturnsFalse(
+            bool minInclusive1, bool maxInclusive1,
+            bool minInclusive2, bool maxInclusive2)
+        {
+            // Arrange
+            var dateInterval1 = new DateInterval(now, inOneHour, minInclusive1, maxInclusive1);
+            var dateInterval2 = new DateInterval(now, inOneHour, minInclusive2, maxInclusive2);
+
+            // Act
+            bool equals = dateInterval1.Equals(dateInterval2);
+
+            // Assert   
+            Assert.False(equals);
         }
 
         #endregion
 
-        #region compareTo
+        #region CompareTo
 
         /// <summary>
         /// The compare to_ date interval with same start and same end dates_ returns zero.
@@ -312,16 +329,14 @@ namespace Orc.Tests
         public void CompareTo_DateIntervalWithSameStartAndSameEndDates_ReturnsZero()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2);
-            var dateInterval2 = new DateInterval(t1, t2);
+            var dateInterval1 = new DateInterval(now, inOneHour);
+            var dateInterval2 = new DateInterval(now, inOneHour);
 
             // Act
-            int value = dateInterval1.CompareTo(dateInterval2); // Shortest duration comes first
+            int compareToValue = dateInterval1.CompareTo(dateInterval2); // Shortest duration comes first
 
             // Assert
-            Assert.True(value == 0);
+            Assert.True(compareToValue == 0);
         }
 
         /// <summary>
@@ -330,18 +345,15 @@ namespace Orc.Tests
         [Test]
         public void CompareTo_DateIntervalWithSameStartAndDifferentEndDates_ReturnsShortestDurationFirst()
         {
-            // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            DateTime t3 = t1.AddHours(3);
-            var dateInterval1 = new DateInterval(t1, t2);
-            var dateInterval2 = new DateInterval(t1, t3);
+            // Arrange            
+            var dateInterval1 = new DateInterval(now, inOneHour);
+            var dateInterval2 = new DateInterval(now, inThreeHours);
 
             // Act
-            int value = dateInterval1.CompareTo(dateInterval2); // Shortest duration comes first
+            int compareToValue = dateInterval1.CompareTo(dateInterval2); // Shortest duration comes first
 
             // Assert
-            Assert.True(value == -1);
+            Assert.True(compareToValue == -1);
         }
 
         /// <summary>
@@ -351,17 +363,14 @@ namespace Orc.Tests
         public void CompareTo_DateIntervalWithSameStartAndDifferentEndDates_ReturnsShortestDurationFirstReversed()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            DateTime t3 = t1.AddHours(3);
-            var dateInterval1 = new DateInterval(t1, t3);
-            var dateInterval2 = new DateInterval(t1, t2);
+            var dateInterval1 = new DateInterval(now, inThreeHours);
+            var dateInterval2 = new DateInterval(now, inOneHour);
 
             // Act
-            int value = dateInterval1.CompareTo(dateInterval2); // Shortest duration comes first
+            int compareToValue = dateInterval1.CompareTo(dateInterval2); // Shortest duration comes first
 
             // Assert
-            Assert.True(value == 1);
+            Assert.True(compareToValue == 1);
         }
 
         /// <summary>
@@ -371,156 +380,17 @@ namespace Orc.Tests
         public void CompareTo_DateIntervalWithDifferentStartAndDifferentEndDates_ReturnsEarliestStart()
         {
             // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            DateTime t3 = t1.AddHours(3);
-            var dateInterval1 = new DateInterval(t1, t2);
-            var dateInterval2 = new DateInterval(t2, t3);
+            var dateInterval1 = new DateInterval(now, inOneHour);
+            var dateInterval2 = new DateInterval(inOneHour, inThreeHours);
 
             // Act
-            int value = dateInterval1.CompareTo(dateInterval2);
+            int compareToValue = dateInterval1.CompareTo(dateInterval2);
 
             // Assert   
-            Assert.True(value == -1);
+            Assert.True(compareToValue == -1);
         }
 
         #endregion
 
-        #region EqualOperation
-
-        /// <summary>
-        /// The compare to_ date interval with same start and same end dates_ returns true.
-        /// </summary>
-        [Test]
-        public void CompareTo_DateIntervalWithSameStartAndSameEndDates_ReturnsTrue()
-        {
-            // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2);
-            var dateInterval2 = new DateInterval(t1, t2);
-
-            // Act
-            bool value = dateInterval1.Equals(dateInterval2);
-
-            // Assert   
-            Assert.True(value);
-        }
-
-        /// <summary>
-        /// The compare to_ date interval with same start and same end dates include start include end_ returns true.
-        /// </summary>
-        [Test]
-        public void CompareTo_DateIntervalWithSameStartAndSameEndDatesIncludeStartIncludeEnd_ReturnsTrue()
-        {
-            // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2, true, true);
-            var dateInterval2 = new DateInterval(t1, t2, true, true);
-
-            // Act
-            bool value = dateInterval1.Equals(dateInterval2);
-
-            // Assert   
-            Assert.True(value);
-        }
-
-        /// <summary>
-        /// The compare to_ date interval with same start and same end dates exclude start include end_ returns true.
-        /// </summary>
-        [Test]
-        public void CompareTo_DateIntervalWithSameStartAndSameEndDatesExcludeStartIncludeEnd_ReturnsTrue()
-        {
-            // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2, false, true);
-            var dateInterval2 = new DateInterval(t1, t2, false, true);
-
-            // Act
-            bool value = dateInterval1.Equals(dateInterval2);
-
-            // Assert   
-            Assert.True(value);
-        }
-
-        /// <summary>
-        /// The compare to_ date interval with same start and same end dates exclude both_ returns true.
-        /// </summary>
-        [Test]
-        public void CompareTo_DateIntervalWithSameStartAndSameEndDatesExcludeBoth_ReturnsTrue()
-        {
-            // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2, false, false);
-            var dateInterval2 = new DateInterval(t1, t2, false, false);
-
-            // Act
-            bool value = dateInterval1.Equals(dateInterval2);
-
-            // Assert   
-            Assert.True(value);
-        }
-
-        /// <summary>
-        /// The compare to_ date interval with same start and same end different inclusions_ returns false.
-        /// </summary>
-        [Test]
-        public void CompareTo_DateIntervalWithSameStartAndSameEndDifferentInclusions_ReturnsFalse()
-        {
-            // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2, true, false);
-            var dateInterval2 = new DateInterval(t1, t2, false, false);
-
-            // Act
-            bool value = dateInterval1.Equals(dateInterval2);
-
-            // Assert   
-            Assert.False(value);
-        }
-
-        /// <summary>
-        /// The compare to_ date interval with same start and same end different inclusions 2_ returns false.
-        /// </summary>
-        [Test]
-        public void CompareTo_DateIntervalWithSameStartAndSameEndDifferentInclusions2_ReturnsFalse()
-        {
-            // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2, true, true);
-            var dateInterval2 = new DateInterval(t1, t2, false, false);
-
-            // Act
-            bool value = dateInterval1.Equals(dateInterval2);
-
-            // Assert   
-            Assert.False(value);
-        }
-
-        /// <summary>
-        /// The compare to_ date interval with same start and same end different inclusions 3_ returns false.
-        /// </summary>
-        [Test]
-        public void CompareTo_DateIntervalWithSameStartAndSameEndDifferentInclusions3_ReturnsFalse()
-        {
-            // Arrange
-            DateTime t1 = DateTime.Now;
-            DateTime t2 = t1.AddHours(1);
-            var dateInterval1 = new DateInterval(t1, t2, true, true);
-            var dateInterval2 = new DateInterval(t1, t2, true, false);
-
-            // Act
-            bool value = dateInterval1.Equals(dateInterval2);
-
-            // Assert   
-            Assert.False(value);
-        }
-
-        #endregion
     }
 }
