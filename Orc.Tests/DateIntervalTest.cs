@@ -19,25 +19,8 @@ namespace Orc.Tests
     /// The date interval test.
     /// </summary>
     [TestFixture]
-    public class DateIntervalTest
+    public class DateIntervalTest : DateIntervalTestBase
     {
-        private DateTime now;
-
-        private DateTime inOneHour;
-
-        private DateTime inTwoHours;
-
-        private DateTime inThreeHours;
-
-        [SetUp]
-        public void Setup()
-        {
-            now = DateTime.Now;
-            inOneHour = now.AddHours(1);
-            inTwoHours = now.AddHours(2);
-            inThreeHours = now.AddHours(3);
-        }
-
         #region Intersects
 
         /// <summary>
@@ -391,6 +374,5 @@ namespace Orc.Tests
         }
 
         #endregion
-
     }
 }

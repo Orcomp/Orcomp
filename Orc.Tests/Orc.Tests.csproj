@@ -55,6 +55,7 @@
     <Compile Include="DateIntervalCollectionTest.cs" />
     <Compile Include="DateIntervalExtensionsTest.cs" />
     <Compile Include="DateIntervalTest.cs" />
+    <Compile Include="DateIntervalTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
