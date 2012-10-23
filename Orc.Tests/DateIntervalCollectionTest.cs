@@ -49,9 +49,8 @@ namespace Orc.Tests
             var result = dateIntervalCollection.DateEdges;
 
             dateIntervalList.ForEach(x => correctResult.AddRange(x.GetEndPoints()));
-            correctResult.Sort();
 
-            CollectionAssert.AreEqual(correctResult, result);
+            CollectionAssert.AreEquivalent(correctResult, result);
         }
     }
 }

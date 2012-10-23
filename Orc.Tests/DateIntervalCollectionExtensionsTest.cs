@@ -39,7 +39,7 @@ namespace Orc.Tests
 
             var result = dateIntervalCollection.OverlapsWith(threeDaysAgoAndTwelveDaysInterval);
 
-            Assert.AreEqual(correctResult, result);
+            CollectionAssert.AreEquivalent(correctResult, result);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Orc.Tests
 
             var result = dateIntervalCollection.OverlapsWith(twoDaysAndFiveDaysInterval);
 
-            Assert.AreEqual(correctResult, result);
+            CollectionAssert.AreEquivalent(correctResult, result);
         }
     }
 }
