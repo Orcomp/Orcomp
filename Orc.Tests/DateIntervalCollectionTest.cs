@@ -31,6 +31,7 @@ namespace Orc.Tests
         [Ignore("This test causes test runners to fail with because of seckoverflow exception.")]
         public void DateEdges_AddMultipleDateIntervals_ReturnSortedDateEdges()
         {
+            //Arrange
             var dateIntervalCollection = new DateIntervalCollection();
 
             dateIntervalCollection.Add(nowAndTenDaysInterval);
@@ -46,8 +47,10 @@ namespace Orc.Tests
 
             var correctResult = new List<IEndPoint<DateTime>>();
 
+            //Act
             var result = dateIntervalCollection.DateEdges;
 
+            //Assert
             dateIntervalList.ForEach(x => correctResult.AddRange(x.GetEndPoints()));
 
             CollectionAssert.AreEquivalent(correctResult, result);

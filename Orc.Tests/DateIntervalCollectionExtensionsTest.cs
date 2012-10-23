@@ -28,6 +28,7 @@ namespace Orc.Tests
         [Test]
         public void OverlapsWith_MultipleDateIntervals_ReturnCorrectAnswer()
         {
+            //Arrange
             var dateIntervalCollection = new DateIntervalCollection();
 
             dateIntervalCollection.Add(nowAndTenDaysInterval);
@@ -37,8 +38,10 @@ namespace Orc.Tests
 
             var correctResult = new List<DateInterval> { nowAndTenDaysInterval, nowAndFiveDaysInterval, twoDaysAndFiveDaysInterval };
 
+            //Act
             var result = dateIntervalCollection.OverlapsWith(threeDaysAgoAndTwelveDaysInterval);
 
+            //Assert
             CollectionAssert.AreEquivalent(correctResult, result);
         }
 
@@ -48,6 +51,7 @@ namespace Orc.Tests
         [Test]
         public void OverlapsWith_MultipleDateIntervals_ReturnCorrectAnswer2()
         {
+            //Arrange
             var dateIntervalCollection = new DateIntervalCollection();
 
             dateIntervalCollection.Add(nowAndTenDaysInterval);
@@ -57,8 +61,10 @@ namespace Orc.Tests
 
             var correctResult = new List<DateInterval> { nowAndTenDaysInterval, nowAndFiveDaysInterval, threeDaysAgoAndTwelveDaysInterval };
 
+            //Act
             var result = dateIntervalCollection.OverlapsWith(twoDaysAndFiveDaysInterval);
 
+            //Assert
             CollectionAssert.AreEquivalent(correctResult, result);
         }
     }
