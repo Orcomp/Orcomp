@@ -9,7 +9,6 @@
 
 namespace Orc.Tests
 {
-    using System;
     using System.Collections.Generic;
 
     using NUnit.Framework;
@@ -21,7 +20,7 @@ namespace Orc.Tests
     /// The date interval collection extensions test.
     /// </summary>
     [TestFixture]
-    public class DateIntervalCollectionExtensionsTest
+    public class DateIntervalCollectionExtensionsTest : DateIntervalCollectionTesBase
     {
         /// <summary>
         /// The overlaps with_ multiple date intervals_ return correct answer.
@@ -31,22 +30,14 @@ namespace Orc.Tests
         {
             var dateIntervalCollection = new DateIntervalCollection();
 
-            var now = DateTime.Now;
+            dateIntervalCollection.Add(nowAndTenDaysInterval);
+            dateIntervalCollection.Add(nowAndFiveDaysInterval);
+            dateIntervalCollection.Add(twoDaysAndFiveDaysInterval);
+            dateIntervalCollection.Add(thirteenDaysAndFourteenDaysInterval);
 
-            var dateInterval1 = new DateInterval(now, now.AddDays(10));
-            var dateInterval2 = new DateInterval(now, now.AddDays(5));
-            var dateInterval3 = new DateInterval(now.AddDays(2), now.AddDays(5));
-            var dateInterval4 = new DateInterval(now.AddDays(-3), now.AddDays(12));
-            var dateInterval5 = new DateInterval(now.AddDays(13), now.AddDays(14));
+            var correctResult = new List<DateInterval> { nowAndTenDaysInterval, nowAndFiveDaysInterval, twoDaysAndFiveDaysInterval };
 
-            dateIntervalCollection.Add(dateInterval1);
-            dateIntervalCollection.Add(dateInterval2);
-            dateIntervalCollection.Add(dateInterval3);
-            dateIntervalCollection.Add(dateInterval5);
-
-            var correctResult = new List<DateInterval> { dateInterval1, dateInterval2, dateInterval3 };
-
-            var result = dateIntervalCollection.OverlapsWith(dateInterval4);
+            var result = dateIntervalCollection.OverlapsWith(threeDaysAgoAndTwelveDaysInterval);
 
             Assert.AreEqual(correctResult, result);
         }
@@ -59,22 +50,14 @@ namespace Orc.Tests
         {
             var dateIntervalCollection = new DateIntervalCollection();
 
-            var now = DateTime.Now;
+            dateIntervalCollection.Add(nowAndTenDaysInterval);
+            dateIntervalCollection.Add(nowAndFiveDaysInterval);
+            dateIntervalCollection.Add(threeDaysAgoAndTwelveDaysInterval);
+            dateIntervalCollection.Add(thirteenDaysAndFourteenDaysInterval);
 
-            var dateInterval1 = new DateInterval(now, now.AddDays(10));
-            var dateInterval2 = new DateInterval(now, now.AddDays(5));
-            var dateInterval3 = new DateInterval(now.AddDays(2), now.AddDays(5));
-            var dateInterval4 = new DateInterval(now.AddDays(-3), now.AddDays(12));
-            var dateInterval5 = new DateInterval(now.AddDays(13), now.AddDays(14));
+            var correctResult = new List<DateInterval> { nowAndTenDaysInterval, nowAndFiveDaysInterval, threeDaysAgoAndTwelveDaysInterval };
 
-            dateIntervalCollection.Add(dateInterval1);
-            dateIntervalCollection.Add(dateInterval2);
-            dateIntervalCollection.Add(dateInterval4);
-            dateIntervalCollection.Add(dateInterval5);
-
-            var correctResult = new List<DateInterval> { dateInterval1, dateInterval2, dateInterval4 };
-
-            var result = dateIntervalCollection.OverlapsWith(dateInterval3);
+            var result = dateIntervalCollection.OverlapsWith(twoDaysAndFiveDaysInterval);
 
             Assert.AreEqual(correctResult, result);
         }

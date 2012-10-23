@@ -52,6 +52,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DateIntervalCollectionExtensionsTest.cs" />
+    <Compile Include="DateIntervalCollectionTesBase.cs" />
     <Compile Include="DateIntervalCollectionTest.cs" />
     <Compile Include="DateIntervalExtensionsTest.cs" />
     <Compile Include="DateIntervalTest.cs" />
