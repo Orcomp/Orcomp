@@ -28,7 +28,6 @@ namespace Orc.Tests
         /// The date edges_ add multiple date intervals_ return sorted date edges.
         /// </summary>
         [Test]
-        [Ignore("This test causes test runners to fail with because of seckoverflow exception.")]
         public void DateEdges_AddMultipleDateIntervals_ReturnSortedDateEdges()
         {
             //Arrange
