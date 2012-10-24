@@ -153,6 +153,16 @@ namespace Orc.Entities
             return result;
         }
 
+        public static bool operator == (Interval<T> left, Interval<T> right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator != (Interval<T> left, Interval<T> right)
+        {
+            return !Equals(left, right);
+        }
+
         /// <summary>
         /// Gets the Min.
         /// </summary>
