@@ -9,76 +9,63 @@
 
 namespace Orc.Tests
 {
-    using System;
     using System.Collections.Generic;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
     using Orc.Entities;
     using Orc.Extensions;
 
-    using Assert = Xunit.Assert;
-
     /// <summary>
     /// The date interval collection extensions test.
     /// </summary>
-    [TestClass]
-    public class DateIntervalCollectionExtensionsTest
+    [TestFixture]
+    public class DateIntervalCollectionExtensionsTest : DateIntervalCollectionTesBase
     {
         /// <summary>
         /// The overlaps with_ multiple date intervals_ return correct answer.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void OverlapsWith_MultipleDateIntervals_ReturnCorrectAnswer()
         {
+            //Arrange
             var dateIntervalCollection = new DateIntervalCollection();
 
-            var now = DateTime.Now;
+            dateIntervalCollection.Add(nowAndTenDaysInterval);
+            dateIntervalCollection.Add(nowAndFiveDaysInterval);
+            dateIntervalCollection.Add(twoDaysAndFiveDaysInterval);
+            dateIntervalCollection.Add(thirteenDaysAndFourteenDaysInterval);
 
-            var dateInterval1 = new DateInterval(now, now.AddDays(10));
-            var dateInterval2 = new DateInterval(now, now.AddDays(5));
-            var dateInterval3 = new DateInterval(now.AddDays(2), now.AddDays(5));
-            var dateInterval4 = new DateInterval(now.AddDays(-3), now.AddDays(12));
-            var dateInterval5 = new DateInterval(now.AddDays(13), now.AddDays(14));
+            var correctResult = new List<DateInterval> { nowAndTenDaysInterval, nowAndFiveDaysInterval, twoDaysAndFiveDaysInterval };
 
-            dateIntervalCollection.Add(dateInterval1);
-            dateIntervalCollection.Add(dateInterval2);
-            dateIntervalCollection.Add(dateInterval3);
-            dateIntervalCollection.Add(dateInterval5);
+            //Act
+            var result = dateIntervalCollection.OverlapsWith(threeDaysAgoAndTwelveDaysInterval);
 
-            var correctResult = new List<DateInterval> { dateInterval1, dateInterval2, dateInterval3 };
-
-            var result = dateIntervalCollection.OverlapsWith(dateInterval4);
-
-            Assert.Equal(correctResult, result);
+            //Assert
+            CollectionAssert.AreEquivalent(correctResult, result);
         }
 
         /// <summary>
         /// The overlaps with_ multiple date intervals_ return correct answer 2.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void OverlapsWith_MultipleDateIntervals_ReturnCorrectAnswer2()
         {
+            //Arrange
             var dateIntervalCollection = new DateIntervalCollection();
 
-            var now = DateTime.Now;
+            dateIntervalCollection.Add(nowAndTenDaysInterval);
+            dateIntervalCollection.Add(nowAndFiveDaysInterval);
+            dateIntervalCollection.Add(threeDaysAgoAndTwelveDaysInterval);
+            dateIntervalCollection.Add(thirteenDaysAndFourteenDaysInterval);
 
-            var dateInterval1 = new DateInterval(now, now.AddDays(10));
-            var dateInterval2 = new DateInterval(now, now.AddDays(5));
-            var dateInterval3 = new DateInterval(now.AddDays(2), now.AddDays(5));
-            var dateInterval4 = new DateInterval(now.AddDays(-3), now.AddDays(12));
-            var dateInterval5 = new DateInterval(now.AddDays(13), now.AddDays(14));
+            var correctResult = new List<DateInterval> { nowAndTenDaysInterval, nowAndFiveDaysInterval, threeDaysAgoAndTwelveDaysInterval };
 
-            dateIntervalCollection.Add(dateInterval1);
-            dateIntervalCollection.Add(dateInterval2);
-            dateIntervalCollection.Add(dateInterval4);
-            dateIntervalCollection.Add(dateInterval5);
+            //Act
+            var result = dateIntervalCollection.OverlapsWith(twoDaysAndFiveDaysInterval);
 
-            var correctResult = new List<DateInterval> { dateInterval1, dateInterval2, dateInterval4 };
-
-            var result = dateIntervalCollection.OverlapsWith(dateInterval3);
-
-            Assert.Equal(correctResult, result);
+            //Assert
+            CollectionAssert.AreEquivalent(correctResult, result);
         }
     }
 }
