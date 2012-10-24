@@ -6,6 +6,9 @@
 //   The interval.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+//TODO: Must enforce immutability of the Interval class.
+
 namespace Orc.Entities
 {
     using System;
@@ -68,6 +71,40 @@ namespace Orc.Entities
         /// <summary>
         /// The equals.
         /// </summary>
+        /// <param name="obj">
+        /// The other.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            var other = obj as IInterval<T>;
+            return other != null && Equals(other);
+        }
+
+        /// <summary>
+        /// The get hash code.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return this.Min.GetHashCode() ^ this.Max.GetHashCode();
+        }
+
+        /// <summary>
+        /// The equals.
+        /// </summary>
         /// <param name="other">
         /// The other.
         /// </param>
@@ -76,7 +113,18 @@ namespace Orc.Entities
         /// </returns>
         public bool Equals(IInterval<T> other)
         {
-            return (this.GetType() == other.GetType()) && (this.CompareTo(other) == 0);
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            // NOTE: Not sure whether to include type comparision yet. Leave comment below.
+            // return (this.GetType() == other.GetType()) && (this.CompareTo(other) == 0);
+
+            return this.CompareTo(other) == 0;
         }
 
         /// <summary>
@@ -161,31 +209,6 @@ namespace Orc.Entities
             var endsAfterOtherStart = this.Max.CompareTo(other.Min) >= 0;
 
             return startsBeforeOtherEnds && endsAfterOtherStart;
-        }
-
-        /// <summary>
-        /// The equals.
-        /// </summary>
-        /// <param name="other">
-        /// The other.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        public override bool Equals(object other)
-        {
-            return this.Equals(other as IInterval<T>);
-        }
-
-        /// <summary>
-        /// The get hash code.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        public override int GetHashCode()
-        {
-            return this.Min.GetHashCode() ^ this.Max.GetHashCode();
         }
 
         /// <summary>

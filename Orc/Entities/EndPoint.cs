@@ -3,12 +3,16 @@
 //   MS-PL
 // </copyright>
 // <summary>
-//   The edge.
+//   The EndPoint
 // </summary>
+// <notes>
+//  TODO: Need to implement IEqualityComparer<T> of EndPoint to include interval, to use with Dictionaries or HashSets
+// </notes>
 // --------------------------------------------------------------------------------------------------------------------
 namespace Orc.Entities
 {
     using System;
+    using System.Collections.Generic;
 
     using Orc.Interface;
 
@@ -18,7 +22,7 @@ namespace Orc.Entities
     /// <typeparam name="T">
     /// T must be a comparable type.
     /// </typeparam>
-    public class EndPoint<T> : IEndPoint<T>
+    public class EndPoint<T> : IEndPoint<T>, IEquatable<EndPoint<T>>
         where T : IComparable<T>
     {
         /// <summary>
@@ -33,6 +37,7 @@ namespace Orc.Entities
         public EndPoint(IInterval<T> interval, EndPointType endPointType)
         {
             this.Interval = interval;
+
             this.EndPointType = endPointType;
 
             this.Value = endPointType == EndPointType.Min ? interval.Min.Value : interval.Max.Value;
@@ -162,28 +167,72 @@ namespace Orc.Entities
         }
 
         /// <summary>
-        /// The equals.
+        /// Indicates whether the current object is equal to another object of the same type.
         /// </summary>
-        /// <param name="obj">
-        /// The obj.
-        /// </param>
         /// <returns>
-        /// The <see cref="bool"/>.
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj)
+        /// <param name="other">An object to compare with this object.</param>
+        public bool Equals(EndPoint<T> other)
         {
-            return this.Equals(obj as IEndPoint<T>);
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return this.EndPointType.Equals(other.EndPointType) && EqualityComparer<T>.Default.Equals(this.Value, other.Value) && this.IsInclusive.Equals(other.IsInclusive);
         }
 
         /// <summary>
-        /// The get hash code.
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
         /// </summary>
         /// <returns>
-        /// The <see cref="int"/>.
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
         /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><filterpriority>2</filterpriority>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            var other = obj as EndPoint<T>;
+            return other != null && Equals(other);
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
-            return Value.GetHashCode() ^ IsInclusive.GetHashCode() ^ IsMinEndPoint.GetHashCode();
+            unchecked
+            {
+                int hashCode = this.EndPointType.GetHashCode();
+                hashCode = (hashCode * 397) ^ EqualityComparer<T>.Default.GetHashCode(this.Value);
+                hashCode = (hashCode * 397) ^ this.IsInclusive.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public static bool operator == (EndPoint<T> left, EndPoint<T> right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator != (EndPoint<T> left, EndPoint<T> right)
+        {
+            return !Equals(left, right);
         }
 
         /// <summary>
@@ -196,7 +245,7 @@ namespace Orc.Entities
         {
             if (this.IsMinEndPoint)
             {
-                if (IsInclusive)
+                if (this.IsInclusive)
                 {
                     return "[" + Value;
                 }
