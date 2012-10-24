@@ -41,9 +41,10 @@ namespace Orc.Entities
                 return true;
             }
 
-            return x.Interval.Equals(y.Interval) && x.EndPointType.Equals(y.EndPointType)
-                   && EqualityComparer<T>.Default.Equals(x.Value, y.Value) && x.IsInclusive.Equals(y.IsInclusive))
-            ;
+            return x.Interval.Equals(y.Interval) && 
+                    x.EndPointType.Equals(y.EndPointType) && 
+                    EqualityComparer<T>.Default.Equals(x.Value, y.Value) && 
+                    x.IsInclusive.Equals(y.IsInclusive);
         }
 
         /// <summary>

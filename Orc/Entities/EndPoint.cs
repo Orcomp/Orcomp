@@ -4,10 +4,9 @@
 // </copyright>
 // <summary>
 //   The EndPoint
+//   We want this class to be immutable:
+//   http://www.bluebytesoftware.com/blog/2007/11/11/ImmutableTypesForC.aspx
 // </summary>
-// <notes>
-//  TODO: Need to implement IEqualityComparer<T> of EndPoint to include interval, to use with Dictionaries or HashSets
-// </notes>
 // --------------------------------------------------------------------------------------------------------------------
 namespace Orc.Entities
 {
@@ -26,6 +25,26 @@ namespace Orc.Entities
         where T : IComparable<T>
     {
         /// <summary>
+        /// Backing field for EndPointType property
+        /// </summary>
+        private readonly EndPointType endPointType;
+
+        /// <summary>
+        /// Backing field for Interval property
+        /// </summary>
+        private readonly IInterval<T> interval;
+
+        /// <summary>
+        /// Backing field for IsInclusive property
+        /// </summary>
+        private readonly bool isInclusive;
+
+        /// <summary>
+        /// Backing field for IsMineEndPoint property
+        /// </summary>
+        private bool isMinEndPoint;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EndPoint{T}"/> class. 
         /// </summary>
         /// <param name="interval">
@@ -36,15 +55,15 @@ namespace Orc.Entities
         /// </param>
         public EndPoint(IInterval<T> interval, EndPointType endPointType)
         {
-            this.Interval = interval;
+            this.interval = interval;
 
-            this.EndPointType = endPointType;
+            this.endPointType = endPointType;
 
             this.Value = endPointType == EndPointType.Min ? interval.Min.Value : interval.Max.Value;
 
-            this.IsMinEndPoint = endPointType == EndPointType.Min;
+            this.isMinEndPoint = endPointType == EndPointType.Min;
 
-            this.IsInclusive = endPointType == EndPointType.Min ? interval.Min.IsInclusive : interval.Max.IsInclusive;
+            this.isInclusive = endPointType == EndPointType.Min ? interval.Min.IsInclusive : interval.Max.IsInclusive;
         }
 
         /// <summary>
@@ -64,14 +83,56 @@ namespace Orc.Entities
         /// </param>
         public EndPoint(T value, EndPointType endPointType, bool isInclusive, IInterval<T> interval)
         {
-            this.Interval = interval;
-            this.EndPointType = endPointType;
+            this.interval = interval;
+            this.endPointType = endPointType;
 
             this.Value = value;
 
-            this.IsMinEndPoint = endPointType == EndPointType.Min;
+            this.isMinEndPoint = endPointType == EndPointType.Min;
 
-            this.IsInclusive = isInclusive;
+            this.isInclusive = isInclusive;
+        }
+
+        /// <summary>
+        /// Gets the edge type.
+        /// </summary>
+        /// <value>
+        /// The edge type.
+        /// </value>
+        public EndPointType EndPointType
+        {
+            get
+            {
+                return this.endPointType;
+            }
+        }
+
+        /// <summary>
+        /// Gets the interval.
+        /// </summary>
+        /// <value>
+        /// The interval.
+        /// </value>
+        public IInterval<T> Interval
+        {
+            get
+            {
+                return this.interval;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether is inclusive.
+        /// </summary>
+        /// <value>
+        /// The is inclusive.
+        /// </value>
+        public bool IsInclusive
+        {
+            get
+            {
+                return this.isInclusive;
+            }
         }
 
         /// <summary>
@@ -80,23 +141,13 @@ namespace Orc.Entities
         /// <value>
         /// The is start edge.
         /// </value>
-        public bool IsMinEndPoint { get; private set; }
-
-        /// <summary>
-        /// Gets the interval.
-        /// </summary>
-        /// <value>
-        /// The interval.
-        /// </value>
-        public IInterval<T> Interval { get; private set; }
-
-        /// <summary>
-        /// Gets the edge type.
-        /// </summary>
-        /// <value>
-        /// The edge type.
-        /// </value>
-        public EndPointType EndPointType { get; private set; }
+        public bool IsMinEndPoint
+        {
+            get
+            {
+                return this.isMinEndPoint;
+            }
+        }
 
         /// <summary>
         /// Gets the value.
@@ -106,13 +157,15 @@ namespace Orc.Entities
         /// </value>
         public T Value { get; private set; }
 
-        /// <summary>
-        /// Gets a value indicating whether is inclusive.
-        /// </summary>
-        /// <value>
-        /// The is inclusive.
-        /// </value>
-        public bool IsInclusive { get; private set; }
+        public static bool operator !=(EndPoint<T> left, EndPoint<T> right)
+        {
+            return !Equals(left, right);
+        }
+
+        public static bool operator ==(EndPoint<T> left, EndPoint<T> right)
+        {
+            return Equals(left, right);
+        }
 
         /// <summary>
         /// Compare two EndPoints with each other.
@@ -148,22 +201,6 @@ namespace Orc.Entities
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// The get other end point.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IEndPoint{T}"/>.
-        /// </returns>
-        public IEndPoint<T> GetOtherEndPoint()
-        {
-            if (this.Interval == null)
-            {
-                return null;
-            }
-
-            return this.IsMinEndPoint ? this.Interval.Max : this.Interval.Min;
         }
 
         /// <summary>
@@ -225,16 +262,21 @@ namespace Orc.Entities
             }
         }
 
-        public static bool operator == (EndPoint<T> left, EndPoint<T> right)
+        /// <summary>
+        /// The get other end point.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEndPoint{T}"/>.
+        /// </returns>
+        public IEndPoint<T> GetOtherEndPoint()
         {
-            return Equals(left, right);
-        }
+            if (this.Interval == null)
+            {
+                return null;
+            }
 
-        public static bool operator != (EndPoint<T> left, EndPoint<T> right)
-        {
-            return !Equals(left, right);
+            return this.IsMinEndPoint ? this.Interval.Max : this.Interval.Min;
         }
-
         /// <summary>
         /// The to string.
         /// </summary>

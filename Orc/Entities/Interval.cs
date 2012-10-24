@@ -4,10 +4,13 @@
 // </copyright>
 // <summary>
 //   The interval.
+//   We want this class to be immutable:
+//   http://www.bluebytesoftware.com/blog/2007/11/11/ImmutableTypesForC.aspx
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-//TODO: Must enforce immutability of the Interval class.
+// TODO: Must enforce immutability of the Interval class.
+
 
 namespace Orc.Entities
 {
@@ -31,12 +34,14 @@ namespace Orc.Entities
         private readonly Comparer<T> comparer = Comparer<T>.Default;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Interval{T}"/> class.
+        /// Backing field for the Max property
         /// </summary>
-        public Interval()
-            : this(default(T), default(T))
-        {
-        }
+        private readonly IEndPoint<T> max;
+
+        /// <summary>
+        /// Backing field for the Min property
+        /// </summary>
+        private readonly IEndPoint<T> min;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Interval{T}"/> class.
@@ -64,67 +69,48 @@ namespace Orc.Entities
                 throw new ArgumentException(string.Format("Min value: {0} can't be greater than Max value: {1}", minValue, maxValue));
             }
 
-            this.Min = new EndPoint<T>(minValue, EndPointType.Min, isMinInclusive, this);
-            this.Max = new EndPoint<T>(maxValue, EndPointType.Max, isMaxInclusive, this);
+            // NOTE: Should not really be leaking "this" in the constructor, if we really want this class to be completely immutable.
+            // See the reference in the header.
+            this.min = new EndPoint<T>(minValue, EndPointType.Min, isMinInclusive, this);
+            this.max = new EndPoint<T>(maxValue, EndPointType.Max, isMaxInclusive, this);
         }
 
         /// <summary>
-        /// The equals.
+        /// Gets the Max.
         /// </summary>
-        /// <param name="obj">
-        /// The other.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        public override bool Equals(object obj)
+        /// <value>
+        /// The Max.
+        /// </value>
+        public IEndPoint<T> Max
         {
-            if (ReferenceEquals(null, obj))
+            get
             {
-                return false;
+                return this.max;
             }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            var other = obj as IInterval<T>;
-            return other != null && Equals(other);
         }
 
         /// <summary>
-        /// The get hash code.
+        /// Gets the Min.
         /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        public override int GetHashCode()
+        /// <value>
+        /// The Min.
+        /// </value>
+        public IEndPoint<T> Min
         {
-            return this.Min.GetHashCode() ^ this.Max.GetHashCode();
+            get
+            {
+                return this.min;
+            }
         }
 
-        /// <summary>
-        /// The equals.
-        /// </summary>
-        /// <param name="other">
-        /// The other.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        public bool Equals(IInterval<T> other)
+        public static bool operator !=(Interval<T> left, Interval<T> right)
         {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-            // NOTE: Not sure whether to include type comparision yet. Leave comment below.
-            // return (this.GetType() == other.GetType()) && (this.CompareTo(other) == 0);
+            return !Equals(left, right);
+        }
 
-            return this.CompareTo(other) == 0;
+        public static bool operator ==(Interval<T> left, Interval<T> right)
+        {
+            return Equals(left, right);
         }
 
         /// <summary>
@@ -153,32 +139,64 @@ namespace Orc.Entities
             return result;
         }
 
-        public static bool operator == (Interval<T> left, Interval<T> right)
+        /// <summary>
+        /// The equals.
+        /// </summary>
+        /// <param name="obj">
+        /// The other.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public override bool Equals(object obj)
         {
-            return Equals(left, right);
-        }
-
-        public static bool operator != (Interval<T> left, Interval<T> right)
-        {
-            return !Equals(left, right);
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            var other = obj as IInterval<T>;
+            return other != null && Equals(other);
         }
 
         /// <summary>
-        /// Gets the Min.
+        /// The equals.
         /// </summary>
-        /// <value>
-        /// The Min.
-        /// </value>
-        public IEndPoint<T> Min { get; private set; }
+        /// <param name="other">
+        /// The other.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool Equals(IInterval<T> other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            // NOTE: Not sure whether to include type comparision yet. Leave comment below.
+            // return (this.GetType() == other.GetType()) && (this.CompareTo(other) == 0);
+
+            return this.CompareTo(other) == 0;
+        }
 
         /// <summary>
-        /// Gets the Max.
+        /// The get hash code.
         /// </summary>
-        /// <value>
-        /// The Max.
-        /// </value>
-        public IEndPoint<T> Max { get; private set; }
-
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            return this.Min.GetHashCode() ^ this.Max.GetHashCode();
+        }
         /// <summary>
         /// The intersects.
         /// </summary>

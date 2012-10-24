@@ -44,6 +44,7 @@
     <Compile Include="Entities\DateIntervalCollection.cs" />
     <Compile Include="Entities\EndPoint.cs" />
     <Compile Include="Entities\EndPointType.cs" />
+    <Compile Include="Entities\EndPointWithIntervalEqualityComparer.cs" />
     <Compile Include="Entities\Interval.cs" />
     <Compile Include="Extensions\DateIntervalCollectionExtensions.cs" />
     <Compile Include="Extensions\DateIntervalExtensions.cs" />
