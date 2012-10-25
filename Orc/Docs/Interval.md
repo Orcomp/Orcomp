@@ -63,3 +63,11 @@ EndPoints can also represent +/- infinity by specidying double.PositiveInfinity 
 # Links
 
 - Maintaining Knowledge about Temporal Intervals (http://web.cacs.louisiana.edu/~logan/521_f08/Doc/p832-allen.pdf)
+
+## Interval Tree Implementations in C#
+
+http://code.google.com/p/intervaltree/source/browse/IntervalTree.cs
+https://github.com/vvondra/Interval-Tree
+https://github.com/mbuchetics/RangeTree/blob/master/RangeTreeExamples/Program.cs
+http://intervaltree.codeplex.com/
+
