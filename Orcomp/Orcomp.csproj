@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\DateRangeEfficiency.cs" />
+    <Compile Include="Entities\DateIntervalEfficiency.cs" />
     <Compile Include="Entities\Constraint.cs" />
     <Compile Include="Entities\DateRange.cs" />
     <Compile Include="Entities\Edge.cs" />

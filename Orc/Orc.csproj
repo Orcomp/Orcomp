@@ -42,9 +42,11 @@
     <Compile Include="Entities\DateEndPoint.cs" />
     <Compile Include="Entities\DateInterval.cs" />
     <Compile Include="Entities\DateIntervalCollection.cs" />
+    <Compile Include="Entities\DateIntervalEfficiency.cs" />
     <Compile Include="Entities\EndPoint.cs" />
     <Compile Include="Entities\EndPointType.cs" />
     <Compile Include="Entities\EndPointWithIntervalEqualityComparer.cs" />
+    <Compile Include="Entities\FixedEndPoint.cs" />
     <Compile Include="Entities\Interval.cs" />
     <Compile Include="Extensions\DateIntervalCollectionExtensions.cs" />
     <Compile Include="Extensions\DateIntervalExtensions.cs" />

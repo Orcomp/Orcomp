@@ -55,11 +55,24 @@ namespace Orc.Extensions
         /// The source.
         /// </param>
         /// <returns>
-        /// The <see cref="IEnumerable"/>.
+        /// The <see cref="IEnumerable{T}"/>.
         /// </returns>
         public static IEnumerable<IEndPoint<DateTime>> GetEndPoints(this DateInterval source)
         {
             return new List<IEndPoint<DateTime>> { source.Min, source.Max };
+        }
+
+        /// <summary>
+        /// This method will accept a dateInterval and calcualte a new dateInterval taking into account the dateIntervalEfficiencies
+        /// ASSUMPTION: the input dateInterval has an efficiency of 100%
+        /// </summary>
+        /// <param name="dateInterval"></param>
+        /// <param name="dateIntervalEfficiencies"></param>
+        /// <param name="fixedEndPoint"></param>
+        /// <returns></returns>
+        public static DateInterval AccountForEfficiencies(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
+        {
+            throw new NotImplementedException();
         }
     }
 }

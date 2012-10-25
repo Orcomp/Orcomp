@@ -7,7 +7,7 @@ using Orcomp.Interfaces;
 
 namespace Orcomp.Entities
 {
-    public sealed class DateRangeEfficiency : IDateRange
+    public sealed class DateIntervalEfficiency : IDateRange
     {
         private DateRange DateRange { get; set; }
 
@@ -30,7 +30,7 @@ namespace Orcomp.Entities
 
         public int Priority { get; set; }
 
-        public DateRangeEfficiency(DateTime startTime, DateTime endTime, double efficiency, int priority = 0)
+        public DateIntervalEfficiency(DateTime startTime, DateTime endTime, double efficiency, int priority = 0)
         {
             DateRange = new DateRange( startTime, endTime );
             Efficiency = efficiency;
