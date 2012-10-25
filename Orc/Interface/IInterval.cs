@@ -63,5 +63,12 @@ namespace Orc.Interface
         /// The <see cref="bool"/>.
         /// </returns>
         bool Overlaps(IInterval<T> other);
+
+        /// <summary>
+        /// Return the overlap with other interval.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        IInterval<T> GetOverlap(IInterval<T> other);
     }
 }

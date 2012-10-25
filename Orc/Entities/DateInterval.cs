@@ -14,6 +14,7 @@ namespace Orc.Entities
 
     /// <summary>
     /// The date interval.
+    /// By Default the min endpoint is inclusive and the max is exclusive
     /// </summary>
     public class DateInterval : Interval<DateTime>, IDateInterval
     {
@@ -61,6 +62,30 @@ namespace Orc.Entities
             : base(minValue, minValue.Add(duration), isMinInclusive, isMaxInclusive)
         {
             this.Duration = duration;
+        }
+
+        /// <summary>
+        /// Instantiate DateInterval from Interval{DateTime}
+        /// </summary>
+        /// <param name="dateTimeInterval"></param>
+        public DateInterval(IInterval<DateTime> dateTimeInterval )
+            : this(dateTimeInterval.Min.Value, dateTimeInterval.Max.Value, dateTimeInterval.Min.IsInclusive, dateTimeInterval.Max.IsInclusive)
+        { 
+        }
+
+        /// <summary>
+        /// Return the overlap with other interval
+        /// </summary>
+        /// <param name="other">
+        /// </param>
+        /// <returns>
+        /// The <see cref="DateInterval"/>.
+        /// </returns>
+        public new IInterval<DateTime> GetOverlap(IInterval<DateTime> other)
+        {
+            var dateTimeInterval = base.GetOverlap(other);
+
+            return dateTimeInterval == null ? null : new DateInterval(dateTimeInterval);
         }
 
         /// <summary>

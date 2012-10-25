@@ -65,6 +65,7 @@
     <Compile Include="DateIntervalExtensions_AccountForEfficienciesTest.cs" />
     <Compile Include="IntervalSkipList\IntervalNodeTest.cs" />
     <Compile Include="IntervalSkipList\IntervalSkipListTest.cs" />
+    <Compile Include="IntervalTree\IntervalTreeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,10 @@ namespace Orc.Entities.IntervalSkipList
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// IntervalSkipList is more of a static IntervalCollection. It is not dynamic and cannot be updated.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class IntervalSkipList<T> where T : IComparable<T>
     {
         private readonly IntervalNode<T> _head;

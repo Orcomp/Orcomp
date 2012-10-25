@@ -9,9 +9,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-// TODO: Must enforce immutability of the Interval class.
-
-
 namespace Orc.Entities
 {
     using System;
@@ -21,11 +18,12 @@ namespace Orc.Entities
 
     /// <summary>
     /// The interval.
+    /// By Default the end points are inclusive.
     /// </summary>
     /// <typeparam name="T">
     /// T must be comparable.
     /// </typeparam>
-    public class Interval<T> : IInterval<T>
+    public class Interval<T> : IInterval<T>, IComparable<Interval<T>>, IEquatable<Interval<T>>
         where T : IComparable<T>
     {
         /// <summary>
@@ -122,7 +120,7 @@ namespace Orc.Entities
         /// <returns>
         /// Returns the result of comparing two intervals together.
         /// </returns>
-        public int CompareTo(IInterval<T> other)
+        public int CompareTo(Interval<T> other)
         {
             if (other == null)
             {
@@ -137,6 +135,20 @@ namespace Orc.Entities
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Compare two IInterval types.
+        /// </summary>
+        /// <param name="other">
+        /// The other.
+        /// </param>
+        /// <returns>
+        /// Returns the result of comparing two intervals together.
+        /// </returns>
+        public int CompareTo(IInterval<T> other)
+        {
+            return CompareTo(other as Interval<T>);
         }
 
         /// <summary>
@@ -158,8 +170,32 @@ namespace Orc.Entities
             {
                 return true;
             }
-            var other = obj as IInterval<T>;
-            return other != null && Equals(other);
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+            return Equals((Interval<T>)obj);
+        }
+
+        /// <summary>
+        /// The equals.
+        /// </summary>
+        /// <param>
+        /// The other. <name>Interval{T}</name> </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool Equals(Interval<T> other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return Equals(this.max, other.max) && Equals(this.min, other.min);
         }
 
         /// <summary>
@@ -250,6 +286,32 @@ namespace Orc.Entities
             var endsAfterOtherStart = this.Max.CompareTo(other.Min) >= 0;
 
             return startsBeforeOtherEnds && endsAfterOtherStart;
+        }
+
+        /// <summary>
+        /// Return the overlap with other interval
+        /// </summary>
+        /// <param name="other">
+        /// </param>
+        /// <returns>
+        /// The <see cref="DateInterval"/>.
+        /// </returns>
+        public IInterval<T> GetOverlap(IInterval<T> other)
+        {
+            if (this.Overlaps(other) == false)
+            {
+                return null;
+            }
+
+            var newMin = this.Min.CompareTo(other.Min) > 0 ? this.Min : other.Min;
+            var newMax = this.Max.CompareTo(other.Max) > 0 ? other.Max : this.Max;
+
+            if (newMin.Value.CompareTo(newMax.Value) == 0 && !newMax.IsInclusive)
+            {
+                return null;
+            }
+
+            return  new Interval<T>(newMin.Value, newMax.Value, newMin.IsInclusive, newMax.IsInclusive);
         }
 
         /// <summary>
