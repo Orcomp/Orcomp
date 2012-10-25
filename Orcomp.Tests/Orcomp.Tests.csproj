@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateRangeCollectionExtensionsTest.cs" />
-    <Compile Include="DateRangeExtensionsTest.cs" />
     <Compile Include="DateRangeTest.cs" />
     <Compile Include="DateTimeUtilitiesTest.cs" />
     <Compile Include="LibraryExtensionsTest.cs" />

@@ -21,19 +21,19 @@ namespace Orc.Tests
     [TestFixture]
     public class DateIntervalTest : DateIntervalTestBase
     {
-        #region Intersects
+        #region Contains point
 
         /// <summary>
         /// The intersects_ date before date interval_ return false.
         /// </summary>
         [Test]
-        public void Intersects_DateBeforeDateInterval_ReturnFalse()
+        public void Contains_DateBeforeDateInterval_ReturnFalse()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool intersect = dateInterval.Intersects(now.AddHours(-1));
+            bool intersect = dateInterval.Contains(now.AddHours(-1));
 
             // Assert
             Assert.False(intersect);
@@ -43,13 +43,13 @@ namespace Orc.Tests
         /// The intersects_ date after date interval_ return false.
         /// </summary>
         [Test]
-        public void Intersects_DateAfterDateInterval_ReturnFalse()
+        public void Contains_DateAfterDateInterval_ReturnFalse()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(now.AddHours(2));
+            bool interesct = dateInterval.Contains(now.AddHours(2));
 
             // Assert
             Assert.False(interesct);
@@ -59,13 +59,13 @@ namespace Orc.Tests
         /// The intersects_ date in date interval_ return true.
         /// </summary>
         [Test]
-        public void Intersects_DateInDateInterval_ReturnTrue()
+        public void Contains_DateInDateInterval_ReturnTrue()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(now.AddHours(0.5));
+            bool interesct = dateInterval.Contains(now.AddHours(0.5));
 
             // Assert
             Assert.True(interesct);
@@ -75,13 +75,13 @@ namespace Orc.Tests
         /// The intersects_ date on start date interval_ return true.
         /// </summary>
         [Test]
-        public void Intersects_DateOnStartDateInterval_ReturnTrue()
+        public void Contains_DateOnStartDateInterval_ReturnTrue()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(now);
+            bool interesct = dateInterval.Contains(now);
 
             // Assert
             Assert.True(interesct);
@@ -91,13 +91,13 @@ namespace Orc.Tests
         /// The intersects_ date on end date interval_ return false.
         /// </summary>
         [Test]
-        public void Intersects_DateOnEndDateInterval_ReturnFalse()
+        public void Contains_DateOnEndDateInterval_ReturnFalse()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(inOneHour);
+            bool interesct = dateInterval.Contains(inOneHour);
 
             // Assert
             Assert.False(interesct);
@@ -107,16 +107,102 @@ namespace Orc.Tests
         /// The intersects_ date on end date interval end date inclusive_ return true.
         /// </summary>
         [Test]
-        public void Intersects_DateOnEndDateIntervalEndDateInclusive_ReturnTrue()
+        public void Contains_DateOnEndDateIntervalEndDateInclusive_ReturnTrue()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour, isMaxInclusive: true);
 
             // Act
-            bool interesct = dateInterval.Intersects(inOneHour);
+            bool interesct = dateInterval.Contains(inOneHour);
 
             // Assert
             Assert.True(interesct);
+        }
+
+        #endregion
+
+        #region Contains interval
+
+        /// <summary>
+        /// The parent interval contains the other interval
+        /// </summary>
+        [Test]
+        public void Contains_CurrentIntervalStartsBeforeAndFinishedAfterOtherInterval_ReturnTrue()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours);
+            var otherInterval = new DateInterval(inOneHour, inTwoHours);
+
+            // Act
+            bool contains = dateInterval.Contains(otherInterval);
+
+            // Assert
+            Assert.True(contains);
+        }
+
+        /// <summary>
+        /// The parent interval contains the other interval, matching start and end points
+        /// </summary>
+        [Test]
+        public void Contains_CurrentIntervalStartsAndFinishedWithOtherInterval_ReturnTrue()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours);
+            var otherInterval = new DateInterval(now, inThreeHours);
+
+            // Act
+            bool contains = dateInterval.Contains(otherInterval);
+
+            // Assert
+            Assert.True(contains);
+        }
+
+        /// <summary>
+        /// The parent interval does not contain the other interval, matching start and end point values
+        /// </summary>
+        [TestCase(false, false, true, false)]
+        [TestCase(false, false, false, true)]
+        [TestCase(true, false, true, true)]
+        [TestCase(true, false, true, true)]
+        [TestCase(true, false, false, true)]
+        public void Contains_CurrentIntervalStartAndEndValuesAreTheSameAsOtherIntervalButDifferentEndPointInclusion_ReturnFalse(
+            bool minInclusive1, bool maxInclusive1,
+            bool minInclusive2, bool maxInclusive2)
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours, minInclusive1, maxInclusive1);
+            var otherInterval = new DateInterval(now, inThreeHours, minInclusive2, maxInclusive2);
+
+            // Act
+            bool contains = dateInterval.Contains(otherInterval);
+
+            // Assert
+            Assert.False(contains);
+        }
+
+        /// <summary>
+        /// The parent interval contains the other interval, matching start and end point values
+        /// </summary>
+        [TestCase(true, true, true, true)]
+        [TestCase(true, true, true, false)]
+        [TestCase(true, true, false, true)]
+        [TestCase(true, true, false, false)]
+        [TestCase(true, false, true, false)]
+        [TestCase(true, false, false, false)]
+        [TestCase(false, false, false, false)]
+        public void Contains_CurrentIntervalStartAndEndValuesAreTheSameAsOtherIntervalButDifferentEndPointInclusion_ReturnTrue(
+            bool minInclusive1, bool maxInclusive1,
+            bool minInclusive2, bool maxInclusive2)
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours, minInclusive1, maxInclusive1);
+            var otherInterval = new DateInterval(now, inThreeHours, minInclusive2, maxInclusive2);
+
+            // Act
+            bool contains = dateInterval.Contains(otherInterval);
+
+            // Assert
+            Assert.True(contains);
         }
 
         #endregion

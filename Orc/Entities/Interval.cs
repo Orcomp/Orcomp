@@ -61,7 +61,7 @@ namespace Orc.Entities
         /// <exception cref="ArgumentException">
         /// Min must be lesser or equal to Max.
         /// </exception>
-        public Interval(T minValue, T maxValue, bool isMinInclusive = true, bool isMaxInclusive = false)
+        public Interval(T minValue, T maxValue, bool isMinInclusive = true, bool isMaxInclusive = true)
         {
             if (this.comparer.Compare(minValue, maxValue) > 0)
             {
@@ -198,7 +198,7 @@ namespace Orc.Entities
             return this.Min.GetHashCode() ^ this.Max.GetHashCode();
         }
         /// <summary>
-        /// The intersects.
+        /// Checks whether a point is contained within the interval
         /// </summary>
         /// <param name="value">
         /// The value.
@@ -206,7 +206,7 @@ namespace Orc.Entities
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public bool Intersects(T value)
+        public bool Contains(T value)
         {
             var minResult = this.comparer.Compare(this.Min.Value, value);
             var maxResult = this.comparer.Compare(this.Max.Value, value);
@@ -215,6 +215,19 @@ namespace Orc.Entities
             var isBeforeMax = this.Max.IsInclusive ? (maxResult >= 0) : (maxResult > 0);
 
             return isAfterMin && isBeforeMax;
+        }
+
+        /// <summary>
+        ///  Checks whether an interval is contained within the parent
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public bool Contains(IInterval<T> other)
+        {
+            var minResult = this.Min.CompareTo(other.Min);
+            var maxResult = this.Max.CompareTo(other.Max);
+
+            return minResult <= 0 && maxResult >= 0;
         }
 
         /// <summary>

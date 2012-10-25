@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
+    <Compile Include="Entities\SkipList\BDSkipList.cs" />
     <Compile Include="Entities\DateEndPoint.cs" />
     <Compile Include="Entities\DateInterval.cs" />
     <Compile Include="Entities\DateIntervalCollection.cs" />
@@ -48,6 +50,12 @@
     <Compile Include="Entities\EndPointWithIntervalEqualityComparer.cs" />
     <Compile Include="Entities\FixedEndPoint.cs" />
     <Compile Include="Entities\Interval.cs" />
+    <Compile Include="Entities\IntervalSkipList\IntervalNode.cs" />
+    <Compile Include="Entities\SkipList\IScannable.cs" />
+    <Compile Include="Entities\SkipList\IScannableDictionary.cs" />
+    <Compile Include="Entities\SkipList\IScanner.cs" />
+    <Compile Include="Entities\Point.cs" />
+    <Compile Include="Entities\SkipList\ScanRange.cs" />
     <Compile Include="Extensions\DateIntervalCollectionExtensions.cs" />
     <Compile Include="Extensions\DateIntervalExtensions.cs" />
     <Compile Include="Interface\IDateInterval.cs" />

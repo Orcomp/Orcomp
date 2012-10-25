@@ -57,12 +57,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DateIntervalCollectionExtensionsTest.cs" />
-    <Compile Include="DateIntervalCollectionTesBase.cs" />
+    <Compile Include="DateIntervalCollectionTestBase.cs" />
     <Compile Include="DateIntervalCollectionTest.cs" />
     <Compile Include="DateIntervalExtensionsTest.cs" />
     <Compile Include="DateIntervalTest.cs" />
     <Compile Include="DateIntervalTestBase.cs" />
     <Compile Include="DateIntervalExtensions_AccountForEfficienciesTest.cs" />
+    <Compile Include="IntervalSkipList\IntervalNodeTest.cs" />
+    <Compile Include="IntervalSkipList\IntervalSkipListTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
