@@ -63,6 +63,7 @@
     <Compile Include="DateIntervalTest.cs" />
     <Compile Include="DateIntervalTestBase.cs" />
     <Compile Include="DateIntervalExtensions_AccountForEfficienciesTest.cs" />
+    <Compile Include="IntervalSkipList\IntervalSkipListBanchmarkTest.cs" />
     <Compile Include="IntervalSkipList\IntervalNodeTest.cs" />
     <Compile Include="IntervalSkipList\IntervalSkipListTest.cs" />
     <Compile Include="IntervalTree\IntervalTreeTest.cs" />

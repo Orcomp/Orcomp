@@ -251,13 +251,30 @@ namespace Orc.Tests
         {
             // Arrange
             var dateInterval = new DateInterval(now, inThreeHours);
-            var afterDateInterval = new DateInterval(inOneHour, inTwoHours);
+            var internalDateInterval = new DateInterval(inOneHour, inTwoHours);
+
+            // Act
+            bool overlaps = dateInterval.Overlaps(internalDateInterval);
+
+            // Assert
+            Assert.True(overlaps);
+        }
+
+        /// <summary>
+        /// The overlaps_ the two date intervals with first max included and second min excluded_ return false.
+        /// </summary>
+        [Test]
+        public void Overlaps_TwoDateIntervalsWithFirstMaxIncludedAndSecondMinExcluded_ReturnFalse()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inTwoHours, isMaxInclusive: true);
+            var afterDateInterval = new DateInterval(inTwoHours, inThreeHours, isMinInclusive: false);
 
             // Act
             bool overlaps = dateInterval.Overlaps(afterDateInterval);
 
             // Assert
-            Assert.True(overlaps);
+            Assert.False(overlaps);
         }
 
         #endregion

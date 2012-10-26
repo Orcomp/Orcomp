@@ -1,152 +1,121 @@
 ﻿namespace Orc.Tests.IntervalSkipList
 {
     using System;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Text;
-
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using System.Collections.Generic;
+    using System.Linq;
+
+    using NUnit.Framework;
 
     using Orc.Entities;
     using Orc.Entities.IntervalSkipList;
 
-    [TestClass]
+    [TestFixture]
     public class IntervalSkipListTest
     {
-        [TestMethod]
-        public void TestSearch()
+        private DateTime now;
+
+        protected DateTime inOneHour;
+
+        protected DateTime inTwoHours;
+
+        protected DateTime inThreeHours;
+
+        [SetUp]
+        public void Setup()
         {
-            List<Interval<int>> intervals = new List<Interval<int>>();
-
-            intervals.Add(new Interval<int>(-300, -200));
-            intervals.Add(new Interval<int>(-3, -2));
-            intervals.Add(new Interval<int>(1, 2));
-            intervals.Add(new Interval<int>(3, 6));
-            intervals.Add(new Interval<int>(2, 4));
-            intervals.Add(new Interval<int>(5, 7));
-            intervals.Add(new Interval<int>(1, 3));
-            intervals.Add(new Interval<int>(4, 6));
-            intervals.Add(new Interval<int>(8, 9));
-            intervals.Add(new Interval<int>(15, 20));
-            intervals.Add(new Interval<int>(40, 50));
-            intervals.Add(new Interval<int>(49, 60));
-
-
-            IntervalSkipList<int> it = new IntervalSkipList<int>(intervals);
-
-            Assert.AreEqual(3, it.Search(new Interval<int>(4, 4)).Count);
-
-            Assert.AreEqual(4, it.Search(new Interval<int>(4, 5)).Count);
-
-            Assert.AreEqual(7, it.Search(new Interval<int>(-1, 10)).Count);
-
-            Assert.AreEqual(0, it.Search(new Interval<int>(-1, -1)).Count);
-
-            Assert.AreEqual(5, it.Search(new Interval<int>(1, 4)).Count);
-
-            Assert.AreEqual(2, it.Search(new Interval<int>(0, 1)).Count);
-
-            Assert.AreEqual(0, it.Search(new Interval<int>(10, 12)).Count);
-
-            List<Interval<int>> intervals2 = new List<Interval<int>>();
-
-            //stravinsky 1880-1971
-            intervals2.Add(new Interval<int>(1880, 1971));
-            //Schoenberg
-            intervals2.Add(new Interval<int>(1874, 1951));
-            //Grieg
-            intervals2.Add(new Interval<int>(1843, 1907));
-            //Schubert
-            intervals2.Add(new Interval<int>(1779, 1828));
-            //Mozart
-            intervals2.Add(new Interval<int>(1756, 1828));
-            //Schuetz
-            intervals2.Add(new Interval<int>(1585, 1672));
-
-            IntervalSkipList<int> it2 = new IntervalSkipList<int>(intervals2);
-
-            Assert.AreEqual(0, it2.Search(new Interval<int>(1829, 1842)).Count);
-
-            LinkedList<Interval<int>> intersection1 = it2.Search(new Interval<int>(1907, 1907));
-            Assert.AreEqual(3, intersection1.Count);
-
-            intersection1 = it2.Search(new Interval<int>(1780, 1790));
-            Assert.AreEqual(2, intersection1.Count);
+            now = DateTime.Now;
+            inOneHour = now.AddHours(1);
+            inTwoHours = now.AddHours(2);
+            inThreeHours = now.AddHours(3);
         }
 
-        [TestMethod]
-        public void Benchamrk()
+        [TestCase(4, 4, 3)]
+        [TestCase(4, 5, 4)]
+        [TestCase(-1, 10, 7)]
+        [TestCase(-1, -1, 0)]
+        [TestCase(1, 4, 5)]
+        [TestCase(0, 1, 2)]
+        [TestCase(10, 12, 0)]
+        public void Search_ForDifferentDateIntervals_ShoudReturnCorrectOverlapsCount(int leftEdgeMinutes, int rightEdgeMinutes, int expectedOverlapsCount)
         {
-            var date = DateTime.Now;
+            //Arrange
+            var intervals = new List<Interval<DateTime>>();
 
-            int numberOfIntervals = 1000000;
+            intervals.Add(ToDateTimeInterval(now, -300, -200));
+            intervals.Add(ToDateTimeInterval(now, -3, -2));
+            intervals.Add(ToDateTimeInterval(now, 1, 2));
+            intervals.Add(ToDateTimeInterval(now, 3, 6));
+            intervals.Add(ToDateTimeInterval(now, 2, 4));
+            intervals.Add(ToDateTimeInterval(now, 5, 7));
+            intervals.Add(ToDateTimeInterval(now, 1, 3));
+            intervals.Add(ToDateTimeInterval(now, 4, 6));
+            intervals.Add(ToDateTimeInterval(now, 8, 9));
+            intervals.Add(ToDateTimeInterval(now, 15, 20));
+            intervals.Add(ToDateTimeInterval(now, 40, 50));
+            intervals.Add(ToDateTimeInterval(now, 49, 60));
 
-            var intervals = GetDateRangesAllDescendingEndTimes(date, numberOfIntervals).ToList();
+            var intervalSkipList = new IntervalSkipList<DateTime>(intervals);
 
-            var sb = new StringBuilder();
-            Stopwatch sp = Stopwatch.StartNew();
-
-            var it = new IntervalSkipList<DateTime>(intervals);
-
-            sp.Stop();
-            sb.AppendLine("Time taken to build tree: " + sp.ElapsedMilliseconds);
-
-            sp.Reset();
-            sp.Start();
-
-
-            var result = it.Search(new Interval<DateTime>(date, date.AddMinutes(numberOfIntervals)));
-
-            sp.Stop();
-            sb.AppendLine("Time taken for first: " + sp.ElapsedMilliseconds);
-
-            sp.Reset();
-            sp.Start();
-
-            var result2 = it.Search(new Interval<DateTime>(date.AddMinutes(-1), date.AddMinutes(1)));
-
-            sp.Stop();
-            sb.AppendLine("Time taken for second: " + sp.ElapsedMilliseconds);
-
-            sp.Reset();
-            sp.Start();
-
-            var result3 = it.Search(new Interval<DateTime>(date.AddMinutes(-numberOfIntervals), date.AddMinutes(numberOfIntervals)));
-
-            sp.Stop();
-            sb.AppendLine("Time taken for Third: " + sp.ElapsedMilliseconds);
-            sp.Reset();
-            sp.Start();
-
-            var result4 = it.Search(new Interval<DateTime>(date.AddMinutes(numberOfIntervals - 1), date.AddMinutes(numberOfIntervals)));
-
-            sp.Stop();
-            sb.AppendLine("Time taken for Fourth: " + sp.ElapsedMilliseconds);
-
-            Assert.AreEqual(numberOfIntervals, result.Count);
-
-            Assert.AreEqual(numberOfIntervals, result2.Count);
-
-            Assert.AreEqual(numberOfIntervals, result3.Count);
-
-            Assert.AreEqual(2, result4.Count);
-
-            var test = sb.ToString();
+            //Act
+            var overlaps = intervalSkipList.Search(ToDateTimeInterval(now, leftEdgeMinutes, rightEdgeMinutes));
+            
+            //Assert
+            Assert.AreEqual(expectedOverlapsCount, overlaps.Count);
         }
 
-        public static IEnumerable<Interval<DateTime>> GetDateRangesAllDescendingEndTimes(DateTime date, int count)
+        [Test]
+        public void Search_ForNullInterval_ShouldReturnEmptyList()
         {
+            //Arrange
+            var intervalList = new List<Interval<DateTime>>();
+            intervalList.Add(new Interval<DateTime>(now, inOneHour));
+                        
+            var intervals = new IntervalSkipList<DateTime>(intervalList);
 
-            var dateRanges = new Interval<DateTime>[count];
+            //Act
+            var intersections = intervals.Search(null);
 
-            for (int i = 1; i <= count; i++)
-            {
-                dateRanges[i - 1] = new Interval<DateTime>(date.AddMinutes(-i), date.AddMinutes(i));
-            }
+            //Assert
+            Assert.AreEqual(0, intersections.Count);
+        }
 
-            return new List<Interval<DateTime>>(dateRanges).OrderBy(x => x.Min);
+        [Test]
+        public void Search_IntervalBetweenTwoInclusiveIntervals_ShouldReturnBothIntervals()
+        {
+            //Arrange
+            var intervalList = new List<Interval<DateTime>>();
+            intervalList.Add(new Interval<DateTime>(now, inOneHour, isMaxInclusive: false));
+            intervalList.Add(new Interval<DateTime>(inTwoHours, inThreeHours, isMinInclusive: false));
+
+            var intervals = new IntervalSkipList<DateTime>(intervalList);
+
+            //Act
+            var intersections = intervals.Search(new Interval<DateTime>(inOneHour, inTwoHours));
+
+            //Assert
+            CollectionAssert.AreEquivalent(intervalList, intersections.ToList());
+        }
+
+        [Test]
+        public void Search_IntervalBetweenTwoNotInclusiveIntervals_ShouldReturnEmptyList()
+        {
+            //Arrange
+            var intervalList = new List<Interval<DateTime>>();
+            intervalList.Add(new DateInterval(now, inOneHour, isMaxInclusive: false));
+            intervalList.Add(new DateInterval(inTwoHours, inThreeHours, isMinInclusive: false));
+
+            var intervals = new IntervalSkipList<DateTime>(intervalList);
+
+            //Act
+            var intersections = intervals.Search(new Interval<DateTime>(inOneHour, inTwoHours));
+
+            //Assert
+            Assert.AreEqual(0, intersections.Count);
+        }
+
+        private static Interval<DateTime> ToDateTimeInterval(DateTime startTime, int leftEdgeMinutes, int rightEdgeMinutes)
+        {
+            return new Interval<DateTime>(startTime.AddMinutes(leftEdgeMinutes), startTime.AddMinutes(rightEdgeMinutes));
         }
     }
 }
