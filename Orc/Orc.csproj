@@ -45,6 +45,8 @@
     <Compile Include="Entities\IntervalTreeVvondra\IntervalNode.cs" />
     <Compile Include="Entities\IntervalTreeVvondra\IntervalTree.cs" />
     <Compile Include="Entities\IntervalTree\IntervalTree.cs" />
+    <Compile Include="Entities\RangeTree\RangeTree.cs" />
+    <Compile Include="Entities\RangeTree\RangeTreeNode.cs" />
     <Compile Include="Entities\SkipList\BDSkipList.cs" />
     <Compile Include="Entities\DateEndPoint.cs" />
     <Compile Include="Entities\DateInterval.cs" />
@@ -72,9 +74,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Docs\Interval.md" />
+    <None Include="Entities\RangeTree\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Entities\IntervalTreeVvondra\README.txt" />
+    <Content Include="Entities\RangeTree\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
