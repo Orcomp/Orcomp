@@ -207,11 +207,11 @@ namespace Orc.Entities
                 else
                 {
                     // End points have the same inclusiveness
-                    if (this.isMinEndPoint == !other.IsMinEndPoint)
-                    {
-                        // Min endPoint always comes before Max endPoint
-                        result = this.IsMinEndPoint ? -1 : +1;
-                    }
+                    //if (this.isMinEndPoint == !other.IsMinEndPoint)
+                    //{
+                    //    // Min endPoint always comes AFTER Max endPoint
+                    //    result = this.IsMinEndPoint ? +1 : -1;
+                    //}
                 }
             }
 

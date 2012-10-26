@@ -278,7 +278,7 @@
 
             // Act
             var result = tree.Search(dateRange);
-            var correctResult = new List<Interval<DateTime>> { new Interval<DateTime>(t2, t3) };
+            var correctResult = new List<Interval<DateTime>> { startInEndAfterDateRange };
 
             // Assert
             Assert.AreEqual(correctResult, result);
