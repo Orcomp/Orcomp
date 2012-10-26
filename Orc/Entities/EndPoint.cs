@@ -210,7 +210,7 @@ namespace Orc.Entities
                     if (this.isMinEndPoint == !other.IsMinEndPoint)
                     {
                         // Min endPoint always comes before Max endPoint
-                        result = -1;
+                        result = this.IsMinEndPoint ? -1 : +1;
                     }
                 }
             }

@@ -8,6 +8,7 @@
 
     using NUnit.Framework;
 
+    using Orc.Entities;
     using Orc.Entities.IntervalTreeVvondra;
 
     [TestFixture]
@@ -19,7 +20,7 @@
         {
             var date = DateTime.Now;
 
-            int numberOfIntervals = 1000000;
+            int numberOfIntervals = 10000;
 
             var intervals = GetDateRangesAllDescendingEndTimes(date, numberOfIntervals).ToList();
 
@@ -88,7 +89,7 @@
                 dateRanges[i - 1] = new Interval<DateTime>(date.AddMinutes(-i), date.AddMinutes(i));
             }
 
-            return new List<Interval<DateTime>>(dateRanges).OrderBy(x => x.Start);
+            return new List<Interval<DateTime>>(dateRanges).OrderBy(x => x.Min);
         }
 
         #region GetOverlap
@@ -191,7 +192,7 @@
 
             // Act
             var result = tree.Search(dateRange);
-            var correctResult = new List<Interval<DateTime>> { new Interval<DateTime>(t2, t3) };
+            var correctResult = new List<Interval2<DateTime>> { new Interval2<DateTime>(t2, t3) };
 
             // Assert
             Assert.AreEqual(correctResult, result);
@@ -213,7 +214,7 @@
 
             // Act
             var result = tree.Search(dateRange);
-            var correctResult = new List<Interval<DateTime>> { new Interval<DateTime>(t2, t3) };
+            var correctResult = new List<Interval2<DateTime>> { new Interval2<DateTime>(t2, t3) };
 
             // Assert
             Assert.AreEqual(correctResult, result);

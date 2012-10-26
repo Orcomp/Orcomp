@@ -67,7 +67,8 @@
     <Compile Include="IntervalSkipList\IntervalNodeTest.cs" />
     <Compile Include="IntervalSkipList\IntervalSkipListTest.cs" />
     <Compile Include="IntervalTree\IntervalTreeTest.cs" />
-    <Compile Include="IntervalTree\IntervalTreeVvondraTest.cs" />
+    <Compile Include="IntervalTree\IntervalTreeVVondraTest.cs" />
+    <Compile Include="IntervalTree\IntervalTreeVvondraTest2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

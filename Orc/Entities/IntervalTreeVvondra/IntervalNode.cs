@@ -3,6 +3,7 @@ using System.Text;
 
 namespace Orc.Entities.IntervalTreeVvondra
 {
+    using Orc.Interface;
 
     /// <summary>
     /// Node of interval Tree
@@ -18,7 +19,7 @@ namespace Orc.Entities.IntervalTreeVvondra
         /// <summary>
         /// Maximum "end" value of interval in node subtree
         /// </summary>
-        public T MaxEnd { get; set; }
+        public IEndPoint<T> MaxEnd { get; set; }
 
         /// <summary>
         /// The interval this node holds
@@ -48,8 +49,8 @@ namespace Orc.Entities.IntervalTreeVvondra
         public IntervalNode(Interval<T> interval)
             : this()
         {
-            MaxEnd = interval.End;
-            Interval = interval;
+            MaxEnd = interval.Max;
+            this.Interval = interval;
         }
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace Orc.Entities.IntervalTreeVvondra
 
         public int CompareTo(IntervalNode<T> other)
         {
-            return Interval.CompareTo(other.Interval);
+            return this.Interval.CompareTo(other.Interval);
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace Orc.Entities.IntervalTreeVvondra
         /// </summary>
         public void RecalculateMaxEnd()
         {
-            T max = Interval.End;
+            IEndPoint<T> max = this.Interval.Max;
 
             if (Right != IntervalTree<T>.Sentinel)
             {

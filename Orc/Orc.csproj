@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
-    <Compile Include="Entities\IntervalTreeVvondra\Interval.cs" />
+    <Compile Include="Entities\IntervalTreeVvondra\Interval2.cs" />
     <Compile Include="Entities\IntervalTreeVvondra\IntervalNode.cs" />
     <Compile Include="Entities\IntervalTreeVvondra\IntervalTree.cs" />
     <Compile Include="Entities\IntervalTree\IntervalTree.cs" />

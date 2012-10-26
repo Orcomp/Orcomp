@@ -84,7 +84,7 @@
                 dateRanges[i - 1] = new Interval<DateTime>(date.AddMinutes(-i), date.AddMinutes(i));
             }
 
-            return new List<Interval<DateTime>>(dateRanges).OrderBy(x => x.Min);
+            return new List<Interval<DateTime>>(dateRanges).OrderBy(x => x.Min.Value);
         }
     }
 }

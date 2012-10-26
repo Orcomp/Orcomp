@@ -6,7 +6,7 @@
     /// Representation of bounded interval
     /// </summary>
     /// <typeparam name="T">type of interval bounds</typeparam>
-    public struct Interval<T> : IComparable<Interval<T>> where T : struct, IComparable<T>
+    public struct Interval2<T> : IComparable<Interval2<T>> where T : struct, IComparable<T>
     {
         public T Start
         {
@@ -20,7 +20,7 @@
             set;
         }
 
-        public Interval(T start, T end)
+        public Interval2(T start, T end)
             : this()
         {
             this.Start = start;
@@ -35,9 +35,9 @@
         /// <summary>
         /// Tests if interval contains given interval
         /// </summary>
-        public bool Contains(Interval<T> interval)
+        public bool Contains(Interval2<T> interval2)
         {
-            return this.Start.CompareTo(interval.Start) <= 0 && this.End.CompareTo(interval.End) >= 0;
+            return this.Start.CompareTo(interval2.Start) <= 0 && this.End.CompareTo(interval2.End) >= 0;
         }
 
         /// <summary>
@@ -48,9 +48,9 @@
             return this.Start.CompareTo(val) <= 0 && this.End.CompareTo(val) >= 0;
         }
 
-        public bool Overlaps(Interval<T> interval)
+        public bool Overlaps(Interval2<T> interval2)
         {
-            return this.Start.CompareTo(interval.End) <= 0 && this.End.CompareTo(interval.Start) >= 0;
+            return this.Start.CompareTo(interval2.End) <= 0 && this.End.CompareTo(interval2.Start) >= 0;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@
         /// </summary>
         /// <param name="i">interval k porovnání</param>
         /// <returns></returns>
-        public int CompareTo(Interval<T> i)
+        public int CompareTo(Interval2<T> i)
         {
             if (this.Start.CompareTo(i.Start) < 0)
             {

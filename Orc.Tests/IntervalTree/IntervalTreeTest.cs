@@ -11,7 +11,7 @@
     using Orc.Entities;
     using Orc.Entities.IntervalTree;
 
-    [TestFixture]
+    [TestFixture, Ignore]
     public class IntervalTreeTest
     {
 

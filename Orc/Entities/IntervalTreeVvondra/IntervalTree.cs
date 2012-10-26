@@ -11,7 +11,7 @@ namespace Orc.Entities.IntervalTreeVvondra
     public partial class IntervalTree<T> : IEnumerable<Interval<T>> where T : struct, IComparable<T>
     {
 
-        internal static IntervalNode<T> Sentinel = new IntervalNode<T>(new Interval<T>());
+        internal static IntervalNode<T> Sentinel = new IntervalNode<T>(new Interval<T>(default(T), default(T)));
 
         IntervalNode<T> Root
         {
@@ -63,7 +63,7 @@ namespace Orc.Entities.IntervalTreeVvondra
 
             while (node != Sentinel && !node.Interval.Overlaps(i))
             {
-                if (node.Left != Sentinel && node.Left.MaxEnd.CompareTo(i.Start) >= 0)
+                if (node.Left != Sentinel && node.Left.MaxEnd.CompareTo(i.Min) >= 0)
                 {
                     node = node.Left;
                 }
@@ -99,7 +99,7 @@ namespace Orc.Entities.IntervalTreeVvondra
             }
 
             // Interval start is greater than largest endpoint in this subtree
-            if (node.Right != Sentinel && i.Start.CompareTo(node.MaxEnd) <= 0)
+            if (node.Right != Sentinel && i.Min.CompareTo(node.MaxEnd) <= 0)
             {
                 SearchSubtree(node.Right, i, result);
             }
@@ -148,7 +148,8 @@ namespace Orc.Entities.IntervalTreeVvondra
             }
 
             // Value is higher than any interval in this subtree
-            if (val.CompareTo(node.MaxEnd) > 0)
+            // TODO: Inclusiveness is ignored. Should use endpoint
+            if (val.CompareTo(node.MaxEnd.Value) > 0)
             {
                 return;
             }
@@ -163,7 +164,8 @@ namespace Orc.Entities.IntervalTreeVvondra
                 result.Add(node.Interval);
             }
 
-            if (val.CompareTo(node.Interval.Start) < 0)
+            // TODO: Inclusiveness is ignored. Should use endpoint
+            if (val.CompareTo(node.Interval.Min.Value) < 0)
             {
                 return;
             }
@@ -315,9 +317,9 @@ namespace Orc.Entities.IntervalTreeVvondra
         /// Removes interval from tree (if present in tree)
         /// </summary>
         /// <param name="?"></param>
-        public void Remove(Interval<T> interval)
+        public void Remove(Interval<T> interval2)
         {
-            RemoveNode(FindInterval(Root, interval));
+            RemoveNode(FindInterval(Root, interval2));
         }
 
         private void RemoveNode(IntervalNode<T> node)
