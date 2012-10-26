@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
+    <Compile Include="Entities\IntervalTreeVvondra\Interval.cs" />
+    <Compile Include="Entities\IntervalTreeVvondra\IntervalNode.cs" />
+    <Compile Include="Entities\IntervalTreeVvondra\IntervalTree.cs" />
     <Compile Include="Entities\IntervalTree\IntervalTree.cs" />
     <Compile Include="Entities\SkipList\BDSkipList.cs" />
     <Compile Include="Entities\DateEndPoint.cs" />
@@ -68,7 +71,9 @@
   <ItemGroup>
     <None Include="Docs\Interval.md" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Entities\IntervalTreeVvondra\README.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

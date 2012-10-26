@@ -81,7 +81,7 @@
         {
             var date = DateTime.Now;
 
-            int numberOfIntervals = 10000;
+            int numberOfIntervals = 1000000;
 
             var intervals = GetDateRangesAllDescendingEndTimes(date, numberOfIntervals).ToList();
 
