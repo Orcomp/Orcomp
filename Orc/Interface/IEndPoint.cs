@@ -3,7 +3,7 @@
 //   MS-PL
 // </copyright>
 // <summary>
-//   The Edge interface.
+//   The EndPoint interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace Orc.Interface
     using Orc.Entities;
 
     /// <summary>
-    /// The Edge interface.
+    /// The EndPoint interface.
     /// </summary>
     /// <typeparam name="T">
     /// T must be comparable.

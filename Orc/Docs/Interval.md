@@ -25,6 +25,11 @@ An EndPoint is aware of the interval it belongs to.
 
 - IntervalTree
 
+## IIntervalContainer
+
+IIntervalContainer has a Query() method instead of Search() or Find() because these last two method names sugges we are searching for something definite, whereas Query is vague enough to
+allow for a list of matching intervals to be returned.
+
 ## Notes
 
 The main purpose of using intervals is to query their relationships (most noteably whether they overlap or not)

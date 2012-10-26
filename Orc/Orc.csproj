@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\EndPointMinFirstComparer.cs" />
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
     <Compile Include="Entities\IntervalTreeVvondra\Interval2.cs" />
     <Compile Include="Entities\IntervalTreeVvondra\IntervalNode.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Interface\IDateInterval.cs" />
     <Compile Include="Interface\IEndPoint.cs" />
     <Compile Include="Interface\IInterval.cs" />
+    <Compile Include="Interface\IIntervalContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,11 +5,14 @@ using System.Text;
 
 namespace Orc.Entities.IntervalTreeVvondra
 {
+    using Orc.Interface;
+
     /// <summary>
     /// Tree capable of adding arbitrary intervals and performing search queries on them
     /// </summary>
-    public partial class IntervalTree<T> : IEnumerable<Interval<T>> where T : struct, IComparable<T>
+    public partial class IntervalTree<T> : IIntervalContainer<T>, IEnumerable<Interval<T>> where T : struct, IComparable<T>
     {
+        //TODO: Replace Interval<T> with IInterval<T> throughout.
 
         internal static IntervalNode<T> Sentinel = new IntervalNode<T>(new Interval<T>(default(T), default(T)));
 
@@ -40,6 +43,13 @@ namespace Orc.Entities.IntervalTreeVvondra
             return result;
         }
 
+        public IEnumerable<IInterval<T>> Query(T value)
+        {
+            var result = new List<Interval<T>>();
+            SearchSubtree(Root, value, result);
+            return result.Cast<IInterval<T>>();
+        }
+
         /// <summary>
         /// Search interval tree for intervals overlapping with given
         /// </summary>
@@ -50,6 +60,13 @@ namespace Orc.Entities.IntervalTreeVvondra
             var result = new List<Interval<T>>();
             SearchSubtree(Root, i, result);
             return result;
+        }
+
+        public IEnumerable<IInterval<T>> Query(IInterval<T> interval)
+        {
+            var result = new List<Interval<T>>();
+            SearchSubtree(Root, interval as Interval<T>, result);
+            return result.Cast<IInterval<T>>();
         }
 
         /// <summary>
@@ -196,6 +213,11 @@ namespace Orc.Entities.IntervalTreeVvondra
             }
         }
 
+        public void Add(IInterval<T> interval )
+        {
+            Add(interval as Interval<T>);
+        }
+
         #region Tree insertion internals
 
         /// <summary>
@@ -317,9 +339,14 @@ namespace Orc.Entities.IntervalTreeVvondra
         /// Removes interval from tree (if present in tree)
         /// </summary>
         /// <param name="?"></param>
-        public void Remove(Interval<T> interval2)
+        public void Remove(Interval<T> interval)
         {
-            RemoveNode(FindInterval(Root, interval2));
+            RemoveNode(FindInterval(Root, interval));
+        }
+
+        public void Remove(IInterval<T> interval)
+        {
+            Remove(interval as Interval<T>);
         }
 
         private void RemoveNode(IntervalNode<T> node)

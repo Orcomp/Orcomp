@@ -169,6 +169,8 @@ namespace Orc.Entities
 
         /// <summary>
         /// Compare two EndPoints with each other.
+        /// When sorting if two end points have the same value and are inclusive and you
+        /// want the min to come after max then use EndPointMinFirstComparer
         /// </summary>
         /// <param name="other">
         /// The other.
@@ -203,15 +205,6 @@ namespace Orc.Entities
                         // Both endpoints are max
                         result = this.IsInclusive ? +1 : -1;
                     }
-                }
-                else
-                {
-                    // End points have the same inclusiveness
-                    //if (this.isMinEndPoint == !other.IsMinEndPoint)
-                    //{
-                    //    // Min endPoint always comes AFTER Max endPoint
-                    //    result = this.IsMinEndPoint ? +1 : -1;
-                    //}
                 }
             }
 
