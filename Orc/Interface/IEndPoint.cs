@@ -53,5 +53,10 @@ namespace Orc.Interface
         /// The is inclusive.
         /// </value>
         bool IsInclusive { get; }
+
+        /// <summary>
+        /// Returns whether the EndPoint is min or max
+        /// </summary>
+        Boolean IsMinEndPoint { get; }
     }
 }

@@ -189,13 +189,28 @@ namespace Orc.Entities
             {
                 if (this.IsInclusive != other.IsInclusive)
                 {
-                    if (this.IsMinEndPoint)
+                    if (this.IsMinEndPoint == !other.IsMinEndPoint)
                     {
+                        result = this.IsMinEndPoint ? + 1 : -1;
+                    }
+                    else if(this.isMinEndPoint)
+                    {
+                        // Both endpoints are mins
                         result = this.IsInclusive ? -1 : +1;
                     }
                     else
                     {
+                        // Both endpoints are max
                         result = this.IsInclusive ? +1 : -1;
+                    }
+                }
+                else
+                {
+                    // End points have the same inclusiveness
+                    if (this.isMinEndPoint == !other.IsMinEndPoint)
+                    {
+                        // Min endPoint always comes before Max endPoint
+                        result = -1;
                     }
                 }
             }
