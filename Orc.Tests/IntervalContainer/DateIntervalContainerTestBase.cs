@@ -11,7 +11,7 @@
     using Orc.Entities;
     using Orc.Interface;
 
-    public abstract class DateIntervalContainerTestBase
+    public abstract partial class DateIntervalContainerTestBase
     {
         private Stopwatch stopwatch;
 
@@ -215,74 +215,8 @@
             Assert.AreEqual(interval, intersections[0]);
         }
 
-        #region General Test Case #1
-        //Not only count but values of queries intervals are verified here
-
-        // ********************************************************
-        // | X axis:                                              |
-        // | 0    5    10   15   20   25   30   35   40   45   50 |
-        // | |    |    |    |    |    |    |    |    |    |    |  |
-        // | Container intervals:                                 |
-        // | [0-------------]    [1---]         [2--------]       |
-        // |   [3------][4-----------------]                      |
-        // |      [5-------------------------------------------]  |
-        // | Test intervals:                                      |
-        // |        [---------------]                             |
-        // |                               [---------]            |
-        // | X axis:                                              |
-        // | |    |    |    |    |    |    |    |    |    |    |  |
-        // | 0    5    10   15   20   25   30   35   40   45   50 |
-        // ********************************************************
-        //Numbers at interval start points to their indexes in intervals list
-
-        private List<Interval<DateTime>> CreateIntervalsForTestCase1()
-        {
-            var intervals = new List<Interval<DateTime>>();
-            intervals.Add(ToDateTimeInterval(now, 0, 15));  //0
-            intervals.Add(ToDateTimeInterval(now, 20, 25)); //1
-            intervals.Add(ToDateTimeInterval(now, 35, 45)); //2
-            intervals.Add(ToDateTimeInterval(now, 3, 10));  //3
-            intervals.Add(ToDateTimeInterval(now, 11, 30)); //4
-            intervals.Add(ToDateTimeInterval(now, 5, 50));  //5
-
-            return intervals;
-        }
-
-        [Test]
-        public void Query_InclusiveInterval_7_23_ForTestCase1_ShouldReturn_5_CorrectIntervals()
-        {
-            var intervals = CreateIntervalsForTestCase1();
-            var intervalToQuery = ToDateTimeInterval(now, 7, 23);
-            TestQueryForIntervalWithExpectedIntervalIndexes(intervals, intervalToQuery, 0, 1, 3, 4, 5);
-        }
-
-        [Test]
-        public void Query_ExclusiveInterval_7_23_ForTestCase1_ShouldReturn_5_CorrectIntervals()
-        {
-            var intervals = CreateIntervalsForTestCase1();
-            var intervalToQuery = ToDateTimeInterval(now, 7, 23, includeEdges: false);
-            TestQueryForIntervalWithExpectedIntervalIndexes(intervals, intervalToQuery, 0, 1, 3, 4, 5);
-        }
-
-        [Test]
-        public void Query_InclusiveInterval_30_40_ForTestCase1_ShouldReturn_3_CorrectIntervals()
-        {
-            var intervals = CreateIntervalsForTestCase1();
-            var intervalToQuery = ToDateTimeInterval(now, 30, 40);
-            TestQueryForIntervalWithExpectedIntervalIndexes(intervals, intervalToQuery, 2, 4, 5);
-        }
-
-        [Test]
-        public void Query_ExclusiveInterval_30_40_ForTestCase1_ShouldReturn_2_CorrectIntervals()
-        {
-            var intervals = CreateIntervalsForTestCase1();
-            var intervalToQuery = ToDateTimeInterval(now, 30, 40, includeEdges: false);
-            TestQueryForIntervalWithExpectedIntervalIndexes(intervals, intervalToQuery, 2, 5);
-        }
-
-        #endregion
-
         #region General Count Intervals Tests
+        [Test]
         [TestCase(4, 4, 3)]
         [TestCase(4, 5, 4)]
         [TestCase(-1, 10, 7)]
@@ -316,6 +250,7 @@
             Assert.AreEqual(expectedOverlapsCount, overlaps.Count());
         }
 
+        [Test]
         [TestCase(0, 2, 1)]
         [TestCase(0, 7, 2)]
         [TestCase(0, 23, 3)]
@@ -377,78 +312,6 @@
         #endregion
 
         #endregion
-
-        #region Benchmark
-
-        [Test]
-        [Category("Benchmark")]
-        public void Query_Benchmark_Test()
-        {
-            const int numberOfIntervals = 10000;
-
-            var intervals = GetDateRangesAllDescendingEndTimes(now, numberOfIntervals).ToList();
-            
-            stopwatch = Stopwatch.StartNew();
-
-			var intervalContainer = this.CreateIntervalContainer(intervals);
-
-            stopwatch.Stop();
-            timeEllapsedReport.AppendLine(string.Format("Time taken to build data structure: {0} ms", this.stopwatch.ElapsedMilliseconds));
-
-            var result1 = TestSearchForInterval(now, now.AddMinutes(numberOfIntervals), intervalContainer, "Mid Point to Max Spanning Interval");
-
-            var result2 = TestSearchForInterval(now.AddMinutes(-1), now.AddMinutes(1), intervalContainer, "Mid Point +/- 1");
-
-            var result3 = TestSearchForInterval(now.AddMinutes(-numberOfIntervals), now.AddMinutes(numberOfIntervals), intervalContainer, "Min to Max Spanning Interval");
-
-            var result4 = TestSearchForInterval(now.AddMinutes(numberOfIntervals - 1), now.AddMinutes(numberOfIntervals), intervalContainer, "Max Spanning interval -1 to Max Spanning Interval");            
-
-            Assert.AreEqual(numberOfIntervals, result1.Count());
-
-            Assert.AreEqual(numberOfIntervals, result2.Count());
-
-            Assert.AreEqual(numberOfIntervals, result3.Count());
-
-            Assert.AreEqual(2, result4.Count());
-            
-            var timeElapsedSummary = timeEllapsedReport.ToString();
-            Debug.WriteLine(timeElapsedSummary);
-        }
-
-        private IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<Interval<DateTime>> intervals)
-        {
-            IIntervalContainer<DateTime> intervalContainer = CreateIntervalContainer();
-            foreach (var interval in intervals)
-            {
-                intervalContainer.Add(interval);
-            }
-            return intervalContainer;
-        }
-
-        private IEnumerable<IInterval<DateTime>> TestSearchForInterval(DateTime startEdge, DateTime endEdge, IIntervalContainer<DateTime> searchIn, string testName)
-        {
-            stopwatch.Reset();
-            stopwatch.Start();
-
-            var foundIntervals = searchIn.Query(new Interval<DateTime>(startEdge, endEdge));
-
-            stopwatch.Stop();
-            timeEllapsedReport.AppendLine(string.Format("Time taken for {0}: {1} ms", testName, stopwatch.ElapsedMilliseconds));
-            return foundIntervals;
-        }
-
-        private static IEnumerable<Interval<DateTime>> GetDateRangesAllDescendingEndTimes(DateTime date, int count)
-        {
-            var dateRanges = new Interval<DateTime>[count];
-
-            for (int i = 1; i <= count; i++)
-            {
-                dateRanges[i - 1] = new Interval<DateTime>(date.AddMinutes(-i), date.AddMinutes(i));
-            }
-
-            return new List<Interval<DateTime>>(dateRanges).OrderBy(x => x.Min.Value);
-        }
-		#endregion
 
         /// <summary>
         /// Tests the query for interval with expected interval indexes.
