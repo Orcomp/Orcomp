@@ -56,7 +56,6 @@
     <Compile Include="Extensions\DateRangeCollectionExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\DateRangeExtensions.cs" />
     <Compile Include="Submissions\GetSortedDateTimes.cs" />
     <Compile Include="Utilities\MathUtils.cs" />
     <Compile Include="Entities\Task.cs" />

@@ -6,35 +6,32 @@
 //   The date interval extensions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Orc.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     using Orc.Entities;
+    using Orc.Interface;
 
     /// <summary>
     /// The date interval extensions.
     /// </summary>
-    public static class DateIntervalExtensions
+    public static class IntervalExtensions
     {
         /// <summary>
-        /// This method will accept a dateInterval and calcualte a new dateInterval taking into account the dateIntervalEfficiencies
-        /// ASSUMPTION: the input dateInterval has an efficiency of 100%.
+        /// The get edges.
         /// </summary>
-        /// <param name="dateInterval">
-        /// </param>
-        /// <param name="dateIntervalEfficiencies">
-        /// </param>
-        /// <param name="fixedEndPoint">
+        /// <param name="source">
+        /// The source.
         /// </param>
         /// <returns>
-        /// The <see cref="DateInterval"/>.
+        /// The <see cref="IEnumerable{T}"/>.
         /// </returns>
-        public static DateInterval AccountForEfficiencies(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
+        public static IEnumerable<IEndPoint<DateTime>> GetEndPoints(this IInterval<DateTime> source)
         {
-            throw new NotImplementedException();
+            return new List<IEndPoint<DateTime>> { source.Min, source.Max };
         }
     }
 }

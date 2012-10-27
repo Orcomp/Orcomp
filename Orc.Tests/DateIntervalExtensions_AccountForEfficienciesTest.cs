@@ -8,7 +8,7 @@
     using Orc.Entities;
     using Orc.Extensions;
 
-    [TestFixture]
+    [TestFixture, Ignore]
     public class DateIntervalExtensions_AccountForEfficienciesTest
     {
         #region Simple Fixed Start

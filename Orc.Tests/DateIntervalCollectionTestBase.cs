@@ -17,7 +17,7 @@ namespace Orc.Tests
     /// <summary>
     /// Common logic for date interval collection tests 
     /// </summary>
-    public class DateIntervalCollectionTesBase
+    public class DateIntervalCollectionTestBase
     {
         protected DateTime now;
 

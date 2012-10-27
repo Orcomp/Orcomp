@@ -21,19 +21,19 @@ namespace Orc.Tests
     [TestFixture]
     public class DateIntervalTest : DateIntervalTestBase
     {
-        #region Intersects
+        #region Contains point
 
         /// <summary>
         /// The intersects_ date before date interval_ return false.
         /// </summary>
         [Test]
-        public void Intersects_DateBeforeDateInterval_ReturnFalse()
+        public void Contains_DateBeforeDateInterval_ReturnFalse()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool intersect = dateInterval.Intersects(now.AddHours(-1));
+            bool intersect = dateInterval.Contains(now.AddHours(-1));
 
             // Assert
             Assert.False(intersect);
@@ -43,13 +43,13 @@ namespace Orc.Tests
         /// The intersects_ date after date interval_ return false.
         /// </summary>
         [Test]
-        public void Intersects_DateAfterDateInterval_ReturnFalse()
+        public void Contains_DateAfterDateInterval_ReturnFalse()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(now.AddHours(2));
+            bool interesct = dateInterval.Contains(now.AddHours(2));
 
             // Assert
             Assert.False(interesct);
@@ -59,13 +59,13 @@ namespace Orc.Tests
         /// The intersects_ date in date interval_ return true.
         /// </summary>
         [Test]
-        public void Intersects_DateInDateInterval_ReturnTrue()
+        public void Contains_DateInDateInterval_ReturnTrue()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(now.AddHours(0.5));
+            bool interesct = dateInterval.Contains(now.AddHours(0.5));
 
             // Assert
             Assert.True(interesct);
@@ -75,13 +75,13 @@ namespace Orc.Tests
         /// The intersects_ date on start date interval_ return true.
         /// </summary>
         [Test]
-        public void Intersects_DateOnStartDateInterval_ReturnTrue()
+        public void Contains_DateOnStartDateInterval_ReturnTrue()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(now);
+            bool interesct = dateInterval.Contains(now);
 
             // Assert
             Assert.True(interesct);
@@ -91,13 +91,13 @@ namespace Orc.Tests
         /// The intersects_ date on end date interval_ return false.
         /// </summary>
         [Test]
-        public void Intersects_DateOnEndDateInterval_ReturnFalse()
+        public void Contains_DateOnEndDateInterval_ReturnFalse()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour);
 
             // Act
-            bool interesct = dateInterval.Intersects(inOneHour);
+            bool interesct = dateInterval.Contains(inOneHour);
 
             // Assert
             Assert.False(interesct);
@@ -107,16 +107,102 @@ namespace Orc.Tests
         /// The intersects_ date on end date interval end date inclusive_ return true.
         /// </summary>
         [Test]
-        public void Intersects_DateOnEndDateIntervalEndDateInclusive_ReturnTrue()
+        public void Contains_DateOnEndDateIntervalEndDateInclusive_ReturnTrue()
         {
             // Arrange
             var dateInterval = new DateInterval(now, inOneHour, isMaxInclusive: true);
 
             // Act
-            bool interesct = dateInterval.Intersects(inOneHour);
+            bool interesct = dateInterval.Contains(inOneHour);
 
             // Assert
             Assert.True(interesct);
+        }
+
+        #endregion
+
+        #region Contains interval
+
+        /// <summary>
+        /// The parent interval contains the other interval
+        /// </summary>
+        [Test]
+        public void Contains_CurrentIntervalStartsBeforeAndFinishedAfterOtherInterval_ReturnTrue()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours);
+            var otherInterval = new DateInterval(inOneHour, inTwoHours);
+
+            // Act
+            bool contains = dateInterval.Contains(otherInterval);
+
+            // Assert
+            Assert.True(contains);
+        }
+
+        /// <summary>
+        /// The parent interval contains the other interval, matching start and end points
+        /// </summary>
+        [Test]
+        public void Contains_CurrentIntervalStartsAndFinishedWithOtherInterval_ReturnTrue()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours);
+            var otherInterval = new DateInterval(now, inThreeHours);
+
+            // Act
+            bool contains = dateInterval.Contains(otherInterval);
+
+            // Assert
+            Assert.True(contains);
+        }
+
+        /// <summary>
+        /// The parent interval does not contain the other interval, matching start and end point values
+        /// </summary>
+        [TestCase(false, false, true, false)]
+        [TestCase(false, false, false, true)]
+        [TestCase(true, false, true, true)]
+        [TestCase(true, false, true, true)]
+        [TestCase(true, false, false, true)]
+        public void Contains_CurrentIntervalStartAndEndValuesAreTheSameAsOtherIntervalButDifferentEndPointInclusion_ReturnFalse(
+            bool minInclusive1, bool maxInclusive1,
+            bool minInclusive2, bool maxInclusive2)
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours, minInclusive1, maxInclusive1);
+            var otherInterval = new DateInterval(now, inThreeHours, minInclusive2, maxInclusive2);
+
+            // Act
+            bool contains = dateInterval.Contains(otherInterval);
+
+            // Assert
+            Assert.False(contains);
+        }
+
+        /// <summary>
+        /// The parent interval contains the other interval, matching start and end point values
+        /// </summary>
+        [TestCase(true, true, true, true)]
+        [TestCase(true, true, true, false)]
+        [TestCase(true, true, false, true)]
+        [TestCase(true, true, false, false)]
+        [TestCase(true, false, true, false)]
+        [TestCase(true, false, false, false)]
+        [TestCase(false, false, false, false)]
+        public void Contains_CurrentIntervalStartAndEndValuesAreTheSameAsOtherIntervalButDifferentEndPointInclusion_ReturnTrue(
+            bool minInclusive1, bool maxInclusive1,
+            bool minInclusive2, bool maxInclusive2)
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours, minInclusive1, maxInclusive1);
+            var otherInterval = new DateInterval(now, inThreeHours, minInclusive2, maxInclusive2);
+
+            // Act
+            bool contains = dateInterval.Contains(otherInterval);
+
+            // Assert
+            Assert.True(contains);
         }
 
         #endregion
@@ -165,13 +251,192 @@ namespace Orc.Tests
         {
             // Arrange
             var dateInterval = new DateInterval(now, inThreeHours);
-            var afterDateInterval = new DateInterval(inOneHour, inTwoHours);
+            var internalDateInterval = new DateInterval(inOneHour, inTwoHours);
+
+            // Act
+            bool overlaps = dateInterval.Overlaps(internalDateInterval);
+
+            // Assert
+            Assert.True(overlaps);
+        }
+
+        /// <summary>
+        /// The overlaps_ the two date intervals with first max included and second min excluded_ return false.
+        /// </summary>
+        [Test]
+        public void Overlaps_TwoDateIntervalsWithFirstMaxIncludedAndSecondMinExcluded_ReturnFalse()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inTwoHours, isMaxInclusive: true);
+            var afterDateInterval = new DateInterval(inTwoHours, inThreeHours, isMinInclusive: false);
 
             // Act
             bool overlaps = dateInterval.Overlaps(afterDateInterval);
 
             // Assert
-            Assert.True(overlaps);
+            Assert.False(overlaps);
+        }
+
+        #endregion
+
+        #region GetOverlap
+
+        /// <summary>
+        /// The get overlap_ date interval before date interval_ return null.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalBeforeDateInterval_ReturnNull()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(inTwoHours, inThreeHours);
+            var beforeDateInterval = new DateInterval(now, inOneHour);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(beforeDateInterval) as DateInterval;
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        /// <summary>
+        /// The get overlap_ date interval after date interval_ return null.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalAfterDateInterval_ReturnNull()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inOneHour);
+            var afterDateInterval = new DateInterval(inTwoHours, inThreeHours);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(afterDateInterval) as DateInterval;
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        /// <summary>
+        /// The get overlap_ date interval before date interval interesct_ return null.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalBeforeDateIntervalInteresct_ReturnNull()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(inOneHour, inTwoHours);
+            var beforeDateInterval = new DateInterval(now, inOneHour);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(beforeDateInterval) as DateInterval;
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        /// <summary>
+        /// The get overlap_ date interval after date interval interect_ return null.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalAfterDateIntervalInterect_ReturnNull()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inOneHour);
+            var afterDateInterval = new DateInterval(inOneHour, inTwoHours);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(afterDateInterval) as DateInterval;
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        /// <summary>
+        /// The get overlap_ date interval start before end in_ return correct date interval.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalStartBeforeEndIn_ReturnCorrectDateInterval()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(inOneHour, inThreeHours);
+            var startBeforeEndInDateInterval = new DateInterval(now, inTwoHours);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(startBeforeEndInDateInterval) as DateInterval;
+            DateInterval correctResult = new DateInterval(inOneHour, inTwoHours);
+
+            // Assert
+            Assert.AreEqual(correctResult, result);
+        }
+
+        /// <summary>
+        /// The get overlap_ date interval start before end after_ return correct date interval.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalStartBeforeEndAfter_ReturnCorrectDateInterval()
+        {
+            // Arrange            
+            var dateInterval = new DateInterval(inOneHour, inTwoHours);
+            var startBeforeEndAfterDateInterval = new DateInterval(now, inThreeHours);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(startBeforeEndAfterDateInterval) as DateInterval;
+            DateInterval correctResult = new DateInterval(inOneHour, inTwoHours);
+
+            // Assert
+            Assert.AreEqual(correctResult, result);
+        }
+
+        /// <summary>
+        /// The get overlap_ date interval start in end in_ return correct date interval.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalStartInEndIn_ReturnCorrectDateInterval()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inThreeHours);
+            var startInEndInDateInterval = new DateInterval(inOneHour, inTwoHours);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(startInEndInDateInterval) as DateInterval;
+            DateInterval correctResult = new DateInterval(inOneHour, inTwoHours);
+
+            // Assert
+            Assert.AreEqual(correctResult, result);
+        }
+
+        /// <summary>
+        /// The get overlap_ date interval start interesct end intersect_ return correct date interval.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalStartInteresctEndIntersect_ReturnCorrectDateInterval()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inOneHour);
+            var startInteresctEndInteresctDateInterval = new DateInterval(now, inOneHour);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(startInteresctEndInteresctDateInterval) as DateInterval;
+            DateInterval correctResult = new DateInterval(now, inOneHour);
+
+            // Assert
+            Assert.AreEqual(correctResult, result);
+        }
+
+        /// <summary>
+        /// The get overlap_ date interval start in end after_ return correct date interval.
+        /// </summary>
+        [Test]
+        public void GetOverlap_DateIntervalStartInEndAfter_ReturnCorrectDateInterval()
+        {
+            // Arrange
+            var dateInterval = new DateInterval(now, inTwoHours);
+            var startInEndAfterDateInterval = new DateInterval(inOneHour, inThreeHours);
+
+            // Act
+            DateInterval result = dateInterval.GetOverlap(startInEndAfterDateInterval) as DateInterval;
+            DateInterval correctResult = new DateInterval(inOneHour, inTwoHours);
+
+            // Assert
+            Assert.AreEqual(correctResult, result);
         }
 
         #endregion

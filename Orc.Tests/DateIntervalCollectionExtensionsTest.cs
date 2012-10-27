@@ -20,7 +20,7 @@ namespace Orc.Tests
     /// The date interval collection extensions test.
     /// </summary>
     [TestFixture]
-    public class DateIntervalCollectionExtensionsTest : DateIntervalCollectionTesBase
+    public class DateIntervalCollectionExtensionsTest : DateIntervalCollectionTestBase
     {
         /// <summary>
         /// The overlaps with_ multiple date intervals_ return correct answer.

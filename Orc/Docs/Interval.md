@@ -4,6 +4,7 @@
 
 - Well documented library for dealing with Intevals and their EndPoints.
 - Nomenclature taken from accepted papers (mainly http://web.cacs.louisiana.edu/~logan/521_f08/Doc/p832-allen.pdf)
+- EndPoints can be inclusive or exclusive.
 
 ## Introduction
 
@@ -24,6 +25,11 @@ An EndPoint is aware of the interval it belongs to.
 ## DataStructures
 
 - IntervalTree
+
+## IIntervalContainer
+
+IIntervalContainer has a Query() method instead of Search() or Find() because these last two method names sugges we are searching for something definite, whereas Query is vague enough to
+allow for a list of matching intervals to be returned.
 
 ## Notes
 
@@ -63,3 +69,21 @@ EndPoints can also represent +/- infinity by specidying double.PositiveInfinity 
 # Links
 
 - Maintaining Knowledge about Temporal Intervals (http://web.cacs.louisiana.edu/~logan/521_f08/Doc/p832-allen.pdf)
+
+# Interval Structures
+
+General information about interval trees: http://en.wikipedia.org/wiki/Interval_tree
+
+## Interval Tree Implementations in C#
+
+http://code.google.com/p/intervaltree/source/browse/IntervalTree.cs
+https://github.com/vvondra/Interval-Tree (Already in Orc)
+https://github.com/mbuchetics/RangeTree/blob/master/RangeTreeExamples/Program.cs (Already in Orc)
+http://intervaltree.codeplex.com/
+
+
+## Algorithmns to be implemented in C#
+http://bioinformatics.oxfordjournals.org/content/23/11/1386.full
+
+## Other useful references
+- C++ Segment Trees http://code.google.com/p/multidimalgorithm/

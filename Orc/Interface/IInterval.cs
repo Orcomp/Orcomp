@@ -36,7 +36,7 @@ namespace Orc.Interface
         IEndPoint<T> Max { get; }
 
         /// <summary>
-        /// Intersects() returns a boolean on whether the specified value intersect the interval.
+        /// Contains() returns a boolean on whether the specified value is contained in the interval.
         /// </summary>
         /// <param name="value">
         /// The value.
@@ -44,7 +44,14 @@ namespace Orc.Interface
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        bool Intersects(T value);
+        bool Contains(T value);
+
+        /// <summary>
+        /// Contains() returns a boolean on whether the specified interval is contained in the parent interval
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        bool Contains(IInterval<T> other);
 
         /// <summary>
         /// Overlaps() returns a boolean on whether another interval overlaps the interval.
@@ -56,5 +63,12 @@ namespace Orc.Interface
         /// The <see cref="bool"/>.
         /// </returns>
         bool Overlaps(IInterval<T> other);
+
+        /// <summary>
+        /// Return the overlap with other interval.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        IInterval<T> GetOverlap(IInterval<T> other);
     }
 }

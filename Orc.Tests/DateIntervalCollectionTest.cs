@@ -22,7 +22,7 @@ namespace Orc.Tests
     /// The date interval collection test.
     /// </summary>
     [TestFixture]
-    public class DateIntervalCollectionTest : DateIntervalCollectionTesBase
+    public class DateIntervalCollectionTest : DateIntervalCollectionTestBase
     {
         /// <summary>
         /// The date edges_ add multiple date intervals_ return sorted date edges.

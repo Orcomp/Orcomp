@@ -3,7 +3,7 @@
 //   MS-PL
 // </copyright>
 // <summary>
-//   The Edge interface.
+//   The EndPoint interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ namespace Orc.Interface
     using Orc.Entities;
 
     /// <summary>
-    /// The Edge interface.
+    /// The EndPoint interface.
     /// </summary>
     /// <typeparam name="T">
     /// T must be comparable.
@@ -53,5 +53,10 @@ namespace Orc.Interface
         /// The is inclusive.
         /// </value>
         bool IsInclusive { get; }
+
+        /// <summary>
+        /// Returns whether the EndPoint is min or max
+        /// </summary>
+        Boolean IsMinEndPoint { get; }
     }
 }

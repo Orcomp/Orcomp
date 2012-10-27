@@ -11,7 +11,7 @@ using Assert = Xunit.Assert;
 
 namespace Orcomp.Tests
 {
-    [TestClass]
+    [TestClass, Ignore]
     public class DateRangeCollectionExtensionsTest
     {
         [TestMethod]
