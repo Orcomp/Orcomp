@@ -9,8 +9,6 @@
 
 namespace Orc.Tests
 {
-    using System;
-
     using NUnit.Framework;
 
     using Orc.Entities;
@@ -261,20 +259,24 @@ namespace Orc.Tests
         }
 
         /// <summary>
-        /// The overlaps_ the two date intervals with first max included and second min excluded_ return false.
+        /// Overlaps the two date intervals: first ends where second starts return correct overlap.
         /// </summary>
         [Test]
-        public void Overlaps_TwoDateIntervalsWithFirstMaxIncludedAndSecondMinExcluded_ReturnFalse()
+        [TestCase(true, true, true)]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, false)]
+        [TestCase(false, false, false)]
+        public void Overlaps_TwoDateIntervalsFirstEndsWhereSecondStarts_ReturnCorrectOverlap(bool isFirstMaxInclusive, bool isSecondMinInclusive, bool overlapExpected)
         {
-            // Arrange
-            var dateInterval = new DateInterval(now, inTwoHours, isMaxInclusive: true);
-            var afterDateInterval = new DateInterval(inTwoHours, inThreeHours, isMinInclusive: false);
+            // Arrange            
+            var dateInterval = new DateInterval(now, inTwoHours, isMaxInclusive: isFirstMaxInclusive);
+            var afterDateInterval = new DateInterval(inTwoHours, inThreeHours, isMinInclusive: isSecondMinInclusive);
 
             // Act
             bool overlaps = dateInterval.Overlaps(afterDateInterval);
 
             // Assert
-            Assert.False(overlaps);
+            Assert.AreEqual(overlapExpected, overlaps);
         }
 
         #endregion
