@@ -42,6 +42,8 @@
             var intervals = new List<Interval<DateTime>>();
 
             intervals.Add(ToDateTimeInterval(now, -300, -200));
+            intervals.Add(ToDateTimeInterval(now, -300, 200));
+            intervals.Add(ToDateTimeInterval(now, -300, 200));
             intervals.Add(ToDateTimeInterval(now, -3, -2));
             intervals.Add(ToDateTimeInterval(now, 1, 2));
             intervals.Add(ToDateTimeInterval(now, 3, 6));
