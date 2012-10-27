@@ -215,6 +215,20 @@
             Assert.AreEqual(interval, intersections[0]);
         }
 
+        [Test]
+        public void Query_EmptyIntervalContainer_ShouldReturnEmptyResults()
+        {
+            //Arrange
+            var emptyIntervalContainer = CreateIntervalContainer(new Interval<DateTime>[0]);
+
+            //Act
+            var intersections = emptyIntervalContainer.Query(new Interval<DateTime>(now, inOneHour));
+
+            //Assert
+            Assert.NotNull(intersections);
+            Assert.AreEqual(0, intersections.Count());
+        }
+
         #region General Count Intervals Tests
         [Test]
         [TestCase(4, 4, 3)]
@@ -313,6 +327,67 @@
 
         #endregion
 
+        #region Add/Remove
+        
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Add_NullInterval_ShouldTrowArgumentNullException()
+        {
+            //Arrange
+            var intervalContainer = CreateIntervalContainer();
+
+            //Act
+            intervalContainer.Add(null);
+        }
+
+        [Test]        
+        public void Add_Interval_ShouldBeAvailable()
+        {
+            //Arrange
+            var interval = new Interval<DateTime>(now, inTwoHours);
+            var intervalContainer = CreateIntervalContainer();
+
+            //Act
+            var preAddIntersections = intervalContainer.Query(interval);
+            intervalContainer.Add(interval);
+            var afterAddIntersections = intervalContainer.Query(interval);
+
+            //Assert
+            Assert.AreEqual(0, preAddIntersections.Count());
+            Assert.AreEqual(1, afterAddIntersections.Count());
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Remove_NullInterval_ShouldTrowArgumentNullException()
+        {
+            //Arrange
+            var intervalContainer = CreateIntervalContainer();
+
+            //Act
+            intervalContainer.Remove(null);
+        }
+
+        [Test]
+        public void Remove_Interval_ShouldNotBeAvailable()
+        {
+            //Arrange
+            var interval = new Interval<DateTime>(now, inTwoHours);
+            var intervalContainer = CreateIntervalContainer();
+            intervalContainer.Add(interval);
+
+            //Act
+            var preRemoveIntersections = intervalContainer.Query(interval);
+            intervalContainer.Remove(interval);
+            var afterRemoveIntersections = intervalContainer.Query(interval);
+
+            //Assert
+            Assert.AreEqual(1, preRemoveIntersections.Count());
+            Assert.AreEqual(0, afterRemoveIntersections.Count());
+        }
+
+        #endregion
+
         /// <summary>
         /// Tests the query for interval with expected interval indexes.
         /// </summary>
@@ -322,6 +397,7 @@
         private void TestQueryForIntervalWithExpectedIntervalIndexes(List<Interval<DateTime>> intervals, Interval<DateTime> queryFor, params int[] intervalsIndexesExpectedInResult)
         {
             //Arrange
+            //for expercted results based on expected indexes from initial interval list
             var expectedResult = intervals.Where(i => intervalsIndexesExpectedInResult.Contains(intervals.IndexOf(i)));
 
             var intervalContainer = CreateIntervalContainer(intervals);
