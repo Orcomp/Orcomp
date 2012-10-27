@@ -11,3 +11,9 @@ Your solution has to either be an order of magnitude faster than the current win
 Pre canned unit tests for certain interfaces will be made available making it easy for you to check your implementation against these tests. 
 
 Standard performance benchmarks are coming soon as well.
+
+It is our hope that this library will be useful as both a teaching and learning tool for students as well as experienced developers.
+
+# License
+
+All code is released under the MIT License unless stated otherwise.
