@@ -64,6 +64,7 @@
     <Compile Include="DateIntervalTestBase.cs" />
     <Compile Include="DateIntervalExtensions_AccountForEfficienciesTest.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.cs" />
+    <Compile Include="IntervalContainer\IntervalTreeAVLTest.cs" />
     <Compile Include="IntervalContainer\IntervalTreeTest.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

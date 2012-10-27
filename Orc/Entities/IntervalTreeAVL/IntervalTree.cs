@@ -12,26 +12,29 @@ namespace Orc.Entities.IntervalTreeAVL
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
+
+    using Orc.Interface;
 
     /// <summary>
     /// Interval Tree class
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class IntervalTree<T, TypeValue> where T : IComparable<T>
+    public class IntervalTree<T> : IIntervalContainer<T> where T : struct, IComparable<T>
     {
         #region Fields
 
         private int Count;
         private IntervalNode Root;
         private IComparer<T> comparer;
-        private KeyValueComparer<T, TypeValue> keyvalueComparer;
+        private KeyValueComparer<T, IInterval<T>> keyvalueComparer;
 
         #endregion
 
         #region Ctor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntervalTree&lt;T, TypeValue&gt;"/> class.
+        /// Initializes a new instance of the <see cref="IntervalTree&lt;T,  IInterval<T>&gt;"/> class.
         /// </summary>
         public IntervalTree()
             : this(null)
@@ -39,20 +42,20 @@ namespace Orc.Entities.IntervalTreeAVL
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IntervalTree&lt;T, TypeValue&gt;"/> class.
+        /// Initializes a new instance of the <see cref="IntervalTree&lt;T,  IInterval<T>&gt;"/> class.
         /// </summary>
         /// <param name="elems">The elems.</param>
-        public IntervalTree(IEnumerable<KeyValuePair<Interval<T>, TypeValue>> elems)
+        public IntervalTree(IEnumerable<KeyValuePair<Interval<T>, IInterval<T>>> elems)
         {
             if (elems != null)
             {
                 foreach (var elem in elems)
                 {
-                    this.Add(elem.Key, elem.Value);
+                    this.Add(elem.Key);
                 }
             }
             this.comparer = ComparerUtil.GetComparer();
-            this.keyvalueComparer = new KeyValueComparer<T, TypeValue>(this.comparer);
+            this.keyvalueComparer = new KeyValueComparer<T, IInterval<T>>(this.comparer);
         }
 
         #endregion
@@ -78,9 +81,9 @@ namespace Orc.Entities.IntervalTreeAVL
         /// Note: this is okay for problems where intervals starting at the same time /value is not a frequent occurrence, however you can use other data structure for better performance depending on your problem needs
         /// </summary>
         /// <param name="arg">The arg.</param>
-        public void Add(T x, T y, TypeValue value)
+        public void Add(T x, T y)
         {
-            this.Add(new Interval<T>(x, y), value);
+            this.Add(new Interval<T>(x, y));
         }
 
         /// <summary>
@@ -90,12 +93,12 @@ namespace Orc.Entities.IntervalTreeAVL
         /// Note: this is okay for problems where intervals starting at the same time /value is not a frequent occurrence, however you can use other data structure for better performance depending on your problem needs
         /// </summary>
         /// <param name="arg">The arg.</param>
-        public bool Add(Interval<T> interval, TypeValue value)
+        public bool Add(Interval<T> interval)
         {
             bool wasAdded = false;
             bool wasSuccessful = false;
 
-            this.Root = IntervalNode.Add(this.Root, interval, value, ref wasAdded, ref wasSuccessful);
+            this.Root = IntervalNode.Add(this.Root, interval, ref wasAdded, ref wasSuccessful);
             if (this.Root != null)
             {
                 IntervalNode.ComputeMax(this.Root);
@@ -141,13 +144,23 @@ namespace Orc.Entities.IntervalTreeAVL
             }
         }
 
+        public void Add(IInterval<T> interval)
+        {
+            Add(interval as Interval<T>);
+        }
+
+        public void Remove(IInterval<T> interval )
+        {
+            Delete(interval as Interval<T>);
+        }
+
         /// <summary>
         /// Searches for all intervals overlapping the one specified.
         /// If multiple intervals starting at the same time/value are found to overlap the specified interval, they are returned in decreasing order of their End values.
         /// </summary>
         /// <param name="toFind">To find.</param>
         /// <param name="list">The list.</param>
-        public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>, TypeValue>> list)
+        public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>,  IInterval<T>>> list)
         {
             if (this.Root != null)
             {
@@ -161,9 +174,30 @@ namespace Orc.Entities.IntervalTreeAVL
         /// </summary>
         /// <param name="toFind">To find.</param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> GetIntervalsOverlappingWith(Interval<T> toFind)
+        public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> GetIntervalsOverlappingWith(Interval<T> toFind)
         {
             return (this.Root != null) ? this.Root.GetIntervalsOverlappingWith(toFind) : null;
+        }
+
+        public IEnumerable<IInterval<T>> Query(IInterval<T> interval )
+        {
+            if(interval == null)
+            {
+                return Enumerable.Empty<IInterval<T>>();
+            }
+
+            var results = GetIntervalsOverlappingWith(interval as Interval<T>);
+
+            return results.Select(x => x.Value);
+        }
+
+        public IEnumerable<IInterval<T>> Query(T value)
+        {
+            var interval = new Interval<T>(value, value);
+
+            var results = GetIntervalsOverlappingWith(interval as Interval<T>);
+
+            return results.Select(x => x.Value);
         }
 
         /// <summary>
@@ -172,7 +206,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// </summary>
         /// <param name="arg">The arg.</param>
         /// <returns></returns>
-        public List<KeyValuePair<Interval<T>, TypeValue>> GetIntervalsStartingAt(T arg)
+        public List<KeyValuePair<Interval<T>,  IInterval<T>>> GetIntervalsStartingAt(T arg)
         {
             return IntervalNode.GetIntervalsStartingAt(this.Root, arg);
         }
@@ -210,7 +244,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// Gets the collection of values (ascending order)
         /// Those intervals starting at the same time/value are sorted further based on their End value (i.e. returned in ascending order of their End values)
         /// </summary>
-        public IEnumerable<TypeValue> Values
+        public IEnumerable< IInterval<T>> Values
         {
             get
             {
@@ -237,7 +271,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// Gets the interval value pairs.
         /// Those intervals starting at the same time/value are sorted further based on their End value (i.e. returned in ascending order of their End values)
         /// </summary>
-        public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> IntervalValuePairs
+        public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> IntervalValuePairs
         {
             get
             {
@@ -254,7 +288,7 @@ namespace Orc.Entities.IntervalTreeAVL
                         yield return rangeNode;
                     }
 
-                    yield return new KeyValuePair<Interval<T>, TypeValue>(p.Interval, p.Value);
+                    yield return new KeyValuePair<Interval<T>,  IInterval<T>>(p.Interval, p.Value);
                     p = p.Successor();
                 }
             }
@@ -269,7 +303,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// <param name="data">The data.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public bool TryGetInterval(Interval<T> data, out TypeValue value)
+        public bool TryGetInterval(Interval<T> data, out  IInterval<T> value)
         {
             return this.TryGetIntervalImpl(this.Root, data, out value);
         }
@@ -312,7 +346,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// <param name="subtree">The subtree.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
-        private bool TryGetIntervalImpl(IntervalNode subtree, Interval<T> data, out TypeValue value)
+        private bool TryGetIntervalImpl(IntervalNode subtree, Interval<T> data, out  IInterval<T> value)
         {
             if (subtree != null)
             {
@@ -335,7 +369,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     }
                     else if (subtree.Range != null)
                     {
-                        int kthIndex = subtree.Range.BinarySearch(new KeyValuePair<T, TypeValue>(data.Max.Value, default(TypeValue)), this.keyvalueComparer);
+                        int kthIndex = subtree.Range.BinarySearch(new KeyValuePair<T,  IInterval<T>>(data.Max.Value, default( IInterval<T>)), this.keyvalueComparer);
                         if (kthIndex >= 0)
                         {
                             value = subtree.Range[kthIndex].Value;
@@ -344,7 +378,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     }
                 }
             }
-            value = default(TypeValue);
+            value = default( IInterval<T>);
             return false;
         }
 
@@ -383,21 +417,21 @@ namespace Orc.Entities.IntervalTreeAVL
             public IntervalNode Left { get; private set; }
             public IntervalNode Right { get; private set; }
             public Interval<T> Interval { get; private set; }
-            public TypeValue Value { get; private set; }
-            public List<KeyValuePair<T, TypeValue>> Range { get; private set; }
+            public IInterval<T> Value { get; private set; }
+            public List<KeyValuePair<T, IInterval<T>>> Range { get; private set; }
             public T Max { get; private set; }
 
             #endregion
 
             #region C'tor
 
-            public IntervalNode(Interval<T> interval, TypeValue value)
+            public IntervalNode(Interval<T> interval)
             {
                 this.Left = null;
                 this.Right = null;
                 this.Balance = 0;
                 this.Interval = interval;
-                this.Value = value;
+                this.Value = interval;
                 this.Max = interval.Max.Value;
             }
 
@@ -411,11 +445,11 @@ namespace Orc.Entities.IntervalTreeAVL
             /// <param name="elem">The elem.</param>
             /// <param name="data">The data.</param>
             /// <returns></returns>
-            public static IntervalNode Add(IntervalNode elem, Interval<T> interval, TypeValue value, ref bool wasAdded, ref bool wasSuccessful)
+            public static IntervalNode Add(IntervalNode elem, Interval<T> interval, ref bool wasAdded, ref bool wasSuccessful)
             {
                 if (elem == null)
                 {
-                    elem = new IntervalNode(interval, value);
+                    elem = new IntervalNode(interval);
                     wasAdded = true;
                     wasSuccessful = true;
                 }
@@ -425,7 +459,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     IntervalNode newChild = null;
                     if (compareResult < 0)
                     {
-                        newChild = Add(elem.Left, interval, value, ref wasAdded, ref wasSuccessful);
+                        newChild = Add(elem.Left, interval, ref wasAdded, ref wasSuccessful);
                         if (elem.Left != newChild)
                         {
                             elem.Left = newChild;
@@ -467,7 +501,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     }
                     else if (compareResult > 0)
                     {
-                        newChild = Add(elem.Right, interval, value, ref wasAdded, ref wasSuccessful);
+                        newChild = Add(elem.Right, interval, ref wasAdded, ref wasSuccessful);
                         if (elem.Right != newChild)
                         {
                             elem.Right = newChild;
@@ -514,7 +548,7 @@ namespace Orc.Entities.IntervalTreeAVL
                         //// all end values (except the maximum end time/value which is stored in the interval node itself) are stored in the Range list in decreasing order.
                         //// note: this is ok for problems where intervals starting at the same time /value is not a frequent occurrence, however you can use other data structure for better performance depending on your problem needs
 
-                        elem.AddIntervalValuePair(interval, value);
+                        elem.AddIntervalValuePair(interval);
 
                         wasSuccessful = true;
                     }
@@ -593,14 +627,14 @@ namespace Orc.Entities.IntervalTreeAVL
             /// The range intervals are sorted in the descending order of their End interval values
             /// </summary>
             /// <returns></returns>
-            public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> GetRange()
+            public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> GetRange()
             {
                 if (this.Range != null)
                 {
                     foreach (var value in this.Range)
                     {
                         var kth = new Interval<T>(this.Interval.Min.Value, value.Key);
-                        yield return new KeyValuePair<Interval<T>, TypeValue>(kth, value.Value);
+                        yield return new KeyValuePair<Interval<T>,  IInterval<T>>(kth, value.Value);
                     }
                 }
                 else
@@ -614,7 +648,7 @@ namespace Orc.Entities.IntervalTreeAVL
             /// The range intervals are sorted in the ascending order of their End interval values
             /// </summary>
             /// <returns></returns>
-            public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> GetRangeReverse()
+            public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> GetRangeReverse()
             {
                 if (this.Range != null && this.Range.Count > 0)
                 {
@@ -622,7 +656,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     for (int k = rangeCount - 1; k >= 0; k--)
                     {
                         var kth = new Interval<T>(this.Interval.Min.Value, this.Range[k].Key);
-                        yield return new KeyValuePair<Interval<T>, TypeValue>(kth, this.Range[k].Value);
+                        yield return new KeyValuePair<Interval<T>,  IInterval<T>>(kth, this.Range[k].Value);
                     }
                 }
                 else
@@ -849,7 +883,7 @@ namespace Orc.Entities.IntervalTreeAVL
             /// <param name="subtree">The subtree.</param>
             /// <param name="data">The data.</param>
             /// <returns></returns>
-            public static List<KeyValuePair<Interval<T>, TypeValue>> GetIntervalsStartingAt(IntervalNode subtree, T start)
+            public static List<KeyValuePair<Interval<T>,  IInterval<T>>> GetIntervalsStartingAt(IntervalNode subtree, T start)
             {
                 if (subtree != null)
                 {
@@ -864,7 +898,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     }
                     else
                     {
-                        var result = new List<KeyValuePair<Interval<T>, TypeValue>>();
+                        var result = new List<KeyValuePair<Interval<T>,  IInterval<T>>>();
                         if (subtree.Range != null)
                         {
                             foreach (var kvp in subtree.GetRangeReverse())
@@ -872,7 +906,7 @@ namespace Orc.Entities.IntervalTreeAVL
                                 result.Add(kvp);
                             }
                         }
-                        result.Add(new KeyValuePair<Interval<T>, TypeValue>(subtree.Interval, subtree.Value));
+                        result.Add(new KeyValuePair<Interval<T>,  IInterval<T>>(subtree.Interval, subtree.Value));
                         return result;
                     }
                 }
@@ -888,7 +922,7 @@ namespace Orc.Entities.IntervalTreeAVL
             /// </summary>
             /// <param name="toFind">To find.</param>
             /// <param name="list">The list.</param>
-            public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>, TypeValue>> list)
+            public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>,  IInterval<T>>> list)
             {
                 if (toFind.Max.Value.CompareTo(this.Interval.Min.Value) <= 0)
                 {
@@ -918,10 +952,10 @@ namespace Orc.Entities.IntervalTreeAVL
                     {
                         if (list == null)
                         {
-                            list = new List<KeyValuePair<Interval<T>, TypeValue>>();
+                            list = new List<KeyValuePair<Interval<T>,  IInterval<T>>>();
                         }
 
-                        list.Add(new KeyValuePair<Interval<T>, TypeValue>(this.Interval, this.Value));
+                        list.Add(new KeyValuePair<Interval<T>,  IInterval<T>>(this.Interval, this.Value));
 
                         ////the max value is stored in the node, if the node doesn't overlap then neither are the nodes in its range 
                         if (this.Range != null && this.Range.Count > 0)
@@ -933,7 +967,7 @@ namespace Orc.Entities.IntervalTreeAVL
                                 {
                                     if (list == null)
                                     {
-                                        list = new List<KeyValuePair<Interval<T>, TypeValue>>();
+                                        list = new List<KeyValuePair<Interval<T>,  IInterval<T>>>();
                                     }
                                     list.Add(kvp);
                                 }
@@ -959,7 +993,7 @@ namespace Orc.Entities.IntervalTreeAVL
             /// </summary>
             /// <param name="toFind">To find.</param>
             /// <returns></returns>
-            public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> GetIntervalsOverlappingWith(Interval<T> toFind)
+            public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> GetIntervalsOverlappingWith(Interval<T> toFind)
             {
                 if (toFind.Max.Value.CompareTo(this.Interval.Min.Value) <= 0)
                 {
@@ -995,7 +1029,7 @@ namespace Orc.Entities.IntervalTreeAVL
 
                     if (this.Interval.Overlaps(toFind))
                     {
-                        yield return new KeyValuePair<Interval<T>, TypeValue>(this.Interval, this.Value);
+                        yield return new KeyValuePair<Interval<T>, IInterval<T>>(this.Interval, this.Value);
 
                         if (this.Range != null && this.Range.Count > 0)
                         {
@@ -1145,8 +1179,8 @@ namespace Orc.Entities.IntervalTreeAVL
                     }
                     else if (rangeCount > 12)
                     {
-                        var keyvalueComparer = new KeyValueComparer<T, TypeValue>(ComparerUtil.GetComparer());
-                        int k = this.Range.BinarySearch(new KeyValuePair<T, TypeValue>(interval.Max.Value, default(TypeValue)), keyvalueComparer);
+                        var keyvalueComparer = new KeyValueComparer<T, IInterval<T>>(ComparerUtil.GetComparer());
+                        int k = this.Range.BinarySearch(new KeyValuePair<T, IInterval<T>>(interval.Max.Value, default(IInterval<T>)), keyvalueComparer);
                         if (k >= 0)
                         {
                             intervalPosition = k + 1;
@@ -1208,19 +1242,19 @@ namespace Orc.Entities.IntervalTreeAVL
                 node.Range = dataRange;
             }
 
-            private void AddIntervalValuePair(Interval<T> interval, TypeValue value)
+            private void AddIntervalValuePair(Interval<T> interval)
             {
                 if (this.Range == null)
                 {
-                    this.Range = new List<KeyValuePair<T, TypeValue>>();
+                    this.Range = new List<KeyValuePair<T, IInterval<T>>>();
                 }
 
                 ////always store the max End value in the node.Data itself .. store the Range list in decreasing order
                 if (interval.Max.Value.CompareTo(this.Interval.Max.Value) > 0)
                 {
-                    this.Range.Insert(0, new KeyValuePair<T, TypeValue>(this.Interval.Max.Value, this.Value));
+                    this.Range.Insert(0, new KeyValuePair<T, IInterval<T>>(this.Interval.Max.Value, this.Value));
                     this.Interval = interval;
-                    this.Value = value;
+                    this.Value = interval;
                 }
                 else
                 {
@@ -1229,14 +1263,14 @@ namespace Orc.Entities.IntervalTreeAVL
                     {
                         if (interval.Max.Value.CompareTo(this.Range[i].Key) >= 0)
                         {
-                            this.Range.Insert(i, new KeyValuePair<T, TypeValue>(interval.Max.Value, value));
+                            this.Range.Insert(i, new KeyValuePair<T, IInterval<T>>(interval.Max.Value, interval));
                             wasAdded = true;
                             break;
                         }
                     }
                     if (!wasAdded)
                     {
-                        this.Range.Add(new KeyValuePair<T, TypeValue>(interval.Max.Value, value));
+                        this.Range.Add(new KeyValuePair<T, IInterval<T>>(interval.Max.Value, interval));
                     }
                 }
             }
@@ -1249,7 +1283,7 @@ namespace Orc.Entities.IntervalTreeAVL
             private IComparer<TKey> keyComparer;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="IntervalTree&lt;T, TypeValue&gt;.KeyValueComparer&lt;TKey, TValue&gt;"/> class.
+            /// Initializes a new instance of the <see cref="IntervalTree&lt;T,  IInterval<T>&gt;.KeyValueComparer&lt;TKey, TValue&gt;"/> class.
             /// </summary>
             /// <param name="keyComparer">The key comparer.</param>
             public KeyValueComparer(IComparer<TKey> keyComparer)

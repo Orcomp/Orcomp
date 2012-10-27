@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Entities\EndPointMinFirstComparer.cs" />
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
+    <Compile Include="Entities\IntervalTreeAVL\IntervalTree.cs" />
     <Compile Include="Entities\IntervalTree\IntervalNode.cs" />
     <Compile Include="Entities\IntervalTree\IntervalTree.cs" />
     <Compile Include="Entities\RangeTree\RangeTree.cs" />
