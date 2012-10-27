@@ -11,7 +11,8 @@
     using Orc.Entities;
     using Orc.Entities.IntervalTree;
 
-    [TestFixture, Ignore]
+    [Ignore("All interval container tests should be implemented via DateIntervalContainerTestBase class inheritance")]
+    [TestFixture]
     public class IntervalTreeTest
     {
 

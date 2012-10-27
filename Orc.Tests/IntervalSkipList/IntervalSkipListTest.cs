@@ -9,6 +9,7 @@
     using Orc.Entities;
     using Orc.Entities.IntervalSkipList;
 
+    [Ignore("All interval container tests should be implemented via DateIntervalContainerTestBase class inheritance")]
     [TestFixture]
     public class IntervalSkipListTest
     {
