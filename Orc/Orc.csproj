@@ -76,7 +76,7 @@
     <None Include="Entities\RangeTree\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Entities\IntervalTree\README.txt" />
+    <None Include="Entities\IntervalTree\README.md" />
     <Content Include="Entities\RangeTree\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
