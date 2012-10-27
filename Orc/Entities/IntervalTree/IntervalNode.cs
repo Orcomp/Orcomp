@@ -1,8 +1,7 @@
-﻿using System;
-using System.Text;
-
-namespace Orc.Entities.IntervalTreeVvondra
+﻿namespace Orc.Entities.IntervalTree
 {
+    using System;
+
     using Orc.Interface;
 
     /// <summary>
@@ -32,7 +31,7 @@ namespace Orc.Entities.IntervalTreeVvondra
         /// </summary>
         public NodeColor Color
         {
-            get { return color; }
+            get { return this.color; }
             set
             {
                 this.color = value;
@@ -42,14 +41,14 @@ namespace Orc.Entities.IntervalTreeVvondra
 
         public IntervalNode()
         {
-            Parent = Left = Right = IntervalTree<T>.Sentinel;
-            Color = NodeColor.BLACK;
+            this.Parent = this.Left = this.Right = IntervalTree<T>.Sentinel;
+            this.Color = NodeColor.BLACK;
         }
 
         public IntervalNode(Interval<T> interval)
             : this()
         {
-            MaxEnd = interval.Max;
+            this.MaxEnd = interval.Max;
             this.Interval = interval;
         }
 
@@ -58,7 +57,7 @@ namespace Orc.Entities.IntervalTreeVvondra
         /// </summary>
         public bool IsRoot
         {
-            get { return Parent == IntervalTree<T>.Sentinel; }
+            get { return this.Parent == IntervalTree<T>.Sentinel; }
         }
 
         /// <summary>
@@ -66,7 +65,7 @@ namespace Orc.Entities.IntervalTreeVvondra
         /// </summary>
         public bool IsLeaf
         {
-            get { return Right == IntervalTree<T>.Sentinel && Left == IntervalTree<T>.Sentinel; }
+            get { return this.Right == IntervalTree<T>.Sentinel && this.Left == IntervalTree<T>.Sentinel; }
         }
 
         /// <summary>
@@ -76,23 +75,23 @@ namespace Orc.Entities.IntervalTreeVvondra
         {
             get
             {
-                if (Parent == IntervalTree<T>.Sentinel)
+                if (this.Parent == IntervalTree<T>.Sentinel)
                 {
                     return NodeDirection.NONE;
                 }
 
-                return Parent.Left == this ? NodeDirection.RIGHT : NodeDirection.LEFT;
+                return this.Parent.Left == this ? NodeDirection.RIGHT : NodeDirection.LEFT;
             }
         }
 
         public IntervalNode<T> GetSuccessor()
         {
-            if (Right == IntervalTree<T>.Sentinel)
+            if (this.Right == IntervalTree<T>.Sentinel)
             {
                 return IntervalTree<T>.Sentinel;
             }
 
-            var node = Right;
+            var node = this.Right;
             while (node.Left != IntervalTree<T>.Sentinel)
             {
                 node = node.Left;
@@ -115,23 +114,23 @@ namespace Orc.Entities.IntervalTreeVvondra
         {
             IEndPoint<T> max = this.Interval.Max;
 
-            if (Right != IntervalTree<T>.Sentinel)
+            if (this.Right != IntervalTree<T>.Sentinel)
             {
-                if (Right.MaxEnd.CompareTo(max) > 0)
+                if (this.Right.MaxEnd.CompareTo(max) > 0)
                 {
-                    max = Right.MaxEnd;
+                    max = this.Right.MaxEnd;
                 }
             }
 
-            if (Left != IntervalTree<T>.Sentinel)
+            if (this.Left != IntervalTree<T>.Sentinel)
             {
-                if (Left.MaxEnd.CompareTo(max) > 0)
+                if (this.Left.MaxEnd.CompareTo(max) > 0)
                 {
-                    max = Left.MaxEnd;
+                    max = this.Left.MaxEnd;
                 }
             }
 
-            MaxEnd = max;
+            this.MaxEnd = max;
         }
 
         /// <summary>
@@ -142,9 +141,9 @@ namespace Orc.Entities.IntervalTreeVvondra
         {
             get
             {
-                if (Parent != IntervalTree<T>.Sentinel)
+                if (this.Parent != IntervalTree<T>.Sentinel)
                 {
-                    return Parent.Parent;
+                    return this.Parent.Parent;
                 }
                 return IntervalTree<T>.Sentinel;
             }
@@ -158,13 +157,13 @@ namespace Orc.Entities.IntervalTreeVvondra
         {
             get
             {
-                var gparent = GrandParent;
+                var gparent = this.GrandParent;
                 if (gparent == IntervalTree<T>.Sentinel)
                 {
                     return IntervalTree<T>.Sentinel;
                 }
 
-                if (Parent == gparent.Left)
+                if (this.Parent == gparent.Left)
                 {
                     return gparent.Right;
                 }
@@ -181,14 +180,14 @@ namespace Orc.Entities.IntervalTreeVvondra
         {
             get
             {
-                if (Parent != IntervalTree<T>.Sentinel)
+                if (this.Parent != IntervalTree<T>.Sentinel)
                 {
-                    if (Parent.Right == this)
+                    if (this.Parent.Right == this)
                     {
-                        return Parent.Left;
+                        return this.Parent.Left;
                     }
 
-                    return Parent.Right;
+                    return this.Parent.Right;
                 }
 
                 return IntervalTree<T>.Sentinel;

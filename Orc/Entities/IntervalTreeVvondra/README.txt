@@ -1,1 +1,0 @@
-﻿Code from https://github.com/vvondra/Interval-Tree

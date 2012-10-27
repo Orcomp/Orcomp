@@ -41,11 +41,12 @@
   <ItemGroup>
     <Compile Include="Entities\EndPointMinFirstComparer.cs" />
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
-    <Compile Include="Entities\IntervalTreeVvondra\Interval2.cs" />
-    <Compile Include="Entities\IntervalTreeVvondra\IntervalNode.cs" />
-    <Compile Include="Entities\IntervalTreeVvondra\IntervalTree.cs" />
+    <Compile Include="Entities\IntervalTree\IntervalNode.cs" />
     <Compile Include="Entities\IntervalTree\IntervalTree.cs" />
-    <Compile Include="Entities\SkipList\BDSkipList.cs" />
+    <Compile Include="Entities\RangeTree\RangeTree.cs" />
+    <Compile Include="Entities\RangeTree\RangeTreeNode.cs" />
+    <Compile Include="Entities\SkipList.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\BDSkipList.cs" />
     <Compile Include="Entities\DateEndPoint.cs" />
     <Compile Include="Entities\DateInterval.cs" />
     <Compile Include="Entities\DateIntervalCollection.cs" />
@@ -56,11 +57,11 @@
     <Compile Include="Entities\FixedEndPoint.cs" />
     <Compile Include="Entities\Interval.cs" />
     <Compile Include="Entities\IntervalSkipList\IntervalNode.cs" />
-    <Compile Include="Entities\SkipList\IScannable.cs" />
-    <Compile Include="Entities\SkipList\IScannableDictionary.cs" />
-    <Compile Include="Entities\SkipList\IScanner.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\IScannable.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\IScannableDictionary.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\IScanner.cs" />
     <Compile Include="Entities\Point.cs" />
-    <Compile Include="Entities\SkipList\ScanRange.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\ScanRange.cs" />
     <Compile Include="Extensions\DateIntervalCollectionExtensions.cs" />
     <Compile Include="Extensions\DateIntervalExtensions.cs" />
     <Compile Include="Extensions\IntervalExtensions.cs" />
@@ -72,9 +73,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Docs\Interval.md" />
+    <None Include="Entities\RangeTree\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Entities\IntervalTreeVvondra\README.txt" />
+    <Content Include="Entities\IntervalTree\README.txt" />
+    <Content Include="Entities\RangeTree\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -32,7 +32,7 @@
 // FURTHERMORE, this skiplist is extended to a doubly-linked skiplist, so we can traverse
 // efficiently in either direction.
 
-namespace Orc.Entities.SkipList
+namespace Orc.Entities.IntervalSkipList.SkipList
 {
     using System;
     using System.Text;

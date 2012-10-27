@@ -1,4 +1,4 @@
-namespace Orc.Entities.SkipList
+namespace Orc.Entities.IntervalSkipList.SkipList
 {
     using System;
 

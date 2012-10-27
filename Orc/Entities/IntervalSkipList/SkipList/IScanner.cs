@@ -6,7 +6,7 @@
 // This code is provided without warranty to the public domain. You may use it for any
 // purpose without restriction.
 
-namespace Orc.Entities.SkipList
+namespace Orc.Entities.IntervalSkipList.SkipList
 {
     using System;
 

@@ -1,815 +1,615 @@
 ﻿namespace Orc.Entities.IntervalTree
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
     using Orc.Interface;
-    using Orc.Extensions;
 
-    // based on http://www.superstarcoders.com/blogs/posts/efficient-avl-tree-in-c-sharp.aspx
-
-    public class IntervalTree<TKey, TEdge, TValue> : IEnumerable<TValue>
-        where TKey : class, IInterval<TEdge>
-        where TEdge : IComparable<TEdge>
+    /// <summary>
+    /// Tree capable of adding arbitrary intervals and performing search queries on them
+    /// </summary>
+    public partial class IntervalTree<T> : IIntervalContainer<T>, IEnumerable<Interval<T>> where T : struct, IComparable<T>
     {
-        private IComparer<TKey> _cmp_keys = Comparer<TKey>.Default;
-        private IComparer<TEdge> _cmp_edges = Comparer<TEdge>.Default;
-        private IntervalNode _root;
+        //TODO: Replace Interval<T> with IInterval<T> throughout.
 
-        public IntervalTree(IComparer<TKey> cmp_keys = null, IComparer<TEdge> cmp_edges = null)
+        internal static IntervalNode<T> Sentinel = new IntervalNode<T>(new Interval<T>(default(T), default(T)));
+
+        IntervalNode<T> Root
         {
-            this._cmp_keys = cmp_keys ?? this._cmp_keys;
-            this._cmp_edges = cmp_edges ?? this._cmp_edges;
+            get;
+            set;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public IntervalTree()
+        {
+            this.Root = Sentinel;
+            this.Root.Left = Sentinel;
+            this.Root.Right = Sentinel;
+            this.Root.Parent = Sentinel;
+        }
+
+        #region Tree searching
+        /// <summary>
+        /// Search interval tree for a given point
+        /// </summary>
+        /// <param name="val">value to be searched for</param>
+        /// <returns>list of intervals which contain the value</returns>
+        public List<Interval<T>> Search(T val)
+        {
+            var result = new List<Interval<T>>();
+            this.SearchSubtree(this.Root, val, result);
+            return result;
+        }
+
+        public IEnumerable<IInterval<T>> Query(T value)
+        {
+            var result = new List<Interval<T>>();
+            this.SearchSubtree(this.Root, value, result);
+            return result.Cast<IInterval<T>>();
+        }
+
+        /// <summary>
+        /// Search interval tree for intervals overlapping with given
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public List<Interval<T>> Search(Interval<T> i)
+        {
+            var result = new List<Interval<T>>();
+            this.SearchSubtree(this.Root, i, result);
+            return result;
+        }
+
+        public IEnumerable<IInterval<T>> Query(IInterval<T> interval)
+        {
+            if(interval == null)
+            {
+                return Enumerable.Empty<IInterval<T>>();
+            }
+
+            var result = new List<Interval<T>>();
+            this.SearchSubtree(this.Root, interval as Interval<T>, result);
+            return result.Cast<IInterval<T>>();
+        }
+
+        /// <summary>
+        /// Searches for the first overlapping interval
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        public Interval<T> SearchFirstOverlapping(Interval<T> i)
+        {
+            var node = this.Root;
+
+            while (node != Sentinel && !node.Interval.Overlaps(i))
+            {
+                if (node.Left != Sentinel && node.Left.MaxEnd.CompareTo(i.Min) >= 0)
+                {
+                    node = node.Left;
+                }
+                else
+                {
+                    node = node.Right;
+                }
+            }
+
+            if (node == Sentinel)
+            {
+                throw new KeyNotFoundException("No overlapping interval found.");
+            }
+
+            return node.Interval;
+        }
+
+        private void SearchSubtree(IntervalNode<T> node, Interval<T> i, List<Interval<T>> result)
+        {
+            if (node == Sentinel)
+            {
+                return;
+            }
+
+            if (node.Left != Sentinel)
+            {
+                this.SearchSubtree(node.Left, i, result);
+            }
+
+            if (i.Overlaps(node.Interval))
+            {
+                result.Add(node.Interval);
+            }
+
+            // Interval start is greater than largest endpoint in this subtree
+            if (node.Right != Sentinel && i.Min.CompareTo(node.MaxEnd) <= 0)
+            {
+                this.SearchSubtree(node.Right, i, result);
+            }
+        }
+
+        private IntervalNode<T> FindInterval(IntervalNode<T> tree, Interval<T> i)
+        {
+
+            while (tree != Sentinel)
+            {
+
+                if (tree.Interval.CompareTo(i) > 0)
+                {
+                    tree = tree.Left;
+                    continue;
+                }
+
+                if (tree.Interval.CompareTo(i) < 0)
+                {
+                    tree = tree.Right;
+                    continue;
+                }
+
+                if (tree.Interval.CompareTo(i) == 0)
+                {
+                    return tree;
+                }
+            }
+
+
+            return Sentinel;
+
+        }
+
+        /// <summary>
+        /// Recursively descends down the tree and adds valids results to the resultset
+        /// </summary>
+        /// <param name="node">subtree to be searched</param>
+        /// <param name="val">value to be searched for</param>
+        /// <param name="result">current resultset</param>
+        private void SearchSubtree(IntervalNode<T> node, T val, List<Interval<T>> result)
+        {
+            if (node == Sentinel)
+            {
+                return;
+            }
+
+            // Value is higher than any interval in this subtree
+            // TODO: Inclusiveness is ignored. Should use endpoint
+            if (val.CompareTo(node.MaxEnd.Value) > 0)
+            {
+                return;
+            }
+
+            if (node.Left != Sentinel)
+            {
+                this.SearchSubtree(node.Left, val, result);
+            }
+
+            if (node.Interval.Contains(val))
+            {
+                result.Add(node.Interval);
+            }
+
+            // TODO: Inclusiveness is ignored. Should use endpoint
+            if (val.CompareTo(node.Interval.Min.Value) < 0)
+            {
+                return;
+            }
+
+            if (node.Right != Sentinel)
+            {
+                this.SearchSubtree(node.Right, val, result);
+            }
+        }
+
+        #endregion search
+
+        /// <summary>
+        /// Insert new interval to interval tree
+        /// </summary>
+        /// <param name="interval">interval to add</param>
+        public void Add(Interval<T> interval)
+        {
+            var node = new IntervalNode<T>(interval);
+            if (this.Root == Sentinel)
+            {
+                node.Color = NodeColor.BLACK;
+                this.Root = node;
+            }
+            else
+            {
+                this.InsertInterval(interval, this.Root);
+            }
+        }
+
+        public void Add(IInterval<T> interval )
+        {
+            this.Add(interval as Interval<T>);
+        }
+
+        #region Tree insertion internals
+
+        /// <summary>
+        /// Recursively descends to the correct spot for interval insertion in the tree
+        /// When a free spot is found for the node, it is attached and tree state is validated
+        /// </summary>
+        /// <param name="interval">interval to be added</param>
+        /// <param name="currentNode">subtree accessed in recursion</param>
+        private void InsertInterval(Interval<T> interval, IntervalNode<T> currentNode)
+        {
+            IntervalNode<T> addedNode = Sentinel;
+            if (interval.CompareTo(currentNode.Interval) < 0)
+            {
+                if (currentNode.Left == Sentinel)
+                {
+                    addedNode = new IntervalNode<T>(interval);
+                    addedNode.Color = NodeColor.RED;
+                    currentNode.Left = addedNode;
+                    addedNode.Parent = currentNode;
+                }
+                else
+                {
+                    this.InsertInterval(interval, currentNode.Left);
+                    return;
+                }
+            }
+            else if (interval.CompareTo(currentNode.Interval) > 0)
+            {
+                if (currentNode.Right == Sentinel)
+                {
+                    addedNode = new IntervalNode<T>(interval);
+                    addedNode.Color = NodeColor.RED;
+                    currentNode.Right = addedNode;
+                    addedNode.Parent = currentNode;
+                }
+                else
+                {
+                    this.InsertInterval(interval, currentNode.Right);
+                    return;
+                }
+            }
+            else
+            {
+                // NOTE: Does not allow for duplicates.
+                return;
+            }
+
+            addedNode.Parent.RecalculateMaxEnd();
+
+            this.RenewConstraintsAfterInsert(addedNode);
+
+            this.Root.Color = NodeColor.BLACK;
+        }
+
+        /// <summary>
+        /// Validates and applies RB-tree constaints to node 
+        /// </summary>
+        /// <param name="node">node to be validated and fixed</param>
+        private void RenewConstraintsAfterInsert(IntervalNode<T> node)
+        {
+            if (node.Parent == Sentinel)
+            {
+                return;
+            }
+
+            if (node.Parent.Color == NodeColor.BLACK)
+            {
+                return;
+            }
+
+            var uncle = node.Uncle;
+
+            if (uncle != Sentinel && uncle.Color == NodeColor.RED)
+            {
+                node.Parent.Color = uncle.Color = NodeColor.BLACK;
+
+                var gparent = node.GrandParent;
+                if (gparent != Sentinel && !gparent.IsRoot)
+                {
+                    gparent.Color = NodeColor.RED;
+                    this.RenewConstraintsAfterInsert(gparent);
+                }
+            }
+            else
+            {
+                if (node.ParentDirection == NodeDirection.LEFT && node.Parent.ParentDirection == NodeDirection.RIGHT)
+                {
+                    this.RotateLeft(node.Parent);
+                    node = node.Left;
+                }
+                else if (node.ParentDirection == NodeDirection.RIGHT && node.Parent.ParentDirection == NodeDirection.LEFT)
+                {
+                    this.RotateRight(node.Parent);
+                    node = node.Right;
+                }
+
+                node.Parent.Color = NodeColor.BLACK;
+
+                if (node.GrandParent == Sentinel)
+                {
+                    return;
+                }
+                node.GrandParent.Color = NodeColor.RED;
+
+                if (node.ParentDirection == NodeDirection.RIGHT)
+                {
+                    this.RotateRight(node.GrandParent);
+                }
+                else
+                {
+                    this.RotateLeft(node.GrandParent);
+                }
+            }
+
+        }
+
+        #endregion Tree insertion internals
+
+        /// <summary>
+        /// Removes interval from tree (if present in tree)
+        /// </summary>
+        /// <param name="?"></param>
+        public void Remove(Interval<T> interval)
+        {
+            this.RemoveNode(this.FindInterval(this.Root, interval));
+        }
+
+        public void Remove(IInterval<T> interval)
+        {
+            this.Remove(interval as Interval<T>);
+        }
+
+        private void RemoveNode(IntervalNode<T> node)
+        {
+            if (node == Sentinel)
+            {
+                return;
+            }
+
+            IntervalNode<T> temp = node;
+            if (node.Right != Sentinel && node.Left != Sentinel)
+            {
+                // Trick when deleting node with both children, switch it with closest in order node
+                // swap values and delete the bottom node converting it to other cases
+
+                temp = node.GetSuccessor();
+                node.Interval = temp.Interval;
+
+                node.RecalculateMaxEnd();
+                while (node.Parent != Sentinel)
+                {
+                    node = node.Parent;
+                    node.RecalculateMaxEnd();
+                }
+            }
+            node = temp;
+            temp = node.Left != Sentinel ? node.Left : node.Right;
+
+            // we will replace node with temp and delete node
+            temp.Parent = node.Parent;
+            if (node.IsRoot)
+            {
+                this.Root = temp; // Set new root
+            }
+            else
+            {
+
+                // Reattach node to parent
+                if (node.ParentDirection == NodeDirection.RIGHT)
+                {
+                    node.Parent.Left = temp;
+                }
+                else
+                {
+                    node.Parent.Right = temp;
+                }
+
+                IntervalNode<T> maxAux = node.Parent;
+                maxAux.RecalculateMaxEnd();
+                while (maxAux.Parent != Sentinel)
+                {
+                    maxAux = maxAux.Parent;
+                    maxAux.RecalculateMaxEnd();
+                }
+            }
+
+            if (node.Color == NodeColor.BLACK)
+            {
+                this.RenewConstraintsAfterDelete(temp);
+            }
+
+        }
+
+        /// <summary>
+        /// Ensures constraints still apply after node deletion
+        /// 
+        ///  - made with the help of algorithm from Cormen et Al. Introduction to Algorithms 2nd ed.
+        /// </summary>
+        /// <param name="node"></param>
+        private void RenewConstraintsAfterDelete(IntervalNode<T> node)
+        {
+            // Need to bubble up and fix
+            while (node != this.Root && node.Color == NodeColor.BLACK)
+            {
+                if (node.ParentDirection == NodeDirection.RIGHT)
+                {
+                    IntervalNode<T> aux = node.Parent.Right;
+                    if (aux.Color == NodeColor.RED)
+                    {
+                        aux.Color = NodeColor.BLACK;
+                        node.Parent.Color = NodeColor.RED;
+                        this.RotateLeft(node.Parent);
+                        aux = node.Parent.Right;
+                    }
+
+                    if (aux.Left.Color == NodeColor.BLACK && aux.Right.Color == NodeColor.BLACK)
+                    {
+                        aux.Color = NodeColor.RED;
+                        node = node.Parent;
+                    }
+                    else
+                    {
+                        if (aux.Right.Color == NodeColor.BLACK)
+                        {
+                            aux.Left.Color = NodeColor.BLACK;
+                            aux.Color = NodeColor.RED;
+                            this.RotateRight(aux);
+                            aux = node.Parent.Right;
+                        }
+
+                        aux.Color = node.Parent.Color;
+                        node.Parent.Color = NodeColor.BLACK;
+                        aux.Right.Color = NodeColor.BLACK;
+                        this.RotateLeft(node.Parent);
+                        node = this.Root;
+                    }
+                }
+                else
+                {
+                    IntervalNode<T> aux = node.Parent.Left;
+                    if (aux.Color == NodeColor.RED)
+                    {
+                        aux.Color = NodeColor.BLACK;
+                        node.Parent.Color = NodeColor.RED;
+                        this.RotateRight(node.Parent);
+                        aux = node.Parent.Left;
+                    }
+
+                    if (aux.Left.Color == NodeColor.BLACK && aux.Right.Color == NodeColor.BLACK)
+                    {
+                        aux.Color = NodeColor.RED;
+                        node = node.Parent;
+                    }
+                    else
+                    {
+                        if (aux.Left.Color == NodeColor.BLACK)
+                        {
+                            aux.Right.Color = NodeColor.BLACK;
+                            aux.Color = NodeColor.RED;
+                            this.RotateLeft(aux);
+                            aux = node.Parent.Left;
+                        }
+
+                        aux.Color = node.Parent.Color;
+                        node.Parent.Color = NodeColor.BLACK;
+                        aux.Left.Color = NodeColor.BLACK;
+                        this.RotateRight(node.Parent);
+                        node = this.Root;
+                    }
+                }
+            }
+
+            node.Color = NodeColor.BLACK;
+        }
+
+        /// <summary>
+        /// General right rotation
+        /// </summary>
+        /// <param name="node">Top of rotated subtree</param>
+        private void RotateRight(IntervalNode<T> node)
+        {
+            var pivot = node.Left;
+            NodeDirection dir = node.ParentDirection;
+            var parent = node.Parent;
+            var tempTree = pivot.Right;
+            pivot.Right = node;
+            node.Parent = pivot;
+            node.Left = tempTree;
+            if (tempTree != Sentinel)
+            {
+                tempTree.Parent = node;
+            }
+
+            if (dir == NodeDirection.LEFT)
+            {
+                parent.Right = pivot;
+            }
+            else if (dir == NodeDirection.RIGHT)
+            {
+                parent.Left = pivot;
+            }
+            else
+            {
+                this.Root = pivot;
+            }
+
+            pivot.Parent = parent;
+
+            pivot.RecalculateMaxEnd();
+            node.RecalculateMaxEnd();
+
+        }
+
+        /// <summary>
+        /// General left rotation
+        /// </summary>
+        /// <param name="node">top of rotated subtree</param>
+        private void RotateLeft(IntervalNode<T> node)
+        {
+            var pivot = node.Right;
+            NodeDirection dir = node.ParentDirection;
+            var parent = node.Parent;
+            var tempTree = pivot.Left;
+            pivot.Left = node;
+            node.Parent = pivot;
+            node.Right = tempTree;
+            if (tempTree != Sentinel)
+            {
+                tempTree.Parent = node;
+            }
+
+            if (dir == NodeDirection.LEFT)
+            {
+                parent.Right = pivot;
+            }
+            else if (dir == NodeDirection.RIGHT)
+            {
+                parent.Left = pivot;
+            }
+            else
+            {
+                this.Root = pivot;
+            }
+
+            pivot.Parent = parent;
+
+            pivot.RecalculateMaxEnd();
+            node.RecalculateMaxEnd();
+        }
+
+        #region Enumerators
+        private IEnumerable<Interval<T>> InOrderWalk(IntervalNode<T> node)
+        {
+            if (node.Left != Sentinel)
+            {
+                foreach (Interval<T> val in this.InOrderWalk(node.Left))
+                {
+                    yield return val;
+                }
+            }
+
+            if (node != Sentinel)
+            {
+                yield return node.Interval;
+            }
+
+            if (node.Right != Sentinel)
+            {
+                foreach (Interval<T> val in this.InOrderWalk(node.Right))
+                {
+                    yield return val;
+                }
+            }
+        }
+
+        public IEnumerator<Interval<T>> GetEnumerator()
+        {
+            foreach (Interval<T> val in this.InOrderWalk(this.Root))
+            {
+                yield return val;
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
 
-        public IEnumerator<TValue> GetEnumerator()
-        {
-            return new IntervalNodeEnumerator(this._root);
-        }
-
-        public void Clear()
-        {
-            this._root = null;
-        }
-
-        public bool Search(TKey key, out TValue value)
-        {
-            IntervalNode node = this._root;
-
-            while (node != null)
-            {
-                if (this._cmp_keys.Compare(key, node.Key) < 0)
-                {
-                    node = node.Left;
-                }
-                else if (this._cmp_keys.Compare(key, node.Key) > 0)
-                {
-                    node = node.Right;
-                }
-                else
-                {
-                    value = node.Value;
-
-                    return true;
-                }
-            }
-
-            value = default(TValue);
-
-            return false;
-        }
-
-        public IEnumerable<TKey> GetOverlaps(TKey key)
-        {
-            var ovelaps = new List<TKey>();
-            this.GetOverlaps(this._root, key, ovelaps);
-
-            return ovelaps;
-        }
-
-        private void GetOverlaps(IntervalNode node, TKey key, List<TKey> overlaps)
-        {
-            if (node == null)
-                return;
-
-            if (this._cmp_edges.Compare(key.Min.Value, node.Max) > 0)
-                return;
-
-            if (key.Overlaps(node.Key))
-            {
-                var overlap = key.GetOverlap(node.Key) as TKey;
-                if (overlap != null)
-                    overlaps.Add(overlap);
-            }
-
-            this.GetOverlaps(node.Left, key, overlaps);
-
-            if (this._cmp_edges.Compare(key.Max.Value, node.Key.Min.Value) > 0)
-            {
-                this.GetOverlaps(node.Right, key, overlaps);
-            }
-        }
-
-        public IEnumerable<TKey> GetOverlappingKeys(TKey key)
-        {
-            return this.GetOverlaps(key);
-        }
-
-        public IEnumerable<TValue> GetOverlappingValues(TKey key)
-        {
-            return this.GetOverlaps(key).Select(k =>
-            {
-                TValue v;
-                return (this.Search(k, out v) ? v : default(TValue));
-            });
-        }
-
-        public void Insert(TKey key, TValue value)
-        {
-            if (this._root == null)
-            {
-                this._root = new IntervalNode { Key = key, Value = value };
-                this.UpdateMax(this._root, false);
-            }
-            else
-            {
-                IntervalNode node = this._root;
-
-                while (node != null)
-                {
-                    int compare = this._cmp_keys.Compare(key, node.Key);
-
-                    if (compare < 0)
-                    {
-                        IntervalNode left = node.Left;
-
-                        if (left == null)
-                        {
-                            node.Left = new IntervalNode { Key = key, Value = value, Parent = node };
-
-                            this.InsertBalance(node, 1);
-
-                            return;
-                        }
-                        else
-                        {
-                            node = left;
-                        }
-                    }
-                    else if (compare > 0)
-                    {
-                        IntervalNode right = node.Right;
-
-                        if (right == null)
-                        {
-                            node.Right = new IntervalNode { Key = key, Value = value, Parent = node };
-
-                            this.InsertBalance(node, -1);
-
-                            return;
-                        }
-                        else
-                        {
-                            node = right;
-                        }
-                    }
-                    else
-                    {
-                        node.Value = value;
-
-                        return;
-                    }
-                }
-            }
-        }
-
-        private void InsertBalance(IntervalNode node, int balance)
-        {
-            while (node != null)
-            {
-                balance = (node.Balance += balance);
-
-                if (balance == 0)
-                {
-                    return;
-                }
-                else if (balance == 2)
-                {
-                    if (node.Left.Balance == 1)
-                    {
-                        this.RotateLeft(node, true);
-                    }
-                    else
-                    {
-                        this.RotateLeftRight(node, true);
-                    }
-
-                    return;
-                }
-                else if (balance == -2)
-                {
-                    if (node.Right.Balance == -1)
-                    {
-                        this.RotateRight(node, true);
-                    }
-                    else
-                    {
-                        this.RotateRightLeft(node, true);
-                    }
-
-                    return;
-                }
-
-                IntervalNode parent = node.Parent;
-
-                if (parent != null)
-                {
-                    balance = parent.Left == node ? 1 : -1;
-                }
-
-                node = parent;
-            }
-        }
-
-        public bool Delete(TKey key)
-        {
-            IntervalNode node = this._root;
-
-            while (node != null)
-            {
-                if (this._cmp_keys.Compare(key, node.Key) < 0)
-                {
-                    node = node.Left;
-                }
-                else if (this._cmp_keys.Compare(key, node.Key) > 0)
-                {
-                    node = node.Right;
-                }
-                else
-                {
-                    IntervalNode left = node.Left;
-                    IntervalNode right = node.Right;
-
-                    if (left == null)
-                    {
-                        if (right == null)
-                        {
-                            if (node == this._root)
-                            {
-                                this._root = null;
-                            }
-                            else
-                            {
-                                IntervalNode parent = node.Parent;
-
-                                if (parent.Left == node)
-                                {
-                                    parent.Left = null;
-                                    this.DeleteBalance(parent, -1);
-                                }
-                                else
-                                {
-                                    parent.Right = null;
-                                    this.DeleteBalance(parent, 1);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Replace(node, right);
-                            this.DeleteBalance(node, 0);
-                        }
-                    }
-                    else if (right == null)
-                    {
-                        Replace(node, left);
-                        this.DeleteBalance(node, 0);
-                    }
-                    else
-                    {
-                        IntervalNode successor = right;
-
-                        if (successor.Left == null)
-                        {
-                            IntervalNode parent = node.Parent;
-
-                            successor.Parent = parent;
-                            successor.Left = left;
-                            successor.Balance = node.Balance;
-
-                            left.Parent = successor;
-
-                            if (node == this._root)
-                            {
-                                this._root = successor;
-                            }
-                            else
-                            {
-                                if (parent.Left == node)
-                                {
-                                    parent.Left = successor;
-                                }
-                                else
-                                {
-                                    parent.Right = successor;
-                                }
-                            }
-
-                            this.DeleteBalance(successor, 1);
-                        }
-                        else
-                        {
-                            while (successor.Left != null)
-                            {
-                                successor = successor.Left;
-                            }
-
-                            IntervalNode parent = node.Parent;
-                            IntervalNode successorParent = successor.Parent;
-                            IntervalNode successorRight = successor.Right;
-
-                            if (successorParent.Left == successor)
-                            {
-                                successorParent.Left = successorRight;
-                            }
-                            else
-                            {
-                                successorParent.Right = successorRight;
-                            }
-
-                            if (successorRight != null)
-                            {
-                                successorRight.Parent = successorParent;
-                            }
-
-                            successor.Parent = parent;
-                            successor.Left = left;
-                            successor.Right = right;
-                            successor.Balance = node.Balance;
-
-                            right.Parent = successor;
-                            left.Parent = successor;
-
-                            if (node == this._root)
-                            {
-                                this._root = successor;
-                            }
-                            else
-                            {
-                                if (parent.Left == node)
-                                {
-                                    parent.Left = successor;
-                                }
-                                else
-                                {
-                                    parent.Right = successor;
-                                }
-                            }
-
-                            this.DeleteBalance(successorParent, -1);
-                        }
-                    }
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private void DeleteBalance(IntervalNode node, int balance)
-        {
-            while (node != null)
-            {
-                balance = (node.Balance += balance);
-
-                if (balance == 2)
-                {
-                    if (node.Left.Balance >= 0)
-                    {
-                        node = this.RotateLeft(node, false);
-
-                        if (node.Balance == -1)
-                        {
-                            this.UpdateMax(node, true);
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        node = this.RotateLeftRight(node, false);
-                    }
-                }
-                else if (balance == -2)
-                {
-                    if (node.Right.Balance <= 0)
-                    {
-                        node = this.RotateRight(node, false);
-
-                        if (node.Balance == 1)
-                        {
-                            this.UpdateMax(node, true);
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        node = this.RotateRightLeft(node, false);
-                    }
-                }
-                else if (balance != 0)
-                {
-                    this.UpdateMax(node, true);
-                    return;
-                }
-                else
-                {
-                    this.UpdateMax(node, false);
-                }
-
-                IntervalNode parent = node.Parent;
-
-                if (parent != null)
-                {
-                    balance = parent.Left == node ? -1 : 1;
-                }
-
-                node = parent;
-            }
-        }
-
-        private IntervalNode RotateRight(IntervalNode node, bool walk)
-        {
-            IntervalNode right = node.Right;
-            IntervalNode rightLeft = right.Left;
-            IntervalNode parent = node.Parent;
-
-            right.Parent = parent;
-            right.Left = node;
-            node.Right = rightLeft;
-            node.Parent = right;
-
-            if (rightLeft != null)
-            {
-                rightLeft.Parent = node;
-            }
-
-            if (node == this._root)
-            {
-                this._root = right;
-            }
-            else if (parent.Right == node)
-            {
-                parent.Right = right;
-            }
-            else
-            {
-                parent.Left = right;
-            }
-
-            right.Balance++;
-            node.Balance = -right.Balance;
-
-            if (walk)
-            {
-                this.UpdateMax(node, true);
-            }
-            else
-            {
-                this.UpdateMax(node, false);
-                this.UpdateMax(right, false);
-            }
-
-            return right;
-        }
-
-        private IntervalNode RotateLeft(IntervalNode node, bool walk)
-        {
-            IntervalNode left = node.Left;
-            IntervalNode leftRight = left.Right;
-            IntervalNode parent = node.Parent;
-
-            left.Parent = parent;
-            left.Right = node;
-            node.Left = leftRight;
-            node.Parent = left;
-
-            if (leftRight != null)
-            {
-                leftRight.Parent = node;
-            }
-
-            if (node == this._root)
-            {
-                this._root = left;
-            }
-            else if (parent.Left == node)
-            {
-                parent.Left = left;
-            }
-            else
-            {
-                parent.Right = left;
-            }
-
-            left.Balance--;
-            node.Balance = -left.Balance;
-
-            if (walk)
-            {
-                this.UpdateMax(node, true);
-            }
-            else
-            {
-                this.UpdateMax(node, false);
-                this.UpdateMax(left, false);
-            }
-
-            return left;
-        }
-
-        private IntervalNode RotateLeftRight(IntervalNode node, bool walk)
-        {
-            IntervalNode left = node.Left;
-            IntervalNode leftRight = left.Right;
-            IntervalNode parent = node.Parent;
-            IntervalNode leftRightRight = leftRight.Right;
-            IntervalNode leftRightLeft = leftRight.Left;
-
-            leftRight.Parent = parent;
-            node.Left = leftRightRight;
-            left.Right = leftRightLeft;
-            leftRight.Left = left;
-            leftRight.Right = node;
-            left.Parent = leftRight;
-            node.Parent = leftRight;
-
-            if (leftRightRight != null)
-            {
-                leftRightRight.Parent = node;
-            }
-
-            if (leftRightLeft != null)
-            {
-                leftRightLeft.Parent = left;
-            }
-
-            if (node == this._root)
-            {
-                this._root = leftRight;
-            }
-            else if (parent.Left == node)
-            {
-                parent.Left = leftRight;
-            }
-            else
-            {
-                parent.Right = leftRight;
-            }
-
-            if (leftRight.Balance == -1)
-            {
-                node.Balance = 0;
-                left.Balance = 1;
-            }
-            else if (leftRight.Balance == 0)
-            {
-                node.Balance = 0;
-                left.Balance = 0;
-            }
-            else
-            {
-                node.Balance = -1;
-                left.Balance = 0;
-            }
-
-            leftRight.Balance = 0;
-
-            if (walk)
-            {
-                this.UpdateMax(left, false);
-                this.UpdateMax(node, true);
-            }
-            else
-            {
-                this.UpdateMax(left, false);
-                this.UpdateMax(node, false);
-                this.UpdateMax(leftRight, false);
-            }
-
-
-            return leftRight;
-        }
-
-        private IntervalNode RotateRightLeft(IntervalNode node, bool walk)
-        {
-            IntervalNode right = node.Right;
-            IntervalNode rightLeft = right.Left;
-            IntervalNode parent = node.Parent;
-            IntervalNode rightLeftLeft = rightLeft.Left;
-            IntervalNode rightLeftRight = rightLeft.Right;
-
-            rightLeft.Parent = parent;
-            node.Right = rightLeftLeft;
-            right.Left = rightLeftRight;
-            rightLeft.Right = right;
-            rightLeft.Left = node;
-            right.Parent = rightLeft;
-            node.Parent = rightLeft;
-
-            if (rightLeftLeft != null)
-            {
-                rightLeftLeft.Parent = node;
-            }
-
-            if (rightLeftRight != null)
-            {
-                rightLeftRight.Parent = right;
-            }
-
-            if (node == this._root)
-            {
-                this._root = rightLeft;
-            }
-            else if (parent.Right == node)
-            {
-                parent.Right = rightLeft;
-            }
-            else
-            {
-                parent.Left = rightLeft;
-            }
-
-            if (rightLeft.Balance == 1)
-            {
-                node.Balance = 0;
-                right.Balance = -1;
-            }
-            else if (rightLeft.Balance == 0)
-            {
-                node.Balance = 0;
-                right.Balance = 0;
-            }
-            else
-            {
-                node.Balance = 1;
-                right.Balance = 0;
-            }
-
-            rightLeft.Balance = 0;
-
-            if (walk)
-            {
-                this.UpdateMax(right, false);
-                this.UpdateMax(node, true);
-            }
-            else
-            {
-                this.UpdateMax(right, false);
-                this.UpdateMax(node, false);
-                this.UpdateMax(rightLeft, false);
-            }
-
-            return rightLeft;
-        }
-
-        private void UpdateMax(IntervalNode node, bool walk)
-        {
-            while (node != null)
-            {
-                node = this.UpdateMax(node) & walk ? node.Parent : null;
-            }
-        }
-
-        private bool UpdateMax(IntervalNode node)
-        {
-            if (node == null)
-                return false;
-
-            var old_max = node.Max;
-
-            if ((node.Left == null) && (node.Right == null))
-                node.Max = node.Key.Max.Value;
-            else if (node.Left == null)
-                node.Max = node.Right.Max;
-            else if (node.Right == null)
-                node.Max = node.Left.Max;
-            else
-                node.Max = this._cmp_edges.Compare(node.Left.Key.Max.Value, node.Right.Key.Max.Value) > 0 ? node.Left.Key.Max.Value : node.Right.Key.Max.Value;
-
-            return (this._cmp_edges.Compare(node.Max, old_max) != 0);
-        }
-
-        private static void Replace(IntervalNode target, IntervalNode source)
-        {
-            IntervalNode left = source.Left;
-            IntervalNode right = source.Right;
-
-            target.Balance = source.Balance;
-            target.Key = source.Key;
-            target.Value = source.Value;
-            target.Left = left;
-            target.Right = right;
-
-            if (left != null)
-            {
-                left.Parent = target;
-            }
-
-            if (right != null)
-            {
-                right.Parent = target;
-            }
-        }
-
-        sealed class IntervalNode
-        {
-            public IntervalNode Parent;
-            public IntervalNode Left;
-            public IntervalNode Right;
-            public TKey Key;
-            public TEdge Max;
-            public TValue Value;
-            public int Balance;
-        }
-
-        sealed class IntervalNodeEnumerator : IEnumerator<TValue>
-        {
-            private IntervalNode _root;
-            private Action _action;
-            private IntervalNode _current;
-            private IntervalNode _right;
-
-            public IntervalNodeEnumerator(IntervalNode root)
-            {
-                this._right = this._root = root;
-
-                this._action = root == null ? Action.End : Action.Right;
-            }
-
-            public bool MoveNext()
-            {
-                switch (this._action)
-                {
-                    case Action.Right:
-                        this._current = this._right;
-
-                        while (this._current.Left != null)
-                        {
-                            this._current = this._current.Left;
-                        }
-
-                        this._right = this._current.Right;
-
-                        this._action = this._right != null ? Action.Right : Action.Parent;
-
-                        return true;
-                    case Action.Parent:
-                        while (this._current.Parent != null)
-                        {
-                            IntervalNode previous = this._current;
-
-                            this._current = this._current.Parent;
-
-                            if (this._current.Left == previous)
-                            {
-                                this._right = this._current.Right;
-
-                                this._action = this._right != null ? Action.Right : Action.Parent;
-
-                                return true;
-                            }
-                        }
-
-                        this._action = Action.End;
-
-                        return false;
-                    default:
-                        return false;
-                }
-            }
-
-            public void Reset()
-            {
-                this._right = this._root;
-
-                this._action = this._root == null ? Action.End : Action.Right;
-            }
-
-            public TValue Current
-            {
-                get
-                {
-                    return this._current.Value;
-                }
-            }
-
-            object IEnumerator.Current
-            {
-                get
-                {
-                    return this.Current;
-                }
-            }
-
-            public void Dispose()
-            {
-
-            }
-
-            enum Action
-            {
-                Parent,
-                Right,
-                End
-            }
-        }
+        #endregion
     }
 }
