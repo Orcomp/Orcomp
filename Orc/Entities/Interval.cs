@@ -286,6 +286,23 @@ namespace Orc.Entities
             var endsAfterOtherStart = this.Max.CompareTo(other.Min) >= 0;
 
             return startsBeforeOtherEnds && endsAfterOtherStart;
+
+            //NOTE: Next implementation resolves a lot of currrent failing tests
+
+            //IInterval<T> left = this;
+            //IInterval<T> right = other;
+
+            //if (left.Min.CompareTo(right.Min) > 0)
+            //{
+            //    left = other;
+            //    right = this;
+            //}
+
+            //if (left.Max.IsInclusive && right.Min.IsInclusive)
+            //{
+            //    return left.Max.CompareTo(right.Min) >= 0;
+            //}
+            //return left.Max.CompareTo(right.Min) > 0;
         }
 
         /// <summary>

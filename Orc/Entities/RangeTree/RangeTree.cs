@@ -119,6 +119,11 @@
         /// </summary>
         public void Add(IInterval<T> item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             this._isInSync = false;
             this._items.Add(item);
         }
@@ -137,6 +142,11 @@
         /// </summary>
         public void Remove(IInterval<T> item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             this._isInSync = false;
             this._items.Remove(item);
         }

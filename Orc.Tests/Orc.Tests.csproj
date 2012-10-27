@@ -63,7 +63,11 @@
     <Compile Include="DateIntervalTest.cs" />
     <Compile Include="DateIntervalTestBase.cs" />
     <Compile Include="DateIntervalExtensions_AccountForEfficienciesTest.cs" />
+    <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase3.cs" />
+    <Compile Include="IntervalContainer\DateIntervalContainerTestBase.Benchmark.cs" />
+    <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase2.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.cs" />
+    <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase1.cs" />
     <Compile Include="IntervalContainer\IntervalTreeTest.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
