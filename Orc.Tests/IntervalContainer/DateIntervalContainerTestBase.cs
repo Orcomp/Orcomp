@@ -394,11 +394,15 @@
         /// <param name="intervals">The intervals to query in.</param>
         /// <param name="queryFor">The interval to query for.</param>
         /// <param name="intervalsIndexesExpectedInResult">The intervals indexes expected in results. Indexes correspond to intervals in 'intervals' parameter</param>
-        private void TestQueryForIntervalWithExpectedIntervalIndexes(List<Interval<DateTime>> intervals, Interval<DateTime> queryFor, params int[] intervalsIndexesExpectedInResult)
+        private void TestQueryForIntervalWithExpectedIntervalIndexes(List<Interval<DateTime>> intervals, Interval<DateTime> queryFor, int[] intervalsIndexesExpectedInResult)
         {
             //Arrange
             //for expercted results based on expected indexes from initial interval list
-            var expectedResult = intervals.Where(i => intervalsIndexesExpectedInResult.Contains(intervals.IndexOf(i)));
+            IEnumerable<Interval<DateTime>> expectedResult = new List<Interval<DateTime>>();
+            if (intervalsIndexesExpectedInResult != null)
+            {
+                expectedResult = intervals.Where(i => intervalsIndexesExpectedInResult.Contains(intervals.IndexOf(i)));
+            }
 
             var intervalContainer = CreateIntervalContainer(intervals);
 
