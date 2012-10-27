@@ -205,6 +205,11 @@
         /// <param name="interval">interval to add</param>
         public void Add(Interval<T> interval)
         {
+            if (interval == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             var node = new IntervalNode<T>(interval);
             if (this.Root == Sentinel)
             {
@@ -346,6 +351,11 @@
         /// <param name="?"></param>
         public void Remove(Interval<T> interval)
         {
+            if (interval == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             this.RemoveNode(this.FindInterval(this.Root, interval));
         }
 
@@ -355,7 +365,7 @@
         }
 
         private void RemoveNode(IntervalNode<T> node)
-        {
+        {            
             if (node == Sentinel)
             {
                 return;
