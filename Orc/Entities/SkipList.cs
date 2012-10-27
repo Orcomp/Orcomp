@@ -1,7 +1,7 @@
 ﻿/// http://www.informit.com/guides/content.aspx?g=dotnet&seqNum=878
 
 
-// TODO: Need tests for this. Make it implement IDictionary<T>
+// TODO: Need tests for this. Make it implement SortedList<T>
 
 namespace Orc.Entities
 {

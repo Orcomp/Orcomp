@@ -22,7 +22,7 @@ namespace Orc.Entities.IntervalSkipList
     using System.Collections.Generic;
     using System.Linq;
 
-    using Orc.Entities.SkipList;
+    using Orc.Entities.IntervalSkipList.SkipList;
 
     public class IntervalNode<T> where T : IComparable<T>
     {

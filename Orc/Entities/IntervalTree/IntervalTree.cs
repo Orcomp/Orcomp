@@ -63,6 +63,11 @@
 
         public IEnumerable<IInterval<T>> Query(IInterval<T> interval)
         {
+            if(interval == null)
+            {
+                return Enumerable.Empty<IInterval<T>>();
+            }
+
             var result = new List<Interval<T>>();
             this.SearchSubtree(this.Root, interval as Interval<T>, result);
             return result.Cast<IInterval<T>>();
@@ -260,6 +265,7 @@
             }
             else
             {
+                // NOTE: Does not allow for duplicates.
                 return;
             }
 

@@ -66,12 +66,7 @@
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.cs" />
     <Compile Include="IntervalContainer\IntervalTreeTest.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
-    <Compile Include="IntervalSkipList\IntervalSkipListBanchmarkTest.cs" />
-    <Compile Include="IntervalSkipList\IntervalNodeTest.cs" />
-    <Compile Include="IntervalSkipList\IntervalSkipListTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RangeTree\RangeTreeTest.cs" />
-    <Compile Include="RangeTree\RangeTreeTest2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

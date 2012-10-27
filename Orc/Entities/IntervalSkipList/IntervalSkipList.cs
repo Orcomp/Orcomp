@@ -14,7 +14,9 @@
  * Ported to C# By Babak Gh
  */
 
-
+// TODO: This implementation is broken and needs some TLC
+// TODO: Needs to implement IIntervalContainer
+// TODO: Needs to be unite tested against IntervalContainterTest
 
 namespace Orc.Entities.IntervalSkipList
 {
