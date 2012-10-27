@@ -41,6 +41,7 @@
             Debug.WriteLine(string.Format("Now: {0}", now));
         }
 
+        #region Query        
         [TestCase(4, 4, 3)]
         [TestCase(4, 5, 4)]
         [TestCase(-1, 10, 7)]
@@ -52,7 +53,6 @@
         {
             //Arrange
             var intervals = new List<Interval<DateTime>>();
-
             intervals.Add(ToDateTimeInterval(now, -300, -200));
             intervals.Add(ToDateTimeInterval(now, -3, -2));
             intervals.Add(ToDateTimeInterval(now, 1, 2));
@@ -118,7 +118,6 @@
             #endregion
 
             var intervals = new List<Interval<DateTime>>();
-
             intervals.Add(ToDateTimeInterval(now, 0, 14));
             intervals.Add(ToDateTimeInterval(now, 4, 10));
             intervals.Add(ToDateTimeInterval(now, 21, 35));
@@ -230,6 +229,26 @@
             //Assert
             Assert.AreEqual(0, intersections.Count());
         }
+
+        #region Test case #1
+
+        public void QueryForIntervalWithExpectedIntervalsIndexes(List<Interval<DateTime>> intervals, Interval<DateTime> queryFor, params int[] intervalIndexesExpectedinResult)
+        {
+            //Arrange
+            var expectedResult = intervals.Where(i => intervalIndexesExpectedinResult.Contains(intervals.IndexOf(i)));
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(queryFor);
+
+            //Assert
+            CollectionAssert.AreEquivalent(expectedResult, intersections);
+        }
+
+        #endregion        
+
+        #endregion
 
         #region Benchmark
 
