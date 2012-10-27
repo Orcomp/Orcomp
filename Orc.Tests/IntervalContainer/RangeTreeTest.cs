@@ -4,15 +4,15 @@
 
     using NUnit.Framework;
 
-    using Orc.Entities.IntervalTreeVvondra;
+    using Orc.Entities.RangeTree;
     using Orc.Interface;
 
     [TestFixture]
-    public class IntervalTreeVVondraTest : DateIntervalContainerTestBase
+    public class RangeTree : DateIntervalContainerTestBase
     {
         protected override IIntervalContainer<DateTime> CreateIntervalContainer()
         {
-            return new IntervalTree<DateTime>();
+            return new RangeTree<DateTime>();
         }
     }
 }

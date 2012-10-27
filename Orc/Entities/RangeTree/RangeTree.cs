@@ -13,7 +13,7 @@
     /// goes "out of sync" and is rebuild when it's queried next.
     /// </summary>
     /// <typeparam name="T">The type of the range.</typeparam>
-    public class RangeTree<T> where T : IComparable<T>
+    public class RangeTree<T> : IIntervalContainer<T> where T : struct, IComparable<T>
     {
         private RangeTreeNode<T> _root;
         private List<IInterval<T>> _items;
@@ -91,6 +91,11 @@
         /// </summary>
         public IEnumerable<IInterval<T>> Query(IInterval<T> range)
         {
+            if(range == null)
+            {
+                return Enumerable.Empty<IInterval<T>>();
+            }
+
             if (!this._isInSync && this._autoRebuild)
                 this.Rebuild();
 

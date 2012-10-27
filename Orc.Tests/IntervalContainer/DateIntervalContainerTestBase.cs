@@ -246,15 +246,15 @@
 			var intervalContainer = this.CreateIntervalContainer(intervals);
 
             stopwatch.Stop();
-            timeEllapsedReport.AppendLine("Time taken to build data structure: " + stopwatch.ElapsedMilliseconds);
+            timeEllapsedReport.AppendLine(string.Format("Time taken to build data structure: {0} ms", this.stopwatch.ElapsedMilliseconds));
 
-            var result1 = TestSearchForInterval(now, now.AddMinutes(numberOfIntervals), intervalContainer, "first");
+            var result1 = TestSearchForInterval(now, now.AddMinutes(numberOfIntervals), intervalContainer, "Mid Point to Max Spanning Interval");
 
-            var result2 = TestSearchForInterval(now.AddMinutes(-1), now.AddMinutes(1), intervalContainer, "second");
+            var result2 = TestSearchForInterval(now.AddMinutes(-1), now.AddMinutes(1), intervalContainer, "Mid Point +/- 1");
 
-            var result3 = TestSearchForInterval(now.AddMinutes(-numberOfIntervals), now.AddMinutes(numberOfIntervals), intervalContainer, "third");
+            var result3 = TestSearchForInterval(now.AddMinutes(-numberOfIntervals), now.AddMinutes(numberOfIntervals), intervalContainer, "Min to Max Spanning Interval");
 
-            var result4 = TestSearchForInterval(now.AddMinutes(numberOfIntervals - 1), now.AddMinutes(numberOfIntervals), intervalContainer, "fourth");            
+            var result4 = TestSearchForInterval(now.AddMinutes(numberOfIntervals - 1), now.AddMinutes(numberOfIntervals), intervalContainer, "Max Spanning interval -1 to Max Spanning Interval");            
 
             Assert.AreEqual(numberOfIntervals, result1.Count());
 
@@ -286,7 +286,7 @@
             var foundIntervals = searchIn.Query(new Interval<DateTime>(startEdge, endEdge));
 
             stopwatch.Stop();
-            timeEllapsedReport.AppendLine(string.Format("Time taken for {0}: {1}", testName, stopwatch.ElapsedMilliseconds));
+            timeEllapsedReport.AppendLine(string.Format("Time taken for {0}: {1} ms", testName, stopwatch.ElapsedMilliseconds));
             return foundIntervals;
         }
 
