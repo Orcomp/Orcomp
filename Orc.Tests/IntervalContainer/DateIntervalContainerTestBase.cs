@@ -41,7 +41,248 @@
             Debug.WriteLine(string.Format("Now: {0}", now));
         }
 
-        #region Query        
+        #region Query
+
+        [Test]
+        public void Query_ForNullInterval_ShouldReturnEmptyList()
+        {
+            //Arrange
+            var intervals = new List<Interval<DateTime>>();
+            intervals.Add(new Interval<DateTime>(now, inOneHour));
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(null);
+
+            //Assert
+            Assert.AreEqual(0, intersections.Count());
+        }
+
+        [Test]
+        public void Query_InclusiveIntervalBetweenTwoInclusiveIntervals_ShouldReturnBothIntervals()
+        {
+            //Arrange
+            // Container: [----]    [----]
+            //      Test:      [----]     
+
+            var intervals = new List<Interval<DateTime>>();
+            intervals.Add(new Interval<DateTime>(now, inOneHour));
+            intervals.Add(new Interval<DateTime>(inTwoHours, inThreeHours));
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours));
+
+            //Assert
+            CollectionAssert.AreEquivalent(intervals, intersections.ToList());
+        }
+
+        [Test]
+        public void Query_NotInclusiveIntervalBetweenTwoInclusiveIntervals_ShouldReturnEmptyList()
+        {
+            //Arrange            
+            // Container: [----]    [----]
+            //      Test:      ]----[     
+
+            var intervals = new List<Interval<DateTime>>();
+            intervals.Add(new Interval<DateTime>(now, inOneHour));
+            intervals.Add(new Interval<DateTime>(inTwoHours, inThreeHours));
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours, false, false));
+
+            //Assert
+            Assert.AreEqual(0, intersections.Count());
+        }
+
+        [Test]
+        public void Query_InclusiveIntervalBetweenTwoNotInclusiveIntervals_ShouldReturnEmptyList()
+        {
+            //Arrange
+            // Container: [----[    ]----]
+            //      Test:      [----]     
+
+            var intervals = new List<Interval<DateTime>>();
+            intervals.Add(new Interval<DateTime>(now, inOneHour, isMaxInclusive: false));
+            intervals.Add(new Interval<DateTime>(inTwoHours, inThreeHours, isMinInclusive: false));
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours));
+
+            //Assert
+            Assert.AreEqual(0, intersections.Count());
+        }
+
+        [Test]
+        public void Query_NotInclusiveIntervalBetweenTwoNotInclusiveIntervals_ShouldReturnEmptyList()
+        {
+            //Arrange
+            // Container: [----[    ]----]
+            //      Test:      ]----[     
+
+            var intervals = new List<Interval<DateTime>>();
+            intervals.Add(new Interval<DateTime>(now, inOneHour, isMaxInclusive: false));
+            intervals.Add(new Interval<DateTime>(inTwoHours, inThreeHours, isMinInclusive: false));
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours));
+
+            //Assert
+            Assert.AreEqual(0, intersections.Count());
+        }
+
+        [Test]
+        public void Query_InclusiveIntervalInListWhichContainsOneTheSameInterval_ShouldReturnThisInterval()
+        {
+            //Arrange
+            var interval = new Interval<DateTime>(now, inOneHour);
+            var intervals = new List<Interval<DateTime>> { interval };
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(interval).ToList();
+
+            //Assert
+            Assert.AreEqual(1, intersections.Count);
+            Assert.AreEqual(interval, intersections[0]);
+        }
+
+        [Test]
+        public void Query_InclusiveIntervalInListWhichContainsOneTheSameButExclusiveInterval_ShouldReturnThisInterval()
+        {
+            //Arrange
+            var interval = new Interval<DateTime>(now, inOneHour, false, false);
+            var intervals = new List<Interval<DateTime>> { interval };
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(new Interval<DateTime>(now, inOneHour, true, true)).ToList();
+
+            //Assert
+            Assert.AreEqual(1, intersections.Count);
+            Assert.AreEqual(interval, intersections[0]);
+        }
+
+        [Test]
+        public void Query_IntervalWhichIsCompletellyInListOfOneLargeInterval_ShouldReturnLargeInterval()
+        {
+            //Arrange
+            // Container: [--------------]
+            //      Test:      [----]     
+
+            //Arrange
+            var interval = new Interval<DateTime>(now, inThreeHours);
+            var intervals = new List<Interval<DateTime>> { interval };
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours)).ToList();
+
+            //Assert
+            Assert.AreEqual(1, intersections.Count);
+            Assert.AreEqual(interval, intersections[0]);
+        }
+
+        [Test]
+        public void Query_IntervalWhichCompletellyCoversListOfOneSmallInterval_ShouldReturnSmallInterval()
+        {
+            //Arrange
+            // Container:      [----]
+            //      Test: [--------------] 
+
+            //Arrange
+            var interval = new Interval<DateTime>(inOneHour, inTwoHours);
+            var intervals = new List<Interval<DateTime>> { interval };
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(new Interval<DateTime>(now, inThreeHours)).ToList();
+
+            //Assert
+            Assert.AreEqual(1, intersections.Count);
+            Assert.AreEqual(interval, intersections[0]);
+        }
+
+        #region General Test Case #1
+        //Not only count but values of queries intervals are verified here
+
+        // ********************************************************
+        // | X axis:                                              |
+        // | 0    5    10   15   20   25   30   35   40   45   50 |
+        // | |    |    |    |    |    |    |    |    |    |    |  |
+        // | Container intervals:                                 |
+        // | [0-------------]    [1---]         [2--------]       |
+        // |   [3------][4-----------------]                      |
+        // |      [5-------------------------------------------]  |
+        // | Test intervals:                                      |
+        // |        [---------------]                             |
+        // |                               [---------]            |
+        // | X axis:                                              |
+        // | |    |    |    |    |    |    |    |    |    |    |  |
+        // | 0    5    10   15   20   25   30   35   40   45   50 |
+        // ********************************************************
+        //Numbers at interval start points to their indexes in intervals list
+
+        private List<Interval<DateTime>> CreateIntervalsForTestCase1()
+        {
+            var intervals = new List<Interval<DateTime>>();
+            intervals.Add(ToDateTimeInterval(now, 0, 15));  //0
+            intervals.Add(ToDateTimeInterval(now, 20, 25)); //1
+            intervals.Add(ToDateTimeInterval(now, 35, 45)); //2
+            intervals.Add(ToDateTimeInterval(now, 3, 10));  //3
+            intervals.Add(ToDateTimeInterval(now, 11, 30)); //4
+            intervals.Add(ToDateTimeInterval(now, 5, 50));  //5
+
+            return intervals;
+        }
+
+        [Test]
+        public void Query_InclusiveInterval_7_23_ForTestCase1_ShouldReturn_5_CorrectIntervals()
+        {
+            var intervals = CreateIntervalsForTestCase1();
+            var intervalToQuery = ToDateTimeInterval(now, 7, 23);
+            TestQueryForIntervalWithExpectedIntervalIndexes(intervals, intervalToQuery, 0, 1, 3, 4, 5);
+        }
+
+        [Test]
+        public void Query_ExclusiveInterval_7_23_ForTestCase1_ShouldReturn_5_CorrectIntervals()
+        {
+            var intervals = CreateIntervalsForTestCase1();
+            var intervalToQuery = ToDateTimeInterval(now, 7, 23, includeEdges: false);
+            TestQueryForIntervalWithExpectedIntervalIndexes(intervals, intervalToQuery, 0, 1, 3, 4, 5);
+        }
+
+        [Test]
+        public void Query_InclusiveInterval_30_40_ForTestCase1_ShouldReturn_3_CorrectIntervals()
+        {
+            var intervals = CreateIntervalsForTestCase1();
+            var intervalToQuery = ToDateTimeInterval(now, 30, 40);
+            TestQueryForIntervalWithExpectedIntervalIndexes(intervals, intervalToQuery, 2, 4, 5);
+        }
+
+        [Test]
+        public void Query_ExclusiveInterval_30_40_ForTestCase1_ShouldReturn_2_CorrectIntervals()
+        {
+            var intervals = CreateIntervalsForTestCase1();
+            var intervalToQuery = ToDateTimeInterval(now, 30, 40, includeEdges: false);
+            TestQueryForIntervalWithExpectedIntervalIndexes(intervals, intervalToQuery, 2, 5);
+        }
+
+        #endregion
+
+        #region General Count Intervals Tests
         [TestCase(4, 4, 3)]
         [TestCase(4, 5, 4)]
         [TestCase(-1, 10, 7)]
@@ -95,7 +336,7 @@
             // | X axis:                                                   |
             // | 0    5    10   15   20   25   30   35   40   45   50    56|
             // | |    |    |    |    |    |    |    |    |    |    |     | |
-            // | Tree intervals:                                           |
+            // | Container intervals:                                      |
             // | [-------------]      [-------------]      [-------------] |
             // |     [-----]              [-----]              [-----]     |
             // | Test intervals:                                           |
@@ -133,120 +374,7 @@
             //Assert
             Assert.AreEqual(expectedOverlapsCount, overlaps.Count());
         }
-
-        [Test]
-        public void Query_ForNullInterval_ShouldReturnEmptyList()
-        {
-            //Arrange
-            var intervals = new List<Interval<DateTime>>();
-            intervals.Add(new Interval<DateTime>(now, inOneHour));
-
-            var intervalContainer = CreateIntervalContainer(intervals);
-
-            //Act
-            var intersections = intervalContainer.Query(null);
-
-            //Assert
-            Assert.AreEqual(0, intersections.Count());
-        }
-
-        [Test]
-        public void Query_InclusiveIntervalBetweenTwoInclusiveIntervals_ShouldReturnBothIntervals()
-        {
-            //Arrange
-            // Tree: [----]    [----]
-            // Test:      [----]     
-
-            var intervals = new List<Interval<DateTime>>();
-            intervals.Add(new Interval<DateTime>(now, inOneHour));
-            intervals.Add(new Interval<DateTime>(inTwoHours, inThreeHours));
-
-            var intervalContainer = CreateIntervalContainer(intervals);
-
-            //Act
-            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours));
-
-            //Assert
-            CollectionAssert.AreEquivalent(intervals, intersections.ToList());
-        }
-
-        [Test]
-        public void Query_NotInclusiveIntervalBetweenTwoInclusiveIntervals_ShouldReturnEmptyList()
-        {
-            //Arrange            
-            // Tree: [----]    [----]
-            // Test:      ]----[     
-
-            var intervals = new List<Interval<DateTime>>();
-            intervals.Add(new Interval<DateTime>(now, inOneHour));
-            intervals.Add(new Interval<DateTime>(inTwoHours, inThreeHours));
-
-            var intervalContainer = CreateIntervalContainer(intervals);
-
-            //Act
-            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours, false, false));
-
-            //Assert
-            Assert.AreEqual(0, intersections.Count());
-        }
-
-        [Test]
-        public void Query_InclusiveIntervalBetweenTwoNotInclusiveIntervals_ShouldReturnEmptyList()
-        {
-            //Arrange
-            // Tree: [----[    ]----]
-            // Test:      [----]     
-
-            var intervals = new List<Interval<DateTime>>();
-            intervals.Add(new Interval<DateTime>(now, inOneHour, isMaxInclusive: false));
-            intervals.Add(new Interval<DateTime>(inTwoHours, inThreeHours, isMinInclusive: false));
-
-            var intervalContainer = CreateIntervalContainer(intervals);
-
-            //Act
-            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours));
-
-            //Assert
-            Assert.AreEqual(0, intersections.Count());
-        }
-
-        [Test]
-        public void Query_NotInclusiveIntervalBetweenTwoNotInclusiveIntervals_ShouldReturnEmptyList()
-        {
-            //Arrange
-            // Tree: [----[    ]----]
-            // Test:      ]----[     
-
-            var intervals = new List<Interval<DateTime>>();
-            intervals.Add(new Interval<DateTime>(now, inOneHour, isMaxInclusive: false));
-            intervals.Add(new Interval<DateTime>(inTwoHours, inThreeHours, isMinInclusive: false));
-
-            var intervalContainer = CreateIntervalContainer(intervals);
-
-            //Act
-            var intersections = intervalContainer.Query(new Interval<DateTime>(inOneHour, inTwoHours));
-
-            //Assert
-            Assert.AreEqual(0, intersections.Count());
-        }
-
-        #region Test case #1
-
-        public void QueryForIntervalWithExpectedIntervalsIndexes(List<Interval<DateTime>> intervals, Interval<DateTime> queryFor, params int[] intervalIndexesExpectedinResult)
-        {
-            //Arrange
-            var expectedResult = intervals.Where(i => intervalIndexesExpectedinResult.Contains(intervals.IndexOf(i)));
-
-            var intervalContainer = CreateIntervalContainer(intervals);
-
-            //Act
-            var intersections = intervalContainer.Query(queryFor);
-
-            //Assert
-            CollectionAssert.AreEquivalent(expectedResult, intersections);
-        }
-
-        #endregion        
+        #endregion
 
         #endregion
 
@@ -322,9 +450,29 @@
         }
 		#endregion
 
-        private static Interval<DateTime> ToDateTimeInterval(DateTime startTime, int leftEdgeMinutes, int rightEdgeMinutes)
+        /// <summary>
+        /// Tests the query for interval with expected interval indexes.
+        /// </summary>
+        /// <param name="intervals">The intervals to query in.</param>
+        /// <param name="queryFor">The interval to query for.</param>
+        /// <param name="intervalsIndexesExpectedInResult">The intervals indexes expected in results. Indexes correspond to intervals in 'intervals' parameter</param>
+        private void TestQueryForIntervalWithExpectedIntervalIndexes(List<Interval<DateTime>> intervals, Interval<DateTime> queryFor, params int[] intervalsIndexesExpectedInResult)
         {
-            return new Interval<DateTime>(startTime.AddMinutes(leftEdgeMinutes), startTime.AddMinutes(rightEdgeMinutes));
+            //Arrange
+            var expectedResult = intervals.Where(i => intervalsIndexesExpectedInResult.Contains(intervals.IndexOf(i)));
+
+            var intervalContainer = CreateIntervalContainer(intervals);
+
+            //Act
+            var intersections = intervalContainer.Query(queryFor);
+
+            //Assert            
+            CollectionAssert.AreEquivalent(expectedResult, intersections);
+        }
+
+        private static Interval<DateTime> ToDateTimeInterval(DateTime startTime, int leftEdgeMinutes, int rightEdgeMinutes, bool includeEdges = true)
+        {
+            return new Interval<DateTime>(startTime.AddMinutes(leftEdgeMinutes), startTime.AddMinutes(rightEdgeMinutes), includeEdges, includeEdges);
         }
 	}
 }
