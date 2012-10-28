@@ -68,6 +68,7 @@
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase2.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase1.cs" />
+    <Compile Include="IntervalContainer\IntervalTreeAVLTest.cs" />
     <Compile Include="IntervalContainer\IntervalTreeTest.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
