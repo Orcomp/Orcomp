@@ -79,7 +79,7 @@ General information about interval trees: http://en.wikipedia.org/wiki/Interval_
 http://code.google.com/p/intervaltree/source/browse/IntervalTree.cs
 https://github.com/vvondra/Interval-Tree (Already in Orc)
 https://github.com/mbuchetics/RangeTree/blob/master/RangeTreeExamples/Program.cs (Already in Orc)
-http://intervaltree.codeplex.com/
+http://intervaltree.codeplex.com/ (Ports the same JAVA implementation than RangeTree)
 
 
 ## Algorithmns to be implemented in C#
