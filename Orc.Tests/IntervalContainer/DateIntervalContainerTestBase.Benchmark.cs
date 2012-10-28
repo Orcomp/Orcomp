@@ -62,7 +62,7 @@
             stopwatch.Reset();
             stopwatch.Start();
 
-            var foundIntervals = searchIn.Query(new Interval<DateTime>(startEdge, endEdge));
+            var foundIntervals = searchIn.Query(new Interval<DateTime>(startEdge, endEdge)).ToList();
 
             stopwatch.Stop();
             timeEllapsedReport.AppendLine(string.Format("Time taken for {0}: {1} ms", testName, stopwatch.ElapsedMilliseconds));
