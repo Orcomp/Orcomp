@@ -274,6 +274,9 @@ namespace Orc.Entities
         /// </param>
         /// <returns>
         /// Returns a boolean on whether two intervals overlap each other.
+        /// |--------|
+        ///          |-------|
+        /// Returns true if end points are inclusive. Otherwise false.
         /// </returns>
         public bool Overlaps(IInterval<T> other)
         {
@@ -287,22 +290,20 @@ namespace Orc.Entities
 
             return startsBeforeOtherEnds && endsAfterOtherStart;
 
-            //NOTE: Next implementation resolves a lot of currrent failing tests
+            // One way to think about this is 
+            //               |------|
+            //   |-------|              |-----|
+            // if the start of the first interval starts after the end of the other interval
+            // OR
+            // if the end of the first interval  ends before the start of the other interval
+            // THEN there can be No overlaps
+            // i.e.
+            // var startsAfterOtherEnds = this.Min.CompareTo(other.Max) > 0;
+            // var endsBeforeOtherStarts = this.Max.CompareTo(other.Min) < 0;
 
-            //IInterval<T> left = this;
-            //IInterval<T> right = other;
+            // return !(startsAfterOtherEnds || endsBeforeOtherStarts);
 
-            //if (left.Min.CompareTo(right.Min) > 0)
-            //{
-            //    left = other;
-            //    right = this;
-            //}
-
-            //if (left.Max.IsInclusive && right.Min.IsInclusive)
-            //{
-            //    return left.Max.CompareTo(right.Min) >= 0;
-            //}
-            //return left.Max.CompareTo(right.Min) > 0;
+            // The implementation above returns exactly the same result.
         }
 
         /// <summary>

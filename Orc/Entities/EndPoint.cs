@@ -206,6 +206,14 @@ namespace Orc.Entities
                         result = this.IsInclusive ? +1 : -1;
                     }
                 }
+                else if(!this.isInclusive)
+                {
+                    // Both end points are exclusive
+                    if (this.IsMinEndPoint == !other.IsMinEndPoint)
+                    {
+                        result = this.IsMinEndPoint ? +1 : -1;
+                    }
+                }
             }
 
             return result;
