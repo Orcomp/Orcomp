@@ -120,7 +120,7 @@
             }
 
             // Interval start is greater than largest endpoint in this subtree
-            if (node.Right != Sentinel && i.Min.CompareTo(node.MaxEnd) <= 0)
+            if (node.Right != Sentinel /* && i.Min.CompareTo(node.MaxEnd) <= 0 */)
             {
                 this.SearchSubtree(node.Right, i, result);
             }
