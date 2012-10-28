@@ -52,5 +52,23 @@
         {
             return new Interval<DateTime>(startTime.AddMinutes(leftEdgeMinutes), startTime.AddMinutes(rightEdgeMinutes), includeEdges, includeEdges);
         }
+
+        [Test]
+        public void SimplestWorkingTest()
+        {
+            //Arrange
+            var intervals = new List<Interval<int>>();
+            intervals.Add(new Interval<int>(1, 2));
+            intervals.Add(new Interval<int>(1, 3));
+
+            var intervalContainer = new Entities.IntervalTree.IntervalTree<int>();
+            intervals.ForEach(intervalContainer.Add);
+
+            //Act
+            var intersections = intervalContainer.Query(new Interval<int>(0,1));
+
+            //Assert
+            Assert.AreEqual(2, intersections.Count());
+        }
     }
 }
