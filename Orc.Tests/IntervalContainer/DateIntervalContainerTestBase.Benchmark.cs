@@ -14,7 +14,7 @@
     {
         [Test]
         [Category("Benchmark")]
-        public void Query_Benchmark_Test()
+        public void Query_BenchmarkIncludedOneInAnotherIntervals_Test()
         {
             const int numberOfIntervals = 10000;
 
@@ -27,13 +27,13 @@
             stopwatch.Stop();
             timeEllapsedReport.AppendLine(string.Format("Time taken to build data structure: {0} ms", this.stopwatch.ElapsedMilliseconds));
 
-            var result1 = TestSearchForInterval(now, now.AddMinutes(numberOfIntervals), intervalContainer, "Mid Point to Max Spanning Interval");
+            var result1 = this.TestQueryForInterval(ToDateTimeInterval(now, 0, numberOfIntervals), intervalContainer, "Mid Point to Max Spanning Interval");
 
-            var result2 = TestSearchForInterval(now.AddMinutes(-1), now.AddMinutes(1), intervalContainer, "Mid Point +/- 1");
+            var result2 = this.TestQueryForInterval(ToDateTimeInterval(now, -1, 1), intervalContainer, "Mid Point +/- 1");
 
-            var result3 = TestSearchForInterval(now.AddMinutes(-numberOfIntervals), now.AddMinutes(numberOfIntervals), intervalContainer, "Min to Max Spanning Interval");
+            var result3 = this.TestQueryForInterval(ToDateTimeInterval(now, -numberOfIntervals, numberOfIntervals), intervalContainer, "Min to Max Spanning Interval");
 
-            var result4 = TestSearchForInterval(now.AddMinutes(numberOfIntervals - 1), now.AddMinutes(numberOfIntervals), intervalContainer, "Max Spanning interval -1 to Max Spanning Interval");
+            var result4 = this.TestQueryForInterval(ToDateTimeInterval(now, numberOfIntervals - 1, numberOfIntervals), intervalContainer, "Max Spanning interval -1 to Max Spanning Interval");
 
             Assert.AreEqual(numberOfIntervals, result1.Count());
 
@@ -57,12 +57,12 @@
             return intervalContainer;
         }
 
-        private IEnumerable<IInterval<DateTime>> TestSearchForInterval(DateTime startEdge, DateTime endEdge, IIntervalContainer<DateTime> searchIn, string testName)
+        private IEnumerable<IInterval<DateTime>> TestQueryForInterval(Interval<DateTime> intervalToQuery, IIntervalContainer<DateTime> queryIn, string testName)
         {
             stopwatch.Reset();
             stopwatch.Start();
 
-            var foundIntervals = searchIn.Query(new Interval<DateTime>(startEdge, endEdge)).ToList();
+            var foundIntervals = queryIn.Query(intervalToQuery).ToList();
 
             stopwatch.Stop();
             timeEllapsedReport.AppendLine(string.Format("Time taken for {0}: {1} ms", testName, stopwatch.ElapsedMilliseconds));
