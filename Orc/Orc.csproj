@@ -42,8 +42,8 @@
     <Compile Include="Entities\EndPointMinFirstComparer.cs" />
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
     <Compile Include="Entities\IntervalTreeAVL\IntervalTree.cs" />
-    <Compile Include="Entities\IntervalTree\IntervalNode.cs" />
-    <Compile Include="Entities\IntervalTree\IntervalTree.cs" />
+    <Compile Include="Entities\IntervalTreeRB\IntervalNode.cs" />
+    <Compile Include="Entities\IntervalTreeRB\IntervalTree.cs" />
     <Compile Include="Entities\RangeTree\RangeTree.cs" />
     <Compile Include="Entities\RangeTree\RangeTreeNode.cs" />
     <Compile Include="Entities\SkipList.cs" />
@@ -77,7 +77,7 @@
     <None Include="Entities\RangeTree\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Entities\IntervalTree\README.md" />
+    <None Include="Entities\IntervalTreeRB\README.md" />
     <Content Include="Entities\RangeTree\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

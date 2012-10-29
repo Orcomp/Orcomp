@@ -61,7 +61,7 @@
             intervals.Add(new Interval<int>(1, 2));
             intervals.Add(new Interval<int>(1, 3));
 
-            var intervalContainer = new Entities.IntervalTree.IntervalTree<int>();
+            var intervalContainer = new Entities.IntervalTreeRB.IntervalTree<int>();
             intervals.ForEach(intervalContainer.Add);
 
             //Act

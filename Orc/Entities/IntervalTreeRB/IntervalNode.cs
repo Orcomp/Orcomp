@@ -1,4 +1,4 @@
-﻿namespace Orc.Entities.IntervalTree
+﻿namespace Orc.Entities.IntervalTreeRB
 {
     using System;
 

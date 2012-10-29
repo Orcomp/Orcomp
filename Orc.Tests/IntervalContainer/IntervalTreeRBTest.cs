@@ -7,11 +7,11 @@
     using NUnit.Framework;
 
     using Orc.Entities;
-    using Orc.Entities.IntervalTree;
+    using Orc.Entities.IntervalTreeRB;
     using Orc.Interface;
 
     [TestFixture]
-    public class IntervalTreeTest : DateIntervalContainerTestBase
+    public class IntervalTreeRBTest : DateIntervalContainerTestBase
     {
         protected override IIntervalContainer<DateTime> CreateIntervalContainer()
         {
