@@ -47,16 +47,6 @@
             Debug.WriteLine(timeElapsedSummary);
         }
 
-        private IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<Interval<DateTime>> intervals)
-        {
-            IIntervalContainer<DateTime> intervalContainer = CreateIntervalContainer();
-            foreach (var interval in intervals)
-            {
-                intervalContainer.Add(interval);
-            }
-            return intervalContainer;
-        }
-
         private IEnumerable<IInterval<DateTime>> TestQueryForInterval(Interval<DateTime> intervalToQuery, IIntervalContainer<DateTime> queryIn, string testName)
         {
             stopwatch.Reset();
