@@ -95,6 +95,11 @@ namespace Orc.Entities.IntervalTreeAVL
         /// <param name="arg">The arg.</param>
         public bool Add(Interval<T> interval)
         {
+            if (interval == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             bool wasAdded = false;
             bool wasSuccessful = false;
 
@@ -149,8 +154,13 @@ namespace Orc.Entities.IntervalTreeAVL
             Add(interval as Interval<T>);
         }
 
-        public void Remove(IInterval<T> interval )
+        public void Remove(IInterval<T> interval)
         {
+            if(interval == null)
+            {
+                throw new ArgumentNullException();
+            }
+
             Delete(interval as Interval<T>);
         }
 
@@ -160,7 +170,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// </summary>
         /// <param name="toFind">To find.</param>
         /// <param name="list">The list.</param>
-        public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>,  IInterval<T>>> list)
+        public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>, IInterval<T>>> list)
         {
             if (this.Root != null)
             {
@@ -174,14 +184,19 @@ namespace Orc.Entities.IntervalTreeAVL
         /// </summary>
         /// <param name="toFind">To find.</param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> GetIntervalsOverlappingWith(Interval<T> toFind)
+        public IEnumerable<KeyValuePair<Interval<T>, IInterval<T>>> GetIntervalsOverlappingWith(Interval<T> toFind)
         {
             return (this.Root != null) ? this.Root.GetIntervalsOverlappingWith(toFind) : null;
         }
 
-        public IEnumerable<IInterval<T>> Query(IInterval<T> interval )
+        public IEnumerable<IInterval<T>> Query(IInterval<T> interval)
         {
-            if(interval == null)
+            if (interval == null)
+            {
+                return Enumerable.Empty<IInterval<T>>();
+            }
+
+            if(Count == 0)
             {
                 return Enumerable.Empty<IInterval<T>>();
             }
@@ -206,7 +221,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// </summary>
         /// <param name="arg">The arg.</param>
         /// <returns></returns>
-        public List<KeyValuePair<Interval<T>,  IInterval<T>>> GetIntervalsStartingAt(T arg)
+        public List<KeyValuePair<Interval<T>, IInterval<T>>> GetIntervalsStartingAt(T arg)
         {
             return IntervalNode.GetIntervalsStartingAt(this.Root, arg);
         }
@@ -244,7 +259,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// Gets the collection of values (ascending order)
         /// Those intervals starting at the same time/value are sorted further based on their End value (i.e. returned in ascending order of their End values)
         /// </summary>
-        public IEnumerable< IInterval<T>> Values
+        public IEnumerable<IInterval<T>> Values
         {
             get
             {
@@ -271,7 +286,7 @@ namespace Orc.Entities.IntervalTreeAVL
         /// Gets the interval value pairs.
         /// Those intervals starting at the same time/value are sorted further based on their End value (i.e. returned in ascending order of their End values)
         /// </summary>
-        public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> IntervalValuePairs
+        public IEnumerable<KeyValuePair<Interval<T>, IInterval<T>>> IntervalValuePairs
         {
             get
             {
@@ -288,7 +303,7 @@ namespace Orc.Entities.IntervalTreeAVL
                         yield return rangeNode;
                     }
 
-                    yield return new KeyValuePair<Interval<T>,  IInterval<T>>(p.Interval, p.Value);
+                    yield return new KeyValuePair<Interval<T>, IInterval<T>>(p.Interval, p.Value);
                     p = p.Successor();
                 }
             }
@@ -369,7 +384,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     }
                     else if (subtree.Range != null)
                     {
-                        int kthIndex = subtree.Range.BinarySearch(new KeyValuePair<T,  IInterval<T>>(data.Max.Value, default( IInterval<T>)), this.keyvalueComparer);
+                        int kthIndex = subtree.Range.BinarySearch(new KeyValuePair<T, IInterval<T>>(data.Max.Value, default(IInterval<T>)), this.keyvalueComparer);
                         if (kthIndex >= 0)
                         {
                             value = subtree.Range[kthIndex].Value;
@@ -378,7 +393,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     }
                 }
             }
-            value = default( IInterval<T>);
+            value = default(IInterval<T>);
             return false;
         }
 
@@ -627,14 +642,14 @@ namespace Orc.Entities.IntervalTreeAVL
             /// The range intervals are sorted in the descending order of their End interval values
             /// </summary>
             /// <returns></returns>
-            public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> GetRange()
+            public IEnumerable<KeyValuePair<Interval<T>, IInterval<T>>> GetRange()
             {
                 if (this.Range != null)
                 {
                     foreach (var value in this.Range)
                     {
                         var kth = new Interval<T>(this.Interval.Min.Value, value.Key);
-                        yield return new KeyValuePair<Interval<T>,  IInterval<T>>(kth, value.Value);
+                        yield return new KeyValuePair<Interval<T>, IInterval<T>>(kth, value.Value);
                     }
                 }
                 else
@@ -648,7 +663,7 @@ namespace Orc.Entities.IntervalTreeAVL
             /// The range intervals are sorted in the ascending order of their End interval values
             /// </summary>
             /// <returns></returns>
-            public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> GetRangeReverse()
+            public IEnumerable<KeyValuePair<Interval<T>, IInterval<T>>> GetRangeReverse()
             {
                 if (this.Range != null && this.Range.Count > 0)
                 {
@@ -656,7 +671,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     for (int k = rangeCount - 1; k >= 0; k--)
                     {
                         var kth = new Interval<T>(this.Interval.Min.Value, this.Range[k].Key);
-                        yield return new KeyValuePair<Interval<T>,  IInterval<T>>(kth, this.Range[k].Value);
+                        yield return new KeyValuePair<Interval<T>, IInterval<T>>(kth, this.Range[k].Value);
                     }
                 }
                 else
@@ -883,7 +898,7 @@ namespace Orc.Entities.IntervalTreeAVL
             /// <param name="subtree">The subtree.</param>
             /// <param name="data">The data.</param>
             /// <returns></returns>
-            public static List<KeyValuePair<Interval<T>,  IInterval<T>>> GetIntervalsStartingAt(IntervalNode subtree, T start)
+            public static List<KeyValuePair<Interval<T>, IInterval<T>>> GetIntervalsStartingAt(IntervalNode subtree, T start)
             {
                 if (subtree != null)
                 {
@@ -898,7 +913,7 @@ namespace Orc.Entities.IntervalTreeAVL
                     }
                     else
                     {
-                        var result = new List<KeyValuePair<Interval<T>,  IInterval<T>>>();
+                        var result = new List<KeyValuePair<Interval<T>, IInterval<T>>>();
                         if (subtree.Range != null)
                         {
                             foreach (var kvp in subtree.GetRangeReverse())
@@ -906,7 +921,7 @@ namespace Orc.Entities.IntervalTreeAVL
                                 result.Add(kvp);
                             }
                         }
-                        result.Add(new KeyValuePair<Interval<T>,  IInterval<T>>(subtree.Interval, subtree.Value));
+                        result.Add(new KeyValuePair<Interval<T>, IInterval<T>>(subtree.Interval, subtree.Value));
                         return result;
                     }
                 }
@@ -922,7 +937,7 @@ namespace Orc.Entities.IntervalTreeAVL
             /// </summary>
             /// <param name="toFind">To find.</param>
             /// <param name="list">The list.</param>
-            public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>,  IInterval<T>>> list)
+            public void GetIntervalsOverlappingWith(Interval<T> toFind, ref List<KeyValuePair<Interval<T>, IInterval<T>>> list)
             {
                 if (toFind.Max.Value.CompareTo(this.Interval.Min.Value) <= 0)
                 {
@@ -952,10 +967,10 @@ namespace Orc.Entities.IntervalTreeAVL
                     {
                         if (list == null)
                         {
-                            list = new List<KeyValuePair<Interval<T>,  IInterval<T>>>();
+                            list = new List<KeyValuePair<Interval<T>, IInterval<T>>>();
                         }
 
-                        list.Add(new KeyValuePair<Interval<T>,  IInterval<T>>(this.Interval, this.Value));
+                        list.Add(new KeyValuePair<Interval<T>, IInterval<T>>(this.Interval, this.Value));
 
                         ////the max value is stored in the node, if the node doesn't overlap then neither are the nodes in its range 
                         if (this.Range != null && this.Range.Count > 0)
@@ -967,7 +982,7 @@ namespace Orc.Entities.IntervalTreeAVL
                                 {
                                     if (list == null)
                                     {
-                                        list = new List<KeyValuePair<Interval<T>,  IInterval<T>>>();
+                                        list = new List<KeyValuePair<Interval<T>, IInterval<T>>>();
                                     }
                                     list.Add(kvp);
                                 }
@@ -993,7 +1008,7 @@ namespace Orc.Entities.IntervalTreeAVL
             /// </summary>
             /// <param name="toFind">To find.</param>
             /// <returns></returns>
-            public IEnumerable<KeyValuePair<Interval<T>,  IInterval<T>>> GetIntervalsOverlappingWith(Interval<T> toFind)
+            public IEnumerable<KeyValuePair<Interval<T>, IInterval<T>>> GetIntervalsOverlappingWith(Interval<T> toFind)
             {
                 if (toFind.Max.Value.CompareTo(this.Interval.Min.Value) <= 0)
                 {
@@ -1027,31 +1042,31 @@ namespace Orc.Entities.IntervalTreeAVL
                         }
                     }
 
-                    if (this.Interval.Overlaps(toFind))
-                    {
-                        yield return new KeyValuePair<Interval<T>, IInterval<T>>(this.Interval, this.Value);
-
-                        if (this.Range != null && this.Range.Count > 0)
-                        {
-                            foreach (var kvp in this.GetRange())
-                            {
-                                if (kvp.Key.Overlaps(toFind))
-                                {
-                                    yield return kvp;
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
                     if (this.Right != null)
                     {
                         foreach (var value in this.Right.GetIntervalsOverlappingWith(toFind))
                         {
                             yield return value;
+                        }
+                    }
+                }
+
+                if (this.Interval.Overlaps(toFind))
+                {
+                    yield return new KeyValuePair<Interval<T>, IInterval<T>>(this.Interval, this.Value);
+
+                    if (this.Range != null && this.Range.Count > 0)
+                    {
+                        foreach (var kvp in this.GetRange())
+                        {
+                            if (kvp.Key.Overlaps(toFind))
+                            {
+                                yield return kvp;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
                     }
                 }
