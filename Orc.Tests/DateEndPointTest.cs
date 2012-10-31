@@ -191,21 +191,33 @@ namespace Orc.Tests
         }
 
         [Test]
+        [TestCase(true, true, EndPointType.Min, EndPointType.Min, -1)]
         [TestCase(true, false, EndPointType.Min, EndPointType.Min, -1)]
- 
+        [TestCase(false, true, EndPointType.Min, EndPointType.Min, -1)]
+        [TestCase(false, false, EndPointType.Min, EndPointType.Min, -1)]
+
+        [TestCase(true, true, EndPointType.Min, EndPointType.Max, -1)]
+        [TestCase(true, false, EndPointType.Min, EndPointType.Max, -1)]
+        [TestCase(false, true, EndPointType.Min, EndPointType.Max, -1)]
+        [TestCase(false, false, EndPointType.Min, EndPointType.Max, -1)]
+
+        [TestCase(true, true, EndPointType.Max, EndPointType.Min, -1)]
         [TestCase(true, false, EndPointType.Max, EndPointType.Min, -1)]
         [TestCase(false, true, EndPointType.Max, EndPointType.Min, -1)]
         [TestCase(false, false, EndPointType.Max, EndPointType.Min, -1)]
 
+        [TestCase(true, true, EndPointType.Max, EndPointType.Max, -1)]
+        [TestCase(true, false, EndPointType.Max, EndPointType.Max, -1)]
         [TestCase(false, true, EndPointType.Max, EndPointType.Max, -1)]
+        [TestCase(false, false, EndPointType.Max, EndPointType.Max, -1)]
         public void CompareTo_DifferentSmallerAndLargerEndpointValues_Returns_Minus_1(
             bool includeFirstIntervalEdge, bool includeSecondIntervalEdge,
             EndPointType firstEndPointType, EndPointType secondEndPointType,
             int expectedResult)
         {
             //Arrange
-            var endPoint1 = new EndPoint<DateTime>(new Interval<DateTime>(now, now, firstEndPointType != EndPointType.Min || includeFirstIntervalEdge, firstEndPointType != EndPointType.Max || includeFirstIntervalEdge), firstEndPointType);
-            var endPoint2 = new EndPoint<DateTime>(new Interval<DateTime>(now, now, secondEndPointType != EndPointType.Min || includeSecondIntervalEdge, secondEndPointType != EndPointType.Max || includeSecondIntervalEdge), secondEndPointType);
+            var endPoint1 = new EndPoint<DateTime>(new Interval<DateTime>(now, inOneHour, firstEndPointType != EndPointType.Min || includeFirstIntervalEdge, firstEndPointType != EndPointType.Max || includeFirstIntervalEdge), firstEndPointType);
+            var endPoint2 = new EndPoint<DateTime>(new Interval<DateTime>(inTwoHours, inThreeHours, secondEndPointType != EndPointType.Min || includeSecondIntervalEdge, secondEndPointType != EndPointType.Max || includeSecondIntervalEdge), secondEndPointType);
 
 
             //Act
