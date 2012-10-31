@@ -119,25 +119,58 @@ namespace Orc.Tests
             Assert.AreEqual(1, compareResult);
         }
 
+        // (,) - means exclusive enpoints. [,] - means inclusive endpoints
         [Test]
+        //endPoint1: [
+        //endPoint2: [
         [TestCase(true, true, EndPointType.Min, EndPointType.Min, 0)]
+        //endPoint1: [
+        //endPoint2: (
         [TestCase(true, false, EndPointType.Min, EndPointType.Min, -1)]
+        //endPoint1: (
+        //endPoint2: [
         [TestCase(false, true, EndPointType.Min, EndPointType.Min, 1)]
+        //endPoint1: (
+        //endPoint2: (
         [TestCase(false, false, EndPointType.Min, EndPointType.Min, 0)]
 
+        //endPoint1: [
+        //endPoint2: ]
         [TestCase(true, true, EndPointType.Min, EndPointType.Max, 0)]
+        //endPoint1: [
+        //endPoint2: )
         [TestCase(true, false, EndPointType.Min, EndPointType.Max, 1)]
+        //endPoint1: (
+        //endPoint2: ]
         [TestCase(false, true, EndPointType.Min, EndPointType.Max, 1)]
+        //endPoint1: (
+        //endPoint2: )
         [TestCase(false, false, EndPointType.Min, EndPointType.Max, 1)]
 
+        //endPoint1: ]
+        //endPoint2: [
         [TestCase(true, true, EndPointType.Max, EndPointType.Min, 0)]
+        //endPoint1: ]
+        //endPoint2: (
         [TestCase(true, false, EndPointType.Max, EndPointType.Min, -1)]
+        //endPoint1: )
+        //endPoint2: [
         [TestCase(false, true, EndPointType.Max, EndPointType.Min, -1)]
+        //endPoint1: )
+        //endPoint2: (
         [TestCase(false, false, EndPointType.Max, EndPointType.Min, -1)]
 
+        //endPoint1: ]
+        //endPoint2: ]
         [TestCase(true, true, EndPointType.Max, EndPointType.Max, 0)]
+        //endPoint1: ]
+        //endPoint2: )
         [TestCase(true, false, EndPointType.Max, EndPointType.Max, 1)]
+        //endPoint1: )
+        //endPoint2: ]
         [TestCase(false, true, EndPointType.Max, EndPointType.Max, -1)]
+        //endPoint1: ]
+        //endPoint2: ]
         [TestCase(false, false, EndPointType.Max, EndPointType.Max, 0)]
         public void CompareTo_TheSameEndpointValue_ReturnsCorrectExpectedResult(
             bool includeFirstIntervalEdge, bool includeSecondIntervalEdge,
@@ -145,8 +178,9 @@ namespace Orc.Tests
             int expectedResult)
         {
             //Arrange
-            var endPoint1 = new DateEndPoint(new DateInterval(now, inOneHour, includeFirstIntervalEdge), firstEndPointType);
-            var endPoint2 = new DateEndPoint(new DateInterval(now, inTwoHours, includeSecondIntervalEdge), secondEndPointType);
+            // use 0 length intervals here for easier testing
+            var endPoint1 = new DateEndPoint(new DateInterval(now, now, includeFirstIntervalEdge), firstEndPointType);
+            var endPoint2 = new DateEndPoint(new DateInterval(now, now, includeSecondIntervalEdge), secondEndPointType);
 
             //Act
             int compareResult = endPoint1.CompareTo(endPoint2);
