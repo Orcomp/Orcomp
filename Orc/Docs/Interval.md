@@ -76,9 +76,9 @@ General information about interval trees: http://en.wikipedia.org/wiki/Interval_
 
 ## Interval Tree Implementations in C#
 
-http://code.google.com/p/intervaltree/source/browse/IntervalTree.cs (Already in Orc - a bug needs to be fixed)
-https://github.com/vvondra/Interval-Tree (Already in Orc - a bug needs to be fixed)
-https://github.com/mbuchetics/RangeTree/blob/master/RangeTreeExamples/Program.cs (Already in Orc)
+http://code.google.com/p/intervaltree/source/browse/IntervalTree.cs (Already in Orc - Uses AVL tree - Duplicates allowed)
+https://github.com/vvondra/Interval-Tree (Already in Orc - USes Red Black tree - No duplicates allowed)
+https://github.com/mbuchetics/RangeTree/blob/master/RangeTreeExamples/Program.cs (Already in Orc - Duplicates allowed)
 http://intervaltree.codeplex.com/ (Ports the same JAVA implementation than RangeTree)
 
 

@@ -14,6 +14,7 @@ namespace Orc.Tests
     using NUnit.Framework;
 
     using Orc.Entities;
+    using Orc.Interface;
 
     [TestFixture]
     public class DateEndPointTest
@@ -179,8 +180,8 @@ namespace Orc.Tests
         {
             //Arrange
             // use 0 length intervals here for easier testing
-            var endPoint1 = new DateEndPoint(new DateInterval(now, now, includeFirstIntervalEdge), firstEndPointType);
-            var endPoint2 = new DateEndPoint(new DateInterval(now, now, includeSecondIntervalEdge), secondEndPointType);
+            var endPoint1 = new EndPoint<DateTime>(new Interval<DateTime>(now, now, firstEndPointType != EndPointType.Min || includeFirstIntervalEdge, firstEndPointType != EndPointType.Max || includeFirstIntervalEdge), firstEndPointType);
+            var endPoint2 = new EndPoint<DateTime>(new Interval<DateTime>(now, now, secondEndPointType != EndPointType.Min || includeSecondIntervalEdge, secondEndPointType != EndPointType.Max || includeSecondIntervalEdge), secondEndPointType);
 
             //Act
             int compareResult = endPoint1.CompareTo(endPoint2);
@@ -190,33 +191,22 @@ namespace Orc.Tests
         }
 
         [Test]
-        [TestCase(true, true, EndPointType.Min, EndPointType.Min, -1)]
         [TestCase(true, false, EndPointType.Min, EndPointType.Min, -1)]
-        [TestCase(false, true, EndPointType.Min, EndPointType.Min, -1)]
-        [TestCase(false, false, EndPointType.Min, EndPointType.Min, -1)]
-
-        [TestCase(true, true, EndPointType.Min, EndPointType.Max, -1)]
-        [TestCase(true, false, EndPointType.Min, EndPointType.Max, -1)]
-        [TestCase(false, true, EndPointType.Min, EndPointType.Max, -1)]
-        [TestCase(false, false, EndPointType.Min, EndPointType.Max, -1)]
-
-        [TestCase(true, true, EndPointType.Max, EndPointType.Min, -1)]
+ 
         [TestCase(true, false, EndPointType.Max, EndPointType.Min, -1)]
         [TestCase(false, true, EndPointType.Max, EndPointType.Min, -1)]
         [TestCase(false, false, EndPointType.Max, EndPointType.Min, -1)]
 
-        [TestCase(true, true, EndPointType.Max, EndPointType.Max, -1)]
-        [TestCase(true, false, EndPointType.Max, EndPointType.Max, -1)]
         [TestCase(false, true, EndPointType.Max, EndPointType.Max, -1)]
-        [TestCase(false, false, EndPointType.Max, EndPointType.Max, -1)]
         public void CompareTo_DifferentSmallerAndLargerEndpointValues_Returns_Minus_1(
             bool includeFirstIntervalEdge, bool includeSecondIntervalEdge,
             EndPointType firstEndPointType, EndPointType secondEndPointType,
             int expectedResult)
         {
             //Arrange
-            var endPoint1 = new DateEndPoint(new DateInterval(now, inOneHour), firstEndPointType);
-            var endPoint2 = new DateEndPoint(new DateInterval(inTwoHours, inThreeHours), secondEndPointType);
+            var endPoint1 = new EndPoint<DateTime>(new Interval<DateTime>(now, now, firstEndPointType != EndPointType.Min || includeFirstIntervalEdge, firstEndPointType != EndPointType.Max || includeFirstIntervalEdge), firstEndPointType);
+            var endPoint2 = new EndPoint<DateTime>(new Interval<DateTime>(now, now, secondEndPointType != EndPointType.Min || includeSecondIntervalEdge, secondEndPointType != EndPointType.Max || includeSecondIntervalEdge), secondEndPointType);
+
 
             //Act
             int compareResult = endPoint1.CompareTo(endPoint2);
