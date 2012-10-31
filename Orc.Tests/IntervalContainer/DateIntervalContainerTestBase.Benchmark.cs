@@ -121,7 +121,7 @@
 
             timeEllapsedReport.AppendLine();
             timeEllapsedReport.AppendLine(string.Format("Time taken for removing {0} intervals: {1} ms", halfNumberOfIntervals, stopwatch.ElapsedMilliseconds));
-            timeEllapsedReport.AppendLine(string.Format("Memory used for removing {0} intervals: {1:00} MB", halfNumberOfIntervals, BytesToMegabytes(bytesUsed)));
+            timeEllapsedReport.AppendLine(string.Format("Memory used for removing {0} intervals: {1:0.00} MB", halfNumberOfIntervals, BytesToMegabytes(bytesUsed)));
             timeEllapsedReport.AppendLine();
         }
 
@@ -144,7 +144,7 @@
 
             timeEllapsedReport.AppendLine();
             timeEllapsedReport.AppendLine(string.Format("Time taken for adding {0} intervals: {1} ms", halfNumberOfIntervals, stopwatch.ElapsedMilliseconds));
-            timeEllapsedReport.AppendLine(string.Format("Memory used for adding {0} intervals: {1:00} MB", halfNumberOfIntervals, BytesToMegabytes(bytesUsed)));
+            timeEllapsedReport.AppendLine(string.Format("Memory used for adding {0} intervals: {1:0.00} MB", halfNumberOfIntervals, BytesToMegabytes(bytesUsed)));
             timeEllapsedReport.AppendLine();
         }        
 
@@ -161,7 +161,7 @@
 
             timeEllapsedReport.AppendLine();
             timeEllapsedReport.AppendLine(string.Format("Time taken to build data structure: {0} ms", stopwatch.ElapsedMilliseconds));
-            timeEllapsedReport.AppendLine(string.Format("Memory used to build data structure: {0:00} MB", BytesToMegabytes(bytesUsed)));
+            timeEllapsedReport.AppendLine(string.Format("Memory used to build data structure: {0:0.00} MB", BytesToMegabytes(bytesUsed)));
             timeEllapsedReport.AppendLine();
 
             return intervalContainer;
