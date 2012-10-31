@@ -415,9 +415,24 @@
             CollectionAssert.AreEquivalent(expectedResult, intersections);
         }
 
+        private IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<Interval<DateTime>> intervals)
+        {
+            IIntervalContainer<DateTime> intervalContainer = CreateIntervalContainer();
+            foreach (var interval in intervals)
+            {
+                intervalContainer.Add(interval);
+            }
+            return intervalContainer;
+        }
+
         private static Interval<DateTime> ToDateTimeInterval(DateTime startTime, int leftEdgeMinutes, int rightEdgeMinutes, bool includeEdges = true)
         {
-            return new Interval<DateTime>(startTime.AddMinutes(leftEdgeMinutes), startTime.AddMinutes(rightEdgeMinutes), includeEdges, includeEdges);
+            return ToDateTimeInterval(startTime, leftEdgeMinutes, rightEdgeMinutes, includeEdges, includeEdges);
+        }
+
+        private static Interval<DateTime> ToDateTimeInterval(DateTime startTime, int leftEdgeMinutes, int rightEdgeMinutes, bool includeLefEdge, bool includeRigthEdge)
+        {
+            return new Interval<DateTime>(startTime.AddMinutes(leftEdgeMinutes), startTime.AddMinutes(rightEdgeMinutes), includeLefEdge, includeRigthEdge);
         }
 	}
 }
