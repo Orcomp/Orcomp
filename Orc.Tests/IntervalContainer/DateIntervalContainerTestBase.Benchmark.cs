@@ -105,6 +105,7 @@
         private void RemoveHalfOfIntervals(IIntervalContainer<DateTime> intervalContainer, List<Interval<DateTime>> intervals)
         {
             stopwatch.Reset();
+            long initalMemory = GC.GetTotalMemory(true);
             stopwatch.Start();
 
             //remove second part of intervals
@@ -115,15 +116,19 @@
             }
 
             stopwatch.Stop();
+            long endRemoveIntervalsMemory = GC.GetTotalMemory(true);
+            long bytesUsed = endRemoveIntervalsMemory - initalMemory;
 
             timeEllapsedReport.AppendLine();
             timeEllapsedReport.AppendLine(string.Format("Time taken for removing {0} intervals: {1} ms", halfNumberOfIntervals, stopwatch.ElapsedMilliseconds));
+            timeEllapsedReport.AppendLine(string.Format("Memory used for removing {0} intervals: {1:0.00} MB", halfNumberOfIntervals, BytesToMegabytes(bytesUsed)));
             timeEllapsedReport.AppendLine();
         }
 
         private void AddRemovedIntervals(IIntervalContainer<DateTime> intervalContainer, List<Interval<DateTime>> intervals)
         {
             stopwatch.Reset();
+            long initalMemory = GC.GetTotalMemory(true);
             stopwatch.Start();
 
             //add second part of intervals
@@ -134,26 +139,29 @@
             }
 
             stopwatch.Stop();
+            long endAddIntervalsMemory = GC.GetTotalMemory(true);
+            long bytesUsed = endAddIntervalsMemory - initalMemory;
 
             timeEllapsedReport.AppendLine();
             timeEllapsedReport.AppendLine(string.Format("Time taken for adding {0} intervals: {1} ms", halfNumberOfIntervals, stopwatch.ElapsedMilliseconds));
+            timeEllapsedReport.AppendLine(string.Format("Memory used for adding {0} intervals: {1:0.00} MB", halfNumberOfIntervals, BytesToMegabytes(bytesUsed)));
             timeEllapsedReport.AppendLine();
         }        
 
         private IIntervalContainer<DateTime> RunIntervalContainerBuild(IEnumerable<Interval<DateTime>> intervals)
         {
-            long memStart = GC.GetTotalMemory(true);
+            long initalMemory = GC.GetTotalMemory(true);
             stopwatch = Stopwatch.StartNew();            
 
             var intervalContainer = CreateIntervalContainer(intervals);
                         
             stopwatch.Stop();
-            long memEnd = GC.GetTotalMemory(true);
-            long bytesUsed = memEnd - memStart;
+            long endCreateMemory = GC.GetTotalMemory(true);
+            long bytesUsed = endCreateMemory - initalMemory;
 
             timeEllapsedReport.AppendLine();
             timeEllapsedReport.AppendLine(string.Format("Time taken to build data structure: {0} ms", stopwatch.ElapsedMilliseconds));
-            timeEllapsedReport.AppendLine(string.Format("Memory used to build data structure: {0} bytes", bytesUsed));
+            timeEllapsedReport.AppendLine(string.Format("Memory used to build data structure: {0:0.00} MB", BytesToMegabytes(bytesUsed)));
             timeEllapsedReport.AppendLine();
 
             return intervalContainer;
@@ -222,6 +230,11 @@
             stopwatch.Stop();
             timeEllapsedReport.AppendLine(string.Format("Time taken for {0}: {1} ms", testName, stopwatch.ElapsedMilliseconds));
             return foundIntervals;
-        }        
+        }
+
+        private static double BytesToMegabytes(long bytes)
+        {
+            return (bytes / 1024f) / 1024f;
+        }
     }
 }
