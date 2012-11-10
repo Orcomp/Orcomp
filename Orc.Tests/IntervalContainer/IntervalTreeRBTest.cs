@@ -10,7 +10,7 @@
     using Orc.Entities.IntervalTreeRB;
     using Orc.Interface;
 
-    [TestFixture]
+    [TestFixture, Ignore]
     public class IntervalTreeRBTest : DateIntervalContainerTestBase
     {
         protected override IIntervalContainer<DateTime> CreateIntervalContainer()

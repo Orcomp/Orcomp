@@ -16,7 +16,7 @@
         [Category("Benchmark")]
         public void Query_BenchmarkIncludedOneIntoAnotherIntervals_Test()
         {
-            const int numberOfIntervals = 10000;
+            const int numberOfIntervals = 100000;
 
             var intervals = GetDateRangesAllDescendingEndTimes(now, numberOfIntervals).ToList();
 
@@ -58,7 +58,7 @@
         [Category("Benchmark")]
         public void Query_BenchmarkSequentialIntervals_Test()
         {
-            const int numberOfIntervals = 1000000;
+            const int numberOfIntervals = 100000;
             const int intervalLength = 5;
             const int spaceLength = 1;
             const int intervalAndSpaceLength = intervalLength + spaceLength;
@@ -78,7 +78,7 @@
         [Timeout(60 * 1000)]
         public void Add_Remove_BenchmarkSequentialIntervals_Test()
         {
-            const int numberOfIntervals = 1000000;
+            const int numberOfIntervals = 100000;
             const int intervalLength = 5;
             const int spaceLength = 1;
             const int intervalAndSpaceLength = intervalLength + spaceLength;            
