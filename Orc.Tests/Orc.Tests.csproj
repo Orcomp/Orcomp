@@ -60,10 +60,11 @@
     <Compile Include="DateIntervalCollectionExtensionsTest.cs" />
     <Compile Include="DateIntervalCollectionTestBase.cs" />
     <Compile Include="DateIntervalCollectionTest.cs" />
+    <Compile Include="DateIntervalExtensionsAccountForEfficiencies\AccountForEfficiencesNoOverlap.cs" />
     <Compile Include="DateIntervalExtensionsTest.cs" />
     <Compile Include="DateIntervalTest.cs" />
     <Compile Include="DateIntervalTestBase.cs" />
-    <Compile Include="DateIntervalExtensions_AccountForEfficienciesTest.cs" />
+    <Compile Include="DateIntervalExtensionsAccountForEfficiencies\AccountForEfficienciesTest.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase4.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase3.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.Benchmark.cs" />
