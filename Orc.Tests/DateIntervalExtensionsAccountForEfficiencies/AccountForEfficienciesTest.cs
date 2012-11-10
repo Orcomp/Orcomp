@@ -1,4 +1,4 @@
-﻿namespace Orc.Tests
+﻿namespace Orc.Tests.DateIntervalExtensionsAccountForEfficiencies
 {
     using System;
     using System.Collections.Generic;
@@ -8,8 +8,8 @@
     using Orc.Entities;
     using Orc.Extensions;
 
-    [TestFixture, Ignore]
-    public class DateIntervalExtensions_AccountForEfficienciesTest
+    [TestFixture]
+    public class AccountForEfficienciesTest
     {
         #region Simple Fixed Start
 
@@ -30,7 +30,7 @@
         }
 
         [Test]
-        public void AccountForEfficiencies_OneZeroEfficiencyCalendarStartAndEndWithDateInterval_ReturnsDateIntervalOfSameDurationWhichStartsWhenTheEfficiencyFinishes()
+        public void AccountForEfficiencies_OneZeroEfficiencyCalendarStartWithDateInterval_ReturnsCorrectDateInterval()
         {
             // +-----------+ 
             // |-----0-----| 
@@ -58,7 +58,7 @@
         }
 
         [Test]
-        public void AccountForEfficiencies_OneZeroEfficiencyCalendarStartAndEndsBeforeDateIntervalStarts_ReturnsSameDateInterval()
+        public void AccountForEfficiencies_OneZeroEfficiencyCalendarEndsWhenDateIntervalStarts_ReturnsSameDateInterval()
         {
             //             +-----------+ 
             // |-----0-----| 
@@ -85,7 +85,7 @@
         }
 
         [Test]
-        public void AccountForEfficiencies_OneZeroEfficiencyCalendarStartAndEndsAfterDateIntervalEnds_ReturnsSameDateInterval()
+        public void AccountForEfficiencies_OneZeroEfficiencyCalendarStartWhenDateIntervalEnds_ReturnsSameDateInterval()
         {
             // +-----------+ 
             //             |-----0-----| 
@@ -212,7 +212,7 @@
         }
 
         [Test]
-        public void AccountForEfficiencies_FixedEnd_OneZeroEfficiencyCalendarStartAndEndWithDateInterval_ReturnsDateIntervalOfSameDurationWhichStartsWhenTheEfficiencyFinishes()
+        public void AccountForEfficiencies_FixedEnd_OneZeroEfficiencyCalendarStartAndEndWithDateInterval_ReturnsCorrectResult()
         {
             // +-----------+ 
             // |-----0-----| 
@@ -240,7 +240,7 @@
         }
 
         [Test]
-        public void AccountForEfficiencies_FixedEnd_OneZeroEfficiencyCalendarStartAndEndsBeforeDateIntervalStarts_ReturnsSameDateInterval()
+        public void AccountForEfficiencies_FixedEnd_OneZeroEfficiencyCalendarEndsWhenDateIntervalStarts_ReturnsSameDateInterval()
         {
             //             +-----------+ 
             // |-----0-----| 
@@ -267,7 +267,7 @@
         }
 
         [Test]
-        public void AccountForEfficiencies_FixedEnd_OneZeroEfficiencyCalendarStartAndEndsAfterDateIntervalEnds_ReturnsSameDateInterval()
+        public void AccountForEfficiencies_FixedEnd_OneZeroEfficiencyCalendarStartsWhenDateIntervalEnds_ReturnsSameDateInterval()
         {
             // +-----------+ 
             //             |-----0-----| 
