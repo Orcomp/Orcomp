@@ -36,7 +36,7 @@ namespace Orx.Tests
             // |--------|                              Duration: 30 mins at 20%
             //
             // Result
-            // |----------------|                      Duration: 75 mins
+            // |----------------|                      Duration: 84 mins
 
 
             // Arrange
@@ -51,7 +51,7 @@ namespace Orx.Tests
             var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(75));  // Duration: 75 mins
+            var result = new DateInterval(start, start.AddMinutes(84)); 
             Assert.AreEqual(result, newDateInterval);
         }
 
@@ -96,10 +96,10 @@ namespace Orx.Tests
             //
             // Result 
             // 20 mins at 40%  => 8 mins at 100%
-            // 10 mins at 150% => 1.5 mins at 100%
-            // 60 - 8 - 1.5 = 50.5
+            // 10 mins at 150% => 15 mins at 100%
+            // 60 - 8 - 15 = 37
             //
-            // Total = 20 + 10 + 50.5 = 80.5 mins
+            // Total = 20 + 10 + 37 = 67 mins
 
 
             // Arrange
@@ -107,8 +107,8 @@ namespace Orx.Tests
 
             var dateInterval = new DateInterval(start, end);
 
-            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(30), start.AddMinutes(50)), 40); 
-            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(50), start.AddMinutes(60)), 150); 
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(40), start.AddMinutes(60)), 40);
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(30), start.AddMinutes(40)), 150);
             dateIntervalEfficiencies.Add(efficiency1);
             dateIntervalEfficiencies.Add(efficiency2);
 
@@ -116,7 +116,7 @@ namespace Orx.Tests
             var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(80.5));
+            var result = new DateInterval(start, start.AddMinutes(67));
             Assert.AreEqual(result, newDateInterval);
         }
 

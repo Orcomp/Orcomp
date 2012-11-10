@@ -30,7 +30,7 @@
         }
 
         [Test]
-        public void AccountForEfficiencies_OneZeroEfficiencyCalendarStartWithDateInterval_ReturnsCorrectDateInterval()
+        public void AccountForEfficiencies_OneZeroEfficiencyCalendarStartsAndEndsWithDateInterval_ReturnsCorrectDateInterval()
         {
             // +-----------+ 
             // |-----0-----| 
