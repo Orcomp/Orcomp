@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Orc.Entities.Interval&lt;T&gt;">
+    <Position X="8" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEBAAABAQAAQEkAACAAAAAAAAAIAAAAABAAAQAiA=</HashCode>
+      <FileName>Entities\Interval.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Orc.Entities.DateInterval">
+    <Position X="8" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\DateInterval.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Orc.Entities.EndPoint&lt;T&gt;">
+    <Position X="10.75" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAACAAAQEgIAAAICAAQCAAIEAAAAwAAAAAiA=</HashCode>
+      <FileName>Entities\EndPoint.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EndPointType" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Orc.Entities.DateEndPoint" Collapsed="true">
+    <Position X="10.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\DateEndPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Orc.Interface.IDateInterval">
+    <Position X="1.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IDateInterval.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Orc.Interface.IInterval&lt;T&gt;">
+    <Position X="1.25" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAABAAAAAAEAACAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Interface\IInterval.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Max" />
+      <Property Name="Min" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Orc.Interface.IEndPoint&lt;T&gt;">
+    <Position X="4.5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAIAAAAAAAACAAAEAAAAgAAAAAAA=</HashCode>
+      <FileName>Interface\IEndPoint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Orc.Entities.EndPointType">
+    <Position X="14.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\EndPointType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

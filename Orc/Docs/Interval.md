@@ -65,6 +65,9 @@ The main purpose of using intervals is to query their relationships (most noteab
 EndPoints can be inclusive or exclusive of their value.
 EndPoints can also represent +/- infinity by specidying double.PositiveInfinity or double.NegativeInfinity
 
+# Interval<DateTime> and DateInterval
+
+The difference between an Interval<DateTime> and a DateInterval is that the former has both end point inclusive, whereas DateInterval has the min end point inclusive and the max end point exclusive.
 
 # Links
 
