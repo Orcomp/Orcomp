@@ -42,10 +42,10 @@ namespace Orc.Entities
 
             if (result == 0)
             {
-                if (x.IsMinEndPoint == !y.IsMinEndPoint && x.IsInclusive && y.IsInclusive)
+                if (x.IsMin == !y.IsMin && x.IsInclusive && y.IsInclusive)
                 {
                     // Min endPoint always comes AFTER Max endPoint
-                    result = x.IsMinEndPoint ? +1 : -1;
+                    result = x.IsMin ? +1 : -1;
                 }
             }
 

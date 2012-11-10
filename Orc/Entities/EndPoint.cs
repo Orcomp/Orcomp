@@ -42,7 +42,7 @@ namespace Orc.Entities
         /// <summary>
         /// Backing field for IsMineEndPoint property
         /// </summary>
-        private bool isMinEndPoint;
+        private readonly bool isMin;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EndPoint{T}"/> class. 
@@ -61,7 +61,7 @@ namespace Orc.Entities
 
             this.Value = endPointType == EndPointType.Min ? interval.Min.Value : interval.Max.Value;
 
-            this.isMinEndPoint = endPointType == EndPointType.Min;
+            this.isMin = endPointType == EndPointType.Min;
 
             this.isInclusive = endPointType == EndPointType.Min ? interval.Min.IsInclusive : interval.Max.IsInclusive;
         }
@@ -88,7 +88,7 @@ namespace Orc.Entities
 
             this.Value = value;
 
-            this.isMinEndPoint = endPointType == EndPointType.Min;
+            this.isMin = endPointType == EndPointType.Min;
 
             this.isInclusive = isInclusive;
         }
@@ -141,11 +141,11 @@ namespace Orc.Entities
         /// <value>
         /// The is start edge.
         /// </value>
-        public bool IsMinEndPoint
+        public bool IsMin
         {
             get
             {
-                return this.isMinEndPoint;
+                return this.isMin;
             }
         }
 
@@ -191,11 +191,11 @@ namespace Orc.Entities
             {
                 if (this.IsInclusive != other.IsInclusive)
                 {
-                    if (this.IsMinEndPoint == !other.IsMinEndPoint)
+                    if (this.IsMin == !other.IsMin)
                     {
-                        result = this.IsMinEndPoint ? + 1 : -1;
+                        result = this.IsMin ? + 1 : -1;
                     }
-                    else if(this.isMinEndPoint)
+                    else if(this.isMin)
                     {
                         // Both endpoints are mins
                         result = this.IsInclusive ? -1 : +1;
@@ -209,9 +209,9 @@ namespace Orc.Entities
                 else if(!this.isInclusive)
                 {
                     // Both end points are exclusive
-                    if (this.IsMinEndPoint == !other.IsMinEndPoint)
+                    if (this.IsMin == !other.IsMin)
                     {
-                        result = this.IsMinEndPoint ? +1 : -1;
+                        result = this.IsMin ? +1 : -1;
                     }
                 }
             }
@@ -291,7 +291,7 @@ namespace Orc.Entities
                 return null;
             }
 
-            return this.IsMinEndPoint ? this.Interval.Max : this.Interval.Min;
+            return this.IsMin ? this.Interval.Max : this.Interval.Min;
         }
         /// <summary>
         /// The to string.
@@ -301,7 +301,7 @@ namespace Orc.Entities
         /// </returns>
         public override string ToString()
         {
-            if (this.IsMinEndPoint)
+            if (this.IsMin)
             {
                 if (this.IsInclusive)
                 {

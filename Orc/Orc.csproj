@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Docs\Interval.md" />
+    <None Include="Entities\Interval.cd" />
     <None Include="Entities\RangeTree\README.md" />
   </ItemGroup>
   <ItemGroup>

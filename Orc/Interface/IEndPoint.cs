@@ -57,6 +57,6 @@ namespace Orc.Interface
         /// <summary>
         /// Returns whether the EndPoint is min or max
         /// </summary>
-        Boolean IsMinEndPoint { get; }
+        Boolean IsMin { get; }
     }
 }
