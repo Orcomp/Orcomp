@@ -36,23 +36,23 @@ namespace Orx.Tests
 
             // +--------------------------+            Duration: 60 mins
             // |-----------200%-----------|			   Duration: 50 mins
-            // |--50%--|           |-300%-|			   Duration (1): 30 min, (2): 10min
+            // |--50%--|           |-500%-|			   Duration (1): 30 min, (2): 10min
 
 
             // Frist we must work out the calendar efficiencies:
 
             // |--50%--|                               Duration: 30 mins
             //         |---200%---|                    Duration: 20 mins
-            //                    |-300%-|             Duration: 10 mins
+            //                    |-500%-|             Duration: 10 mins
 
             // 30 mins at 50%	   => 15   mins at 100%
             // 20 mins at 200%     => 40   mins at 100%
-            // 10 mins at 300%     => 30   mins at 100%
+            // 10 mins at 500%     => 50   mins at 100%
 
             // Result:
             // 60 - 15 - 40 = 5 mins
-            // 5 mins at 100% is equivalend to 5/3 = 1.67 mins at 300%
-            // Total duration is: 30 + 20 + 1.67 = 51.67 mins
+            // 5 mins at 100% is equivalend to 5/5 = 1 min at 500%
+            // Total duration is: 30 + 20 + 1 = 51 mins
 
             // Arrange
             DateTime end = start.AddMinutes(60);
@@ -69,7 +69,7 @@ namespace Orx.Tests
             var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(51.67));
+            var result = new DateInterval(start, start.AddMinutes(51));
             Assert.AreEqual(result, newDateInterval);
         }
 

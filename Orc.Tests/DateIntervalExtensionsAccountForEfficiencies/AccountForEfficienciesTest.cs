@@ -453,7 +453,7 @@
 
             // Arrange
             var now = DateTime.Now;
-            var dateInterval = new DateInterval(now, now.AddDays(5));
+            var dateInterval = new DateInterval(now.AddDays(2), now.AddDays(7));
 
             var dateIntervalEfficiencies = new List<DateIntervalEfficiency>();
             var efficiency1 = new DateIntervalEfficiency(now.AddDays(1), now.AddDays(2), 0);
@@ -495,7 +495,7 @@
             // Act
             var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Max);
 
-            var correctDateInterval = new DateInterval(dateInterval.Min.Value.AddTicks(-dateInterval.Duration.Ticks / 2), dateInterval.Max.Value);
+            var correctDateInterval = new DateInterval(dateInterval.Max.Value.AddTicks(-dateInterval.Duration.Ticks / 2), dateInterval.Max.Value);
 
             // Assert
             Assert.AreEqual(correctDateInterval, newDateInterval);
