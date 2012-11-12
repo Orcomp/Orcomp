@@ -58,9 +58,9 @@ namespace Orx.Tests
             DateTime end = start.AddMinutes(60);
             var dateInterval = new DateInterval(start, end);
 
-            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start, start.AddMinutes(50)), 200);
-            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start, start.AddMinutes(30)), 50);
-            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(50), start.AddMinutes(60)), 300, 1);
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start, start.AddMinutes(30)), 50);
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(30), start.AddMinutes(50)), 200);
+            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(50), start.AddMinutes(60)), 500, 1);
             dateIntervalEfficiencies.Add(efficiency1);
             dateIntervalEfficiencies.Add(efficiency2);
             dateIntervalEfficiencies.Add(efficiency3);
@@ -234,7 +234,7 @@ namespace Orx.Tests
             // Total duration is: 10 + 45 + 36 = 91
 
             // Arrange
-            DateTime end = start.AddMinutes(90);
+            DateTime end = start.AddMinutes(100);
 
             var dateInterval = new DateInterval(start, end);
 

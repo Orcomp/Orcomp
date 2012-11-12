@@ -253,7 +253,7 @@ namespace Orx.Tests
             // 50 - 9 - 30 - 2.5 = 8.5 mins
 
             // So the 50 mins affected by the calendar period will last 30 + 15 + 5 + 8.5 = 58.5 mins
-            // Total duration 20 + 58.5 = 73.5 mins
+            // Total duration 20 + 58.5 = 78.5 mins
 
             // Arrange
             DateTime end = start.AddMinutes(70);
@@ -271,7 +271,7 @@ namespace Orx.Tests
             var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Max);
 
             // Assert
-            var result = new DateInterval(end.AddMinutes(-73.5), end); 
+            var result = new DateInterval(end.AddMinutes(-78.5), end); 
             Assert.AreEqual(result, newDateInterval);
         }
 
