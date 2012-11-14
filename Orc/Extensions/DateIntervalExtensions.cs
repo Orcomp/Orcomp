@@ -13,6 +13,7 @@ namespace Orc.Extensions
     using System.Collections.Generic;
 
     using Orc.Entities;
+    using Orc.Submissions;
 
     /// <summary>
     /// The date interval extensions.
@@ -32,9 +33,9 @@ namespace Orc.Extensions
         /// <returns>
         /// The <see cref="DateInterval"/>.
         /// </returns>
-        public static DateInterval AccountForEfficiencies(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
+        public static DateInterval AccountForEfficiencies(this DateInterval dateInterval, IList<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
         {
-            throw new NotImplementedException();
+            return Submissions.AccountForEfficiencies.thcristo(dateInterval, dateIntervalEfficiencies, fixedEndPoint);
         }
     }
 }
