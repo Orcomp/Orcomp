@@ -78,6 +78,7 @@
     <Compile Include="IntervalContainer\IntervalTreeAVLTest.cs" />
     <Compile Include="IntervalContainer\IntervalTreeRBTest.cs" />
     <Compile Include="IntervalContainer\NPerf\DateIntervalContainerBenchmarkBase.cs" />
+    <Compile Include="IntervalContainer\NPerf\DateIntervalContainerWrappers.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
