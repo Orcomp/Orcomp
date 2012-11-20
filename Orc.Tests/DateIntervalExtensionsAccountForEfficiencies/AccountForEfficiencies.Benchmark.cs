@@ -15,17 +15,17 @@ namespace Orc.Tests.DateIntervalExtensionsAccountForEfficiencies
     public class AccountForEfficiencies
     {
         [Test]
-        [Category("Benchmark")]
+        [Category("Benchmark"), Ignore]
         public void benchamrk1()
         {
 
-            var numberOfIntervals = 100000;
+            var numberOfIntervals = 1000000;
 
             var now = DateTime.Now.Date;
 
             var dateIntervalEfficiencies = Enumerable.Range(0, numberOfIntervals).Select(x => new DateIntervalEfficiency(now.AddMinutes(x), now.AddMinutes(x + 1), 1)).ToList();
 
-            var initialInterval = new DateInterval(now, now.AddMinutes(numberOfIntervals/2));
+            var initialInterval = new DateInterval(now, now.AddMinutes(numberOfIntervals));
 
 
             var stopwatch = Stopwatch.StartNew();

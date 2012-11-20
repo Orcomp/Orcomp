@@ -275,6 +275,78 @@ namespace Orx.Tests
             Assert.AreEqual(result, newDateInterval);
         }
 
+        [Test]
+        public void AccountForEfficienciesCustom_NoOverlap_WithZeroAtEnd()
+        {
+            //THIS CASE HANDLES 2 SENARIOS, 
+            //                  1)ZERO EFF AFTER THE END, BUT WILL BE IN THE RESULT
+            //                  2)ZERO EFF AFTER AND WILL NOT AFFECT, BUT WILL TEST THAT INSIDE RANGES BETWEEN OUTSIDE EFF DOESN'T COUNT
+
+            // +--------------------+                  Duration: 60 mins
+            // |--------|                              Duration: 30 mins at 50%
+            //                        |----|           Duration: 10 min at 0%
+            //                                  |----| Duration: 10 min at 0% (no effect)
+            //
+            // Result
+            // |---------------------------|           Duration: 85 mins
+
+
+            // Arrange
+            DateTime end = start.AddMinutes(60);
+
+            var dateInterval = new DateInterval(start, end);
+
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start, start.AddMinutes(30)), 50); // 30 mins at 50%
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(65), start.AddMinutes(75)), 0); // 10 mins at 0%
+            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(90), start.AddMinutes(100)), 0); // 10 mins at 0%
+            dateIntervalEfficiencies.Add(efficiency1);
+            dateIntervalEfficiencies.Add(efficiency2);
+            dateIntervalEfficiencies.Add(efficiency3);
+
+            // Act
+            var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
+
+            // Assert
+            var result = new DateInterval(start, start.AddMinutes(85));
+            Assert.AreEqual(result, newDateInterval);
+        }
+
+        [Test]
+        public void AccountForEfficienciesCustom_NoOverlap_WithZeroAtStart()
+        {
+            //SAME AS THE ABOVE, JUST FROM START
+            //THIS CASE HANDLES 2 SENARIOS, 
+            //                  1)ZERO EFF BEFORE THE START, BUT WILL BE IN THE RESULT
+            //                  2)ZERO EFF BEFORE START AND WILL NOT AFFECT, BUT WILL TEST THAT INSIDE RANGES BETWEEN OUTSIDE EFF DOESN'T COUNT
+
+            //                  +--------------------+                  Duration: 60 mins
+            //                  |--------|                              Duration: 30 mins at 50%
+            //           |----|                                         Duration: 10 min at 0%
+            //|----|                                                    Duration: 10 min at 0% (no effect)
+            //
+            // Result
+            //       |-------------------------------|                  Duration: 85 mins
+
+
+            // Arrange
+
+
+            var dateInterval = new DateInterval(start.AddMinutes(40), start.AddMinutes(100));
+
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(40), start.AddMinutes(70)), 50); // 30 mins at 50%
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(25), start.AddMinutes(35)), 0); // 10 mins at 0%
+            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start, start.AddMinutes(10)), 0); // 10 mins at 0%
+            dateIntervalEfficiencies.Add(efficiency1);
+            dateIntervalEfficiencies.Add(efficiency2);
+            dateIntervalEfficiencies.Add(efficiency3);
+
+            // Act
+            var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Max);
+
+            // Assert
+            var result = new DateInterval(start.AddMinutes(15), start.AddMinutes(100));//RANGE 85 MINUTES
+            Assert.AreEqual(result, newDateInterval);
+        }
 
     }
 }

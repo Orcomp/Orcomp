@@ -33,9 +33,9 @@ namespace Orc.Extensions
         /// <returns>
         /// The <see cref="DateInterval"/>.
         /// </returns>
-        public static DateInterval AccountForEfficiencies(this DateInterval dateInterval, IList<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
+        public static DateInterval AccountForEfficiencies(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
         {
-            return Submissions.AccountForEfficiencies.thcristo(dateInterval, dateIntervalEfficiencies, fixedEndPoint);
+            return Submissions.AccountForEfficiencies.Quicks01lver2(dateInterval, dateIntervalEfficiencies, fixedEndPoint);
         }
     }
 }

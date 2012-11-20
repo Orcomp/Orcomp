@@ -11,6 +11,8 @@ namespace Orc.Entities
 {
     using System;
 
+    using C5;
+
     /// <summary>
     /// The date interval efficiency.
     /// </summary>
@@ -73,5 +75,7 @@ namespace Orc.Entities
         /// The priority.
         /// </value>
         public int Priority { get; set; }
+
+        public IPriorityQueueHandle<DateIntervalEfficiency> handle;
     }
 }
