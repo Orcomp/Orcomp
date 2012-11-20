@@ -6,6 +6,7 @@ using System.Text;
 namespace Orc.Submissions
 {
     using Orc.Entities;
+    using Orc.Entities.IntervalTreeRB;
     using Orc.Entities.RangeTree;
     using Orc.Interface;
 
@@ -134,6 +135,134 @@ namespace Orc.Submissions
 
             return newInterval;
         }
+
+        public static DateInterval thcristo2(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
+        {
+            if (dateIntervalEfficiencies.Count == 0)
+                return dateInterval;
+
+            DateIntervalCollection intvColl = new DateIntervalCollection(true);
+            IntervalTree<DateTime> intvTree = new IntervalTree<DateTime>();
+
+            //Put efficiency intervals in a collection and a range tree
+            foreach (DateIntervalEfficiency eff in dateIntervalEfficiencies)
+            {
+                intvColl.Add(eff);
+                intvTree.Add(eff);
+            }
+
+            //Add a default efficiency of 100% before the first
+            //and after the last efficiency interval
+            DateIntervalEfficiency effStart = new DateIntervalEfficiency(DateTime.MinValue, intvColl.DateEdges.First().Value);
+            DateIntervalEfficiency effEnd = new DateIntervalEfficiency(intvColl.DateEdges.Last().Value, DateTime.MaxValue);
+            intvColl.Add(effStart);
+            intvColl.Add(effEnd);
+            intvTree.Add(effStart);
+            intvTree.Add(effEnd);
+
+            int numEdges = intvColl.DateEdges.Count;
+
+            int startEdge, endEdge, sign;
+            DateTime currentDate;
+
+            //Find the range of edges that are of interest
+            if (fixedEndPoint == FixedEndPoint.Min)
+            {
+                currentDate = dateInterval.Min.Value;
+                startEdge = intvColl.DateEdges.BinarySearch(dateInterval.Min);
+                if (startEdge < 0)
+                    startEdge = ~startEdge - 1;
+                endEdge = numEdges - 1;
+                sign = 1;
+            }
+            else
+            {
+                currentDate = dateInterval.Max.Value;
+                startEdge = intvColl.DateEdges.BinarySearch(dateInterval.Max);
+                if (startEdge < 0)
+                    startEdge = ~startEdge;
+                endEdge = 0;
+                sign = -1;
+            }
+
+            //We have to "consume" this time
+            double totalDays = dateInterval.Duration.TotalDays;
+
+            //This is the actual time used
+            double equivDays = 0;
+
+            DateInterval newInterval = dateInterval;
+            int currentEdge = startEdge;
+
+            //Loop through the edges of interest
+            //and connect them with a new efficiency interval
+            //by taking into account the priorities.
+            //At the same time, try to "consume" totalDays of 100% efficiency
+            //by increasing equivDays of actual efficiency
+            while (currentEdge != endEdge)
+            {
+                //We need to ignore an edge that coincides with the next one
+                if (intvColl.DateEdges[currentEdge].Value != intvColl.DateEdges[currentEdge + sign].Value)
+                {
+                    int minEdge = (sign == 1 ? currentEdge : currentEdge - 1);
+                    int maxEdge = (sign == 1 ? currentEdge + 1 : currentEdge);
+
+                    DateInterval currentInterval = new DateInterval(intvColl.DateEdges[minEdge].Value, intvColl.DateEdges[maxEdge].Value);
+                    IEnumerable<DateIntervalEfficiency> overlaps = intvTree.Query(currentInterval).Cast<DateIntervalEfficiency>();
+
+                    double efficiency = 100;
+
+                    if (overlaps.Any())
+                        efficiency = (overlaps
+                                        .OrderByDescending(intv => intv.Priority)
+                                        .ThenBy(intv => intv.Efficiency)
+                                        .First()).Efficiency;
+
+                    double diffDays = Double.MaxValue;
+                    DateTime newDate = (sign == 1 ? DateTime.MaxValue : DateTime.MinValue);
+
+                    if (efficiency != 0)
+                    {
+                        //Compute how much time is needed to complete the remaining task 
+                        //given the current interval's efficiency
+                        diffDays = totalDays * 100.0 / efficiency;
+                        newDate = currentDate.AddDays(sign * diffDays);
+                    }
+
+                    if (efficiency == 0)
+                    {
+                        //No actual work is done, 
+                        //so just jump to the end of the interval
+                        newDate = (sign == 1 ? currentInterval.Max.Value : currentInterval.Min.Value);
+                        equivDays += (newDate - currentDate).TotalDays * sign;
+                        currentDate = newDate;
+                    }
+                    else if ((sign > 0 && newDate > currentInterval.Max.Value) || (sign < 0 && newDate < currentInterval.Min.Value))
+                    {
+                        //This interval is not sufficient to complete the task,
+                        //so use all the interval's available time
+                        newDate = (sign == 1 ? currentInterval.Max.Value : currentInterval.Min.Value);
+                        equivDays += (newDate - currentDate).TotalDays * sign;
+
+                        //Decrease the remaining task time and update the current point in time
+                        totalDays -= (newDate - currentDate).TotalDays * sign * efficiency / 100.0;
+                        currentDate = newDate;
+                    }
+                    else
+                    {
+                        //The task can be completed in this interval
+                        equivDays += diffDays;
+                        newInterval = new DateInterval((sign == 1 ? dateInterval.Min.Value : dateInterval.Max.Value.AddDays(sign * equivDays)), (sign == 1 ? dateInterval.Min.Value.AddDays(sign * equivDays) : dateInterval.Max.Value));
+                        break;
+                    }
+                }
+
+                currentEdge += sign;
+            }
+
+            return newInterval;
+        }
+
 
         //#region Quicks01ver
 
