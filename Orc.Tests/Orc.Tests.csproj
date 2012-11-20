@@ -60,6 +60,7 @@
     <Compile Include="DateIntervalCollectionExtensionsTest.cs" />
     <Compile Include="DateIntervalCollectionTestBase.cs" />
     <Compile Include="DateIntervalCollectionTest.cs" />
+    <Compile Include="DateIntervalExtensionsAccountForEfficiencies\AccountForEfficienciesBenchmark.cs" />
     <Compile Include="DateIntervalExtensionsAccountForEfficiencies\AccountForEfficienciesNoOverlapTest.cs" />
     <Compile Include="DateIntervalExtensionsAccountForEfficiencies\AccountForEfficienciesOverlapsTest.cs" />
     <Compile Include="DateIntervalExtensionsTest.cs" />
