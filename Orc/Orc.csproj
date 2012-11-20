@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Entities\EndPointMinFirstComparer.cs" />
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
     <Compile Include="Entities\IntervalTreeAVL\IntervalTree.cs" />
