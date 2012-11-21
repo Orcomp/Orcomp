@@ -199,7 +199,7 @@
             // 1% efficiency
             var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(now, TimeSpan.FromMinutes(1), numberOfIntervals).Select((x, i) => new DateIntervalEfficiency(x, numberOfIntervals - i)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
+            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.First().Max.Value);
 
             var stopwatch = Stopwatch.StartNew();
             var effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
@@ -230,7 +230,7 @@
             // 1% efficiency
             var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(now, TimeSpan.FromMinutes(1), numberOfIntervals).Select((x, i) => new DateIntervalEfficiency(x, numberOfIntervals - i)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
+            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.First().Max.Value);
 
             dateIntervalEfficiencies.Add(new DateIntervalEfficiency(initialInterval, 100, 1));
 
