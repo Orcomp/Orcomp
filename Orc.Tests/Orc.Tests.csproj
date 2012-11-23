@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NPerf.Framework">
-      <HintPath>..\packages\NPerf\NPerf.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -70,8 +67,6 @@
     <Compile Include="DateIntervalTest.cs" />
     <Compile Include="DateIntervalTestBase.cs" />
     <Compile Include="DateIntervalExtensionsAccountForEfficiencies\AccountForEfficienciesTest.cs" />
-    <Compile Include="IntervalContainer\NPerf\DateIntervalContainer.Add.Tests.cs" />
-    <Compile Include="IntervalContainer\NPerf\DateIntervalContainer.IncludeOneInOne.Query.Tests.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase4.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase3.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.Benchmark.cs" />
@@ -80,8 +75,6 @@
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase1.cs" />
     <Compile Include="IntervalContainer\IntervalTreeAVLTest.cs" />
     <Compile Include="IntervalContainer\IntervalTreeRBTest.cs" />
-    <Compile Include="IntervalContainer\NPerf\DateIntervalContainerBenchmarkBase.cs" />
-    <Compile Include="IntervalContainer\NPerf\DateIntervalContainerWrappers.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

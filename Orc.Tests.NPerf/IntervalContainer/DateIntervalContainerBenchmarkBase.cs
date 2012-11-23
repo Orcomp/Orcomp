@@ -1,4 +1,4 @@
-﻿namespace Orc.Tests.IntervalContainer.NPerf
+﻿namespace Orc.Tests.NPerf.IntervalContainer
 {
     using System;
 
@@ -12,7 +12,7 @@
 
         protected Interval<DateTime> ToDateTimeInterval(DateTime startTime, int leftEdgeMinutes, int rightEdgeMinutes, bool includeEdges = true)
         {
-            return ToDateTimeInterval(startTime, leftEdgeMinutes, rightEdgeMinutes, includeEdges, includeEdges);
+            return this.ToDateTimeInterval(startTime, leftEdgeMinutes, rightEdgeMinutes, includeEdges, includeEdges);
         }
 
         protected Interval<DateTime> ToDateTimeInterval(DateTime startTime, int leftEdgeMinutes, int rightEdgeMinutes, bool includeLefEdge, bool includeRigthEdge)

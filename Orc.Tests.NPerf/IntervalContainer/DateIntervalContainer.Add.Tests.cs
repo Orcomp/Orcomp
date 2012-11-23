@@ -1,4 +1,4 @@
-﻿namespace Orc.Tests.IntervalContainer.NPerf
+﻿namespace Orc.Tests.NPerf.IntervalContainer
 {
     using System;
 
@@ -12,13 +12,13 @@
         [PerfSetUp]
         public void SetUp(int testIndex, IIntervalContainer<DateTime> intervalContainer)
         {
-            numberOfIntervals = CollectionCount(testIndex);
+            this.numberOfIntervals = this.CollectionCount(testIndex);
         }
 
         [PerfRunDescriptor]
         public double RunDescription(int testIndex)
         {
-            return CollectionCount(testIndex);
+            return this.CollectionCount(testIndex);
         }        
 
         [PerfTest]
@@ -27,9 +27,9 @@
             const int intervalLength = 4;
             const int spaceLength = 1;
             const int intervalAndSpaceLength = intervalLength + spaceLength;
-            for (int i = 0; i < numberOfIntervals; i++)
+            for (int i = 0; i < this.numberOfIntervals; i++)
             {
-                var intervalToAdd = ToDateTimeInterval(now, i * intervalAndSpaceLength, ((i + 1) * intervalAndSpaceLength) - spaceLength);
+                var intervalToAdd = this.ToDateTimeInterval(this.now, i * intervalAndSpaceLength, ((i + 1) * intervalAndSpaceLength) - spaceLength);
                 container.Add(intervalToAdd);
             }
         }

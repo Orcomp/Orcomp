@@ -1,4 +1,4 @@
-﻿namespace Orc.Tests.IntervalContainer.NPerf
+﻿namespace Orc.Tests.NPerf.IntervalContainer
 {
     using System;
     using System.Collections.Generic;
@@ -15,8 +15,8 @@
         [PerfSetUp]
         public void SetUp(int testIndex, IIntervalContainer<DateTime> intervalContainer)
         {
-            numberOfIntervals = CollectionCount(testIndex);
-            var intervals = GenerateIncludedOneIntoAnotherIntervals(DateTime.Now, numberOfIntervals);
+            this.numberOfIntervals = this.CollectionCount(testIndex);
+            var intervals = GenerateIncludedOneIntoAnotherIntervals(DateTime.Now, this.numberOfIntervals);
             foreach (var interval in intervals)
             {
                 intervalContainer.Add(interval);
@@ -26,34 +26,34 @@
         [PerfRunDescriptor]
         public double RunDescription(int testIndex)
         {
-            return CollectionCount(testIndex);
+            return this.CollectionCount(testIndex);
         }
 
         [PerfTest]
         public void Query_MidPointToMaxSpanningInterval(IIntervalContainer<DateTime> container)
         {
-            Interval<DateTime> queryInterval = ToDateTimeInterval(DateTime.Now, 0, numberOfIntervals);
+            Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, 0, this.numberOfIntervals);
             container.Query(queryInterval).ToList();
         }
 
         [PerfTest]
         public void Query_MidInterval(IIntervalContainer<DateTime> container)
         {
-            Interval<DateTime> queryInterval = ToDateTimeInterval(DateTime.Now, -1, 1);
+            Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, -1, 1);
             container.Query(queryInterval).ToList();
         }
 
         [PerfTest]
         public void Query_MinToMaxSpanningInterval(IIntervalContainer<DateTime> container)
         {
-            Interval<DateTime> queryInterval = ToDateTimeInterval(DateTime.Now, -numberOfIntervals, numberOfIntervals);
+            Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, -this.numberOfIntervals, this.numberOfIntervals);
             container.Query(queryInterval).ToList();
         }
 
         [PerfTest]
         public void Query_RigthEndInterval(IIntervalContainer<DateTime> container)
         {
-            Interval<DateTime> queryInterval = ToDateTimeInterval(DateTime.Now, numberOfIntervals - 1, numberOfIntervals);
+            Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, this.numberOfIntervals - 1, this.numberOfIntervals);
             container.Query(queryInterval).ToList();
         }
 
