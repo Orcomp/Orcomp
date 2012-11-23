@@ -1,6 +1,7 @@
 ﻿namespace Orc.Tests.DateIntervalExtensionsAccountForEfficiencies
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
 
@@ -28,92 +29,39 @@
 		[TestCase(1, 0, FixedEndPoint.Max, TestName = "FixedEndPointNoOverlapsWithoutOffset")]
 		[TestCase(1, 1, FixedEndPoint.Min, TestName = "FixedStartPointNoOverlapsWithOffset")]
 		[TestCase(1, 1, FixedEndPoint.Max, TestName = "FixedEndPointNoOverlapsWithOffset")]
-		public void Benchmark_NoOverlaps(int durationInMinutes, int offSetinMinutes, FixedEndPoint fixedEndPoint)
+		public void NoOverlaps(int durationInMinutes, int offSetinMinutes, FixedEndPoint fixedEndPoint)
 		{
 			// 1% efficiency
 			var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(durationInMinutes), TimeSpan.FromMinutes(offSetinMinutes), numberOfIntervals)
-				.Select(x => new DateIntervalEfficiency(x, 1)).ToList();
+				.Select(interval => new DateIntervalEfficiency(interval, 1)).ToList();
 
 			var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
 
-			var stopwatch = Stopwatch.StartNew();
-			var effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, fixedEndPoint);
-			stopwatch.Stop();
-
-			Debug.WriteLine(string.Format("Span whole collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
-
-			initialInterval = new DateInterval(now, dateIntervalEfficiencies[numberOfIntervals / 2].Max.Value);
-
-			stopwatch.Reset();
-			stopwatch.Start();
-			effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, fixedEndPoint);
-			stopwatch.Stop();
-
-			Debug.WriteLine(string.Format("Span half collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
+            RunAccountForEfficienciesBenchmarkTest(initialInterval, dateIntervalEfficiencies, fixedEndPoint, assertIntervalsEquality: false);
 		}
 
         [Test]
+        [TestCase(100, 1, true)]
+        // |--------------------------------------| 100 % priority 1
+        // |--|  |--|  |--|  |--|  |--|  |--|  |--| 1% priority 0
+
+        [TestCase(100, 0, false)]
+        // |--------------------------------------| 100 %
+        // |--|  |--|  |--|  |--|  |--|  |--|  |--|
+        //  50   150    50   150   50    150
+
         [Category("Benchmark")]
-        public void FixedStartPointNoOverlapsWithOffsetWithSpan()
+        public void FixedStartPointNoOverlapsWithOffsetWithSpan(double spanEfficiency, int spanPriority, bool assertIntervalsEquality)
         {
-            // |--------------------------------------| 100 % priority 1
-            // |--|  |--|  |--|  |--|  |--|  |--|  |--| 1% priority 0
-
-
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals).Select(x => new DateIntervalEfficiency(x, 1)).ToList();
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals)
+                .Select(interval => new DateIntervalEfficiency(interval, 1)).ToList();
 
             var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
 
-            dateIntervalEfficiencies.Add(new DateIntervalEfficiency(initialInterval, 100, 1));
+            dateIntervalEfficiencies.Add(new DateIntervalEfficiency(initialInterval, spanEfficiency, spanPriority));
 
-            var stopwatch = Stopwatch.StartNew();
-            var effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
-            stopwatch.Stop();
-
-            Debug.WriteLine(string.Format("Span whole collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
-            Assert.AreEqual(initialInterval, effectualInterval);
-
-            initialInterval = new DateInterval(now, dateIntervalEfficiencies[numberOfIntervals / 2].Max.Value);
-
-            stopwatch.Reset();
-            stopwatch.Start();
-            effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
-            stopwatch.Stop();
-
-            Debug.WriteLine(string.Format("Span half collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
-            Assert.AreEqual(initialInterval, effectualInterval);
-        }
-
-        [Test]
-        [Category("Benchmark")]		            
-        public void FixedStartPointNoOverlapsWithOffsetWithSpan2()
-        {
-            // |--------------------------------------| 100 %
-            // |--|  |--|  |--|  |--|  |--|  |--|  |--|
-            //  50   150    50   150   50    150
-
-            // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals).Select((x, i) => new DateIntervalEfficiency(x, i % 2 == 0 ? 50 : 150)).ToList();
-
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
-
-            dateIntervalEfficiencies.Add(new DateIntervalEfficiency(initialInterval, 100));
-
-            var stopwatch = Stopwatch.StartNew();
-            var effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
-            stopwatch.Stop();
-
-            Debug.WriteLine(string.Format("Span whole collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
-
-            initialInterval = new DateInterval(now, dateIntervalEfficiencies[numberOfIntervals / 2].Max.Value);
-
-            stopwatch.Reset();
-            stopwatch.Start();
-            effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
-            stopwatch.Stop();
-
-            Debug.WriteLine(string.Format("Span half collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
+            RunAccountForEfficienciesBenchmarkTest(initialInterval, dateIntervalEfficiencies, FixedEndPoint.Min, assertIntervalsEquality);
         }
 
         [Test]
@@ -127,24 +75,12 @@
             //        |-----|         60
 
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(now, TimeSpan.FromMinutes(1), numberOfIntervals).Select((x, i) => new DateIntervalEfficiency(x, numberOfIntervals - i)).ToList();
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(now, TimeSpan.FromMinutes(1), numberOfIntervals)
+                .Select((interval, i) => new DateIntervalEfficiency(interval, numberOfIntervals - i)).ToList();
 
             var initialInterval = new DateInterval(now, dateIntervalEfficiencies.First().Max.Value);
 
-            var stopwatch = Stopwatch.StartNew();
-            var effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
-            stopwatch.Stop();
-
-            Debug.WriteLine(string.Format("Span whole collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
-
-            initialInterval = new DateInterval(now, dateIntervalEfficiencies[numberOfIntervals / 2].Max.Value);
-
-            stopwatch.Reset();
-            stopwatch.Start();
-            effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
-            stopwatch.Stop();
-
-            Debug.WriteLine(string.Format("Span half collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
+            RunAccountForEfficienciesBenchmarkTest(initialInterval, dateIntervalEfficiencies, FixedEndPoint.Min, assertIntervalsEquality: false);
         }
 
         [Test]
@@ -158,28 +94,46 @@
             //        |-----|         60
 
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(now, TimeSpan.FromMinutes(1), numberOfIntervals).Select((x, i) => new DateIntervalEfficiency(x, numberOfIntervals - i)).ToList();
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(now, TimeSpan.FromMinutes(1), numberOfIntervals)
+                .Select((interval, i) => new DateIntervalEfficiency(interval, numberOfIntervals - i)).ToList();
 
             var initialInterval = new DateInterval(now, dateIntervalEfficiencies.First().Max.Value);
 
             dateIntervalEfficiencies.Add(new DateIntervalEfficiency(initialInterval, 100, 1));
 
+            RunAccountForEfficienciesBenchmarkTest(initialInterval, dateIntervalEfficiencies, FixedEndPoint.Min, assertIntervalsEquality: true);
+        }
+
+        private void RunAccountForEfficienciesBenchmarkTest(
+            DateInterval initialInterval,
+            List<DateIntervalEfficiency> dateIntervalEfficiencies, 
+            FixedEndPoint fixedEndPoint = FixedEndPoint.Min, 
+            bool assertIntervalsEquality = false)
+        {
             var stopwatch = Stopwatch.StartNew();
-            var effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
+            var effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, fixedEndPoint);
             stopwatch.Stop();
 
             Debug.WriteLine(string.Format("Span whole collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
-            Assert.AreEqual(initialInterval, effectualInterval);
+            if(assertIntervalsEquality)
+            {
+                Assert.AreEqual(initialInterval, effectualInterval);
+            }
 
-            initialInterval = new DateInterval(now, dateIntervalEfficiencies[numberOfIntervals / 2].Max.Value);
+            initialInterval = (fixedEndPoint == FixedEndPoint.Min)
+                ? new DateInterval(this.now, dateIntervalEfficiencies[this.numberOfIntervals / 2].Max.Value)
+                : new DateInterval(dateIntervalEfficiencies[this.numberOfIntervals / 2].Max.Value, dateIntervalEfficiencies.Last().Max.Value);
 
             stopwatch.Reset();
             stopwatch.Start();
-            effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, FixedEndPoint.Min);
+            effectualInterval = initialInterval.AccountForEfficiencies(dateIntervalEfficiencies, fixedEndPoint);
             stopwatch.Stop();
 
             Debug.WriteLine(string.Format("Span half collection, Elapsed time: {0} ms, result is: {1}", stopwatch.ElapsedMilliseconds, effectualInterval));
-            Assert.AreEqual(initialInterval, effectualInterval);
+            if (assertIntervalsEquality)
+            {
+                Assert.AreEqual(initialInterval, effectualInterval);
+            }
         }
     }
 }
