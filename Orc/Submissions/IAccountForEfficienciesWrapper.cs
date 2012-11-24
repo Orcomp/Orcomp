@@ -6,6 +6,6 @@
 
     public interface IAccountForEfficienciesWrapper
     {
-        DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies);
+        DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint);
     }
 }
