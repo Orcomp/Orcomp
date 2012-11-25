@@ -10,8 +10,6 @@ namespace Orc.Tests
 {
     using NUnit.Framework;
 
-    using Orc.Entities;
-
     /// <summary>
     /// The date interval extensions test.
     /// </summary>

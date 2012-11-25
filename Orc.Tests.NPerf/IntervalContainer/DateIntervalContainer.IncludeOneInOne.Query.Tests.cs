@@ -30,6 +30,7 @@
         }
 
         [PerfTest]
+        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Query_MidPointToMaxSpanningInterval(IIntervalContainer<DateTime> container)
         {
             Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, 0, this.numberOfIntervals);
@@ -37,6 +38,7 @@
         }
 
         [PerfTest]
+        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Query_MidInterval(IIntervalContainer<DateTime> container)
         {
             Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, -1, 1);
@@ -44,6 +46,7 @@
         }
 
         [PerfTest]
+        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Query_MinToMaxSpanningInterval(IIntervalContainer<DateTime> container)
         {
             Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, -this.numberOfIntervals, this.numberOfIntervals);
@@ -51,6 +54,7 @@
         }
 
         [PerfTest]
+        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Query_RigthEndInterval(IIntervalContainer<DateTime> container)
         {
             Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, this.numberOfIntervals - 1, this.numberOfIntervals);

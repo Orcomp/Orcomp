@@ -22,6 +22,7 @@
         }        
 
         [PerfTest]
+        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Add_Interval(IIntervalContainer<DateTime> container)
         {
             const int intervalLength = 4;

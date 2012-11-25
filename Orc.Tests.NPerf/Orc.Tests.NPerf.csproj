@@ -33,6 +33,10 @@
     <Reference Include="NPerf.Framework">
       <HintPath>..\packages\NPerf\NPerf.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="Orc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Orc\Orc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,18 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateIntervalExtensionsAccountForEfficiencies\AccountForEfficienciesTests.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainer.Add.Tests.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainer.IncludeOneInOne.Query.Tests.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerBenchmarkBase.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerWrappers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Orc\Orc.csproj">
-      <Project>{71f9cf8b-53a6-4626-bc89-ce4862d234a8}</Project>
-      <Name>Orc</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
