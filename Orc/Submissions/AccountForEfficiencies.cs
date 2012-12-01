@@ -418,6 +418,31 @@ namespace Orc.Submissions
             }
         }
 
+        /*
+        So here the overview:
+
+        I ended up with a tree of inclusions and integrating every "delta"-interval there is. When complete, I start from the beginning and move forward until the work is done.
+
+        Back in my student days, I did a similar structure in an image processing project while working in the institute for medical informatics at the RWTH Aachen. We did hierarchical image segmentation, building a tree of regions, with each region containing a set of pixels. Neighbouring regions got merged at some point during the process based on different similarity measures between them, until u end up with the whole iamge as a single region - the root.
+        More interesting is the data storage. In the leaves you store the pixels directly, but when you're higher up the hierarchy that would give you a huge memory usage and data redundancy. But when not stored, you still have to access them somehow. You can accumulate th em, inevitably visiting each child node and copying the pixels from each leaf into an array - a slowdown, so still bad.
+        So I did this tree where all the pixels lie in a single array, and the order of the pixels being implicitly defined by the tree structure. And the pixels for every node turn out to be sequential regions in the array, so we only have to store start and end points and at the same time gaining O(1) random access to the pixels of each region.
+        This definitely bears similarities with the current solution of our little interval problem. Only kind of upside-down... This is the idea I expanded on and ended up with the following algorithm.
+
+        In short:
+
+        For every interval, we scan this described single data array from left to right, according to the interval dimension and position. We create a 'Time -> Array Index' mapping, and for every interval we get its start and end index, just like in my above example. We scan from left to r ight, marking every array element we go over, with the interval it belongs to. If we meet another interval, we mark it as a child for the next "parent node" and then we jump over it. While advancing, we multiply the delta time intervals (in ticks) by the current ruling efficiency. This creates our "leafs", which is our foundation for the tree. Overlapping/neighbouring intervals get "merged" by creating a new parent node having extents to fit all its children in. So whenever there is an existent interval in the borders of the currently processed efficiency, it will become a child of the newly created parent node. As an optimization, we readjust the paths from leaf to parent, since only the topmost parent is used, thus giving us amortized O(1) for accessing the parent from the leaf.
+        On every "time point", we store the "efficient ticks" info, being the time of the delta interval in ticks multiplied by the ruling efficiency for it. We init the ticks array with real time duration (i.e. 100% efficiency) and on every "time point" we process, we multiply by the efficiency.
+        At the end of all of this, we just begin at point zero and go forward until we reach our goal.
+        For fixed end point, logic is like last time - only flip, with the endpoint being the center of the "mirroring".
+
+        By the way, I saw that you had some IntervalTree... structures there. I didn't check them out, I used only my own stuff for the first version. Most probably there are a few possibilities to make this prettier and more "OOP", but I went for the "pure" and raw algorithm with minimal, fast and spot-on data structures, so those things went mostly unconsidered.
+
+        All in all, it got more complex and more tedious to develop than the simple queue algorithm, but the idea is so smart and ingenious (hehe) that it was worth the extra time :) I am just not sure at what input sizes it will show its superiority over t he queue approach however, which itself should be very fast and very close complexity-wise to this one - the only drawback of the queue seems to be the O(log(n)) addition time of elements.
+
+        I got rid of the priority queue in the end, but I again ended up with some kind of tree :) Some "heavy duty" performance tests would be great to measure and see the differences! (Of course I didn't bother to write some, lol)
+
+        That's about it, please check it out and tell me what you think! :)
+         * */
         public static DateInterval Quicks01lver2(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
         {
             // Check for empty list
@@ -1175,6 +1200,119 @@ namespace Orc.Submissions
                 if (overlappingEfficiencies.Any())
                 {
                     var eff = overlappingEfficiencies.GroupBy(x => x.Priority).OrderByDescending(x => x.Key).Select(x => x.Min(y => y.Efficiency)).First();
+                    output.Add(new DateIntervalEfficiency(timeEvents[i], timeEvents[i + 1], eff));
+                }
+            }
+            return output;
+        }
+
+        public static DateInterval MoustafaS2(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
+        {
+            if (dateIntervalEfficiencies == null || dateIntervalEfficiencies.Count == 0)
+                return dateInterval;
+            if (dateInterval == null)
+                return null;
+            var split = dateIntervalEfficiencies.Collapse2();
+            if (split.Count == 0)
+                return dateInterval;
+            var constantMin = fixedEndPoint == FixedEndPoint.Min;
+            long resultantTicks = 0;
+            long totalTicks = dateInterval.Duration.Ticks,
+                 acc = 0;
+            DateTime start = dateInterval.Min.Value;
+            DateTime end = dateInterval.Max.Value;
+            var d = split.Select((x, i)
+                => ((i < split.Count - 1) && (split[i + 1].Min.Value.Ticks != x.Max.Value.Ticks) && (split[i + 1].Min.Value.Ticks >= dateInterval.Min.Value.Ticks && x.Max.Value.Ticks <= dateInterval.Max.Value.Ticks))
+                ?
+                split[i + 1].Min.Value.Ticks - x.Max.Value.Ticks : 0)
+                .Sum();
+            acc += d;
+            resultantTicks += d;
+            if (constantMin && split[0].Min.Value.Ticks > dateInterval.Min.Value.Ticks)
+            {
+                var z = split[0].Min.Value.Ticks - dateInterval.Min.Value.Ticks;
+                acc += z;
+                resultantTicks += z;
+            }
+            foreach (var over in split)
+            {
+                if (constantMin && over.Max.Value.Ticks <= dateInterval.Min.Value.Ticks)
+                    continue;
+                var eff = over.Efficiency;
+                if (eff == 0.0)
+                    continue;
+                var diff = (long)(over.Max.Value.Ticks - over.Min.Value.Ticks);
+                var last = diff * eff / 100;
+                if (resultantTicks + last < totalTicks)
+                {
+                    resultantTicks += (long)last;
+                    acc += diff;
+                }
+                else
+                {
+                    last = totalTicks - resultantTicks;
+                    var t = (long)((double)last * 100 / eff);
+                    resultantTicks += (long)last;
+                    acc += t;
+                    break;
+                }
+            }
+            if (constantMin)
+                end = end.AddTicks((acc - resultantTicks));
+            else
+                start = start.AddTicks(-(acc - resultantTicks));
+
+            var zeros = split.Where(x => x.Efficiency == 0.0);
+            if (zeros.Any())
+            {
+                zeros = constantMin ? zeros : zeros.OrderByDescending(x => x.Min);
+                foreach (var item in zeros)
+                {
+                    var tmp = new DateInterval(start, end).GetOverlap(item);
+                    if (tmp != null)
+                    {
+                        long ticks;
+                        if (constantMin)
+                        {
+                            ticks = end.Ticks >= item.Max.Value.Ticks ? (tmp.Max.Value.Ticks - tmp.Min.Value.Ticks) : ((item.Max.Value.Ticks - end.Ticks) + (tmp.Max.Value.Ticks - tmp.Min.Value.Ticks));
+                            end = end.AddTicks(ticks);
+                        }
+                        else
+                        {
+                            ticks = start.Ticks <= item.Min.Value.Ticks ? (tmp.Max.Value.Ticks - tmp.Min.Value.Ticks) : ((start.Ticks - item.Min.Value.Ticks) + (tmp.Max.Value.Ticks - tmp.Min.Value.Ticks));
+                            start = start.AddTicks(-ticks);
+                        }
+                    }
+                }
+            }
+            var result = new DateInterval(start, end);
+            return result;
+        }
+        public static IList<DateIntervalEfficiency> Collapse2(this IEnumerable<DateIntervalEfficiency> intervalCollection)
+        {
+            if (intervalCollection == null)
+            {
+                return null;
+            }
+            //var output = new List<DateIntervalEfficiency>();
+
+            // Grabbing all time split points and sorting them
+            var output = new List<DateIntervalEfficiency>();
+
+            // Grabbing all time split points and sorting them
+            List<DateTime> timeEvents = intervalCollection.SelectMany(task => new[] { task.Min.Value, task.Max.Value })
+                                                     .Distinct()
+                                                     .OrderBy(x => x)
+                                                     .ToList();
+            for (var i = 0; i < timeEvents.Count - 1; i++)
+            {
+                var overlappingEfficiencies = intervalCollection.Where(x => x.Overlaps(new DateInterval(timeEvents[i], timeEvents[i + 1])));
+
+                if (overlappingEfficiencies.Any())
+                {
+                    var eff = overlappingEfficiencies.GroupBy(x => x.Priority).OrderByDescending(x => x.Key).Select(x => x.Min(y => y.Efficiency)).First();
+                    //var max = overlappingEfficiencies.Max(x => x.Priority);
+                    //var eff = overlappingEfficiencies.Where(x => x.Priority == max).Min(x => x.Efficiency);
                     output.Add(new DateIntervalEfficiency(timeEvents[i], timeEvents[i + 1], eff));
                 }
             }
