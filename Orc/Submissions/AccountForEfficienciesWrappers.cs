@@ -36,13 +36,13 @@
         }
     }
 
-    public class Quicks01lver2_AccountForEfficiencies : IAccountForEfficienciesWrapper
-    {
-        public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
-        {
-            return initialInterval.Quicks01lver2(dateIntervalEfficiencies, fixedEndPoint);
-        }
-    }
+    //public class Quicks01lver2_AccountForEfficiencies : IAccountForEfficienciesWrapper
+    //{
+    //    public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
+    //    {
+    //        return initialInterval.Quicks01lver2(dateIntervalEfficiencies, fixedEndPoint);
+    //    }
+    //}
 
     public class MoustafaS_AccountForEfficiencies : IAccountForEfficienciesWrapper
     {
