@@ -39,6 +39,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Interfaces\ISorter.cs" />
+    <Compile Include="Algorithms\Interfaces\ISwap.cs" />
+    <Compile Include="Algorithms\NSort.Generic\BidirectionalBubbleSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\BubbleSorter.cs" />
+    <Compile Include="Algorithms\NSort.Generic\ComboSort11.cs" />
+    <Compile Include="Algorithms\NSort.Generic\ComparableComparer.cs" />
+    <Compile Include="Algorithms\NSort.Generic\DefaultSwap.cs" />
+    <Compile Include="Algorithms\NSort.Generic\DoubleStorageMergeSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\FastQuickSorter.cs" />
+    <Compile Include="Algorithms\NSort.Generic\HeapSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\InPlaceMergeSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\InsertionSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\OddEvenTransportSorter.cs" />
+    <Compile Include="Algorithms\NSort.Generic\QuickSorter.cs" />
+    <Compile Include="Algorithms\NSort.Generic\QuickSortWithBubbleSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\SelectionSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\ShakerSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\ShearSorter.cs" />
+    <Compile Include="Algorithms\NSort.Generic\ShellSort.cs" />
+    <Compile Include="Algorithms\NSort.Generic\SwapSorter.cs" />
+    <Compile Include="Algorithms\NSort\BidirectionalBubbleSort.cs" />
+    <Compile Include="Algorithms\NSort\BubbleSorter.cs" />
+    <Compile Include="Algorithms\NSort\ComboSort11.cs" />
+    <Compile Include="Algorithms\NSort\ComparableComparer.cs" />
+    <Compile Include="Algorithms\NSort\DefaultSwap.cs" />
+    <Compile Include="Algorithms\NSort\DoubleStorageMergeSort.cs" />
+    <Compile Include="Algorithms\NSort\FastQuickSorter.cs" />
+    <Compile Include="Algorithms\NSort\HeapSort.cs" />
+    <Compile Include="Algorithms\NSort\InPlaceMergeSort.cs" />
+    <Compile Include="Algorithms\NSort\InsertionSort.cs" />
+    <Compile Include="Algorithms\NSort\OddEvenTransportSorter.cs" />
+    <Compile Include="Algorithms\NSort\QuickSorter.cs" />
+    <Compile Include="Algorithms\NSort\QuickSortWithBubbleSort.cs" />
+    <Compile Include="Algorithms\NSort\SelectionSort.cs" />
+    <Compile Include="Algorithms\NSort\ShakerSort.cs" />
+    <Compile Include="Algorithms\NSort\ShearSorter.cs" />
+    <Compile Include="Algorithms\NSort\ShellSort.cs" />
+    <Compile Include="Algorithms\NSort\SwapSorter.cs" />
     <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Entities\EndPointMinFirstComparer.cs" />
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
@@ -81,11 +119,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Entities\IntervalTreeRB\README.md" />
+    <Content Include="Algorithms\Interfaces\LICENSE.txt" />
+    <Content Include="Algorithms\Interfaces\README.txt" />
+    <Content Include="Algorithms\NSort.Generic\README.txt" />
+    <Content Include="Algorithms\NSort\LICENSE.txt" />
+    <Content Include="Algorithms\NSort\README.txt" />
     <Content Include="Entities\RangeTree\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataStructures\" />
-    <Folder Include="SortAlgorithms\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
