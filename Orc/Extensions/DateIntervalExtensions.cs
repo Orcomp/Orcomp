@@ -11,9 +11,9 @@ namespace Orc.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Orc.Entities;
-    using Orc.Submissions;
 
     /// <summary>
     /// The date interval extensions.
@@ -35,7 +35,7 @@ namespace Orc.Extensions
         /// </returns>
         public static DateInterval AccountForEfficiencies(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
         {
-            return Submissions.AccountForEfficiencies.MoustafaS2(dateInterval, dateIntervalEfficiencies, fixedEndPoint);
+            throw new NotImplementedException();
         }
     }
 }
