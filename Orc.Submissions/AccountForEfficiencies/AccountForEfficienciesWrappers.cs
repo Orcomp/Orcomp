@@ -3,8 +3,9 @@
     using System.Collections.Generic;
 
     using Orc.Entities;
+    using Orc.Interface;
 
-    public class vrstks_AccountForEfficiencies : IAccountForEfficienciesWrapper
+    public class vrstks_AccountForEfficiencies : IAccountForEfficiencies
     {
         public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
         {
@@ -12,7 +13,7 @@
         }
     }
 
-    public class vrstks2_AccountForEfficiencies : IAccountForEfficienciesWrapper
+    public class vrstks2_AccountForEfficiencies : IAccountForEfficiencies
     {
         public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
         {
@@ -20,7 +21,7 @@
         }
     }
 
-    public class thcristo_AccountForEfficiencies : IAccountForEfficienciesWrapper
+    public class thcristo_AccountForEfficiencies : IAccountForEfficiencies
     {
         public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
         {
@@ -28,7 +29,7 @@
         }
     }
 
-    public class thcristo2_AccountForEfficiencies: IAccountForEfficienciesWrapper
+    public class thcristo2_AccountForEfficiencies: IAccountForEfficiencies
     {
         public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
         {
@@ -44,7 +45,7 @@
     //    }
     //}
 
-    public class MoustafaS_AccountForEfficiencies : IAccountForEfficienciesWrapper
+    public class MoustafaS_AccountForEfficiencies : IAccountForEfficiencies
     {
         public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
         {

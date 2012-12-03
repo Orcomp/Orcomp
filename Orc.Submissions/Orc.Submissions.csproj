@@ -40,7 +40,6 @@
   <ItemGroup>
     <Compile Include="AccountForEfficiencies\AccountForEfficiencies.cs" />
     <Compile Include="AccountForEfficiencies\AccountForEfficienciesWrappers.cs" />
-    <Compile Include="AccountForEfficiencies\IAccountForEfficienciesWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
