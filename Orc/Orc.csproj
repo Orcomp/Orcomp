@@ -76,6 +76,8 @@
     <Compile Include="Interface\IIntervalContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Submissions\AccountForEfficiencies.cs" />
+    <Compile Include="Submissions\AccountForEfficienciesWrappers.cs" />
+    <Compile Include="Submissions\IAccountForEfficienciesWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Docs\Interval.md" />
