@@ -77,6 +77,9 @@
     <Compile Include="Algorithms\NSort\ShearSorter.cs" />
     <Compile Include="Algorithms\NSort\ShellSort.cs" />
     <Compile Include="Algorithms\NSort\SwapSorter.cs" />
+    <Compile Include="Algorithms\TimSort\ArrayTimSort.cs" />
+    <Compile Include="Algorithms\TimSort\ListTimSort.cs" />
+    <Compile Include="Algorithms\TimSort\TimSortExtensions.cs" />
     <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Entities\EndPointMinFirstComparer.cs" />
     <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
@@ -124,6 +127,7 @@
     <Content Include="Algorithms\NSort.Generic\README.txt" />
     <Content Include="Algorithms\NSort\LICENSE.txt" />
     <Content Include="Algorithms\NSort\README.txt" />
+    <Content Include="Algorithms\TimSort\License.txt" />
     <Content Include="Entities\RangeTree\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
