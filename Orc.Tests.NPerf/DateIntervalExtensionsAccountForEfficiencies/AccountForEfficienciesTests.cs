@@ -3,12 +3,12 @@
     using System;
     using System.Linq;
 
-    using Orc.Entities;   
-    using Orc.Submissions;
+    using Orc.Entities;
+    using Orc.Interface;
 
     using global::NPerf.Framework;
-    
-    [PerfTester(typeof(IAccountForEfficienciesWrapper), 2, Description = "Date Interval AccountForEfficiencies() method tests", FeatureDescription = "Intervals count")]
+
+    [PerfTester(typeof(IAccountForEfficiencies), 2, Description = "Date Interval AccountForEfficiencies() method tests", FeatureDescription = "Intervals count")]
     public class AccountForEfficienciesTests
     {
         private const int IntevalStep = 500;
@@ -23,7 +23,7 @@
         }
 
         [PerfSetUp]
-        public void SetUp(int testIndex, IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void SetUp(int testIndex, IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             numberOfIntervals = CollectionCount(testIndex);
         }
@@ -35,7 +35,7 @@
         }
 
         [PerfTest]
-        public void FixedStartPointNoOverlapsWithoutOffset(IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void FixedStartPointNoOverlapsWithoutOffset(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // 1% efficiency
             var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.Zero, numberOfIntervals)
@@ -47,7 +47,7 @@
         }
 
         [PerfTest]
-        public void FixedEndPointNoOverlapsWithoutOffset(IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void FixedEndPointNoOverlapsWithoutOffset(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // 1% efficiency
             var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.Zero, numberOfIntervals)
@@ -59,7 +59,7 @@
         }
 
         [PerfTest]
-        public void FixedStartPointNoOverlapsWithOffset(IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void FixedStartPointNoOverlapsWithOffset(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // 1% efficiency
             var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals)
@@ -71,7 +71,7 @@
         }
 
         [PerfTest]
-        public void FixedEndPointNoOverlapsWithOffset(IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void FixedEndPointNoOverlapsWithOffset(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // 1% efficiency
             var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals)
@@ -83,7 +83,7 @@
         }
 
         [PerfTest]
-        public void FixedStartPointNoOverlapsWithOffsetWithSpan(IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void FixedStartPointNoOverlapsWithOffsetWithSpan(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // |--------------------------------------| 100 % priority 1
             // |--|  |--|  |--|  |--|  |--|  |--|  |--| 1% priority 0
@@ -101,7 +101,7 @@
         }
 
         [PerfTest]
-        public void FixedStartPointNoOverlapsWithOffsetWithSpan2(IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void FixedStartPointNoOverlapsWithOffsetWithSpan2(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // |--------------------------------------| 100 %
             // |--|  |--|  |--|  |--|  |--|  |--|  |--|
@@ -119,7 +119,7 @@
         }
 
         [PerfTest]
-        public void FixedStartPointWithOverlaps(IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void FixedStartPointWithOverlaps(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // With decreasing efficiency
             // |-------------------|  90
@@ -137,7 +137,7 @@
         }
 
         [PerfTest]
-        public void FixedStartPointWithOverlapsWithSpan(IAccountForEfficienciesWrapper accountForEfficienciesCalculator)
+        public void FixedStartPointWithOverlapsWithSpan(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // |-------------------|  100% with highest priority
             // |-------------------|  90
