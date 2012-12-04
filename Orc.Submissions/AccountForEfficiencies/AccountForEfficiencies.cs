@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Orc.Submissions
+﻿namespace Orc.Submissions.AccountForEfficiencies
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
+
+    using C5;
+
     using Orc.Entities;
     using Orc.Entities.IntervalTreeRB;
     using Orc.Entities.RangeTree;
@@ -12,6 +14,7 @@ namespace Orc.Submissions
 
     public static class AccountForEfficiencies
     {
+        #region thcristo
         public static DateInterval thcristo(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
         {
             if (dateIntervalEfficiencies.Count == 0)
@@ -263,114 +266,359 @@ namespace Orc.Submissions
             return newInterval;
         }
 
+        /// <summary>
+        /// This class compares object IDs of efficiency intervals 
+        /// based on priority, efficiency and object id.
+        /// </summary>
+        private class DateIntervalEfficiencyComparer : System.Collections.Generic.Comparer<long>
+        {
+            private Dictionary<long, DateIntervalEfficiency> dictIntervals;
 
-        //#region Quicks01ver
+            public DateIntervalEfficiencyComparer(Dictionary<long, DateIntervalEfficiency> dictIntervals)
+            {
+                this.dictIntervals = dictIntervals;
+            }
 
-        //public class IntervalBorder {
-        //    public DateTime time;
-        //    public bool isStart;
-        //    public DateIntervalEfficiency efficiency;
+            public override int Compare(long x, long y)
+            {
+                DateIntervalEfficiency intervalx = this.dictIntervals[x];
+                DateIntervalEfficiency intervaly = this.dictIntervals[y];
 
-        //    public IntervalBorder(DateTime time, bool isStart, DateIntervalEfficiency efficiency) {
-        //    this.time = time;
-        //    this.isStart = isStart;
-        //    this.efficiency = efficiency;
-        //    }
-        //}
+                if (intervalx.Priority != intervaly.Priority)
+                    return (-1) * intervalx.Priority.CompareTo(intervaly.Priority);
+                else if (intervalx.Efficiency != intervaly.Efficiency)
+                    return intervalx.Efficiency.CompareTo(intervaly.Efficiency);
+                else
+                    return x.CompareTo(y);
+            }
+        }
 
-        //public class TimeComparer<T> : IComparer<T> where T : IntervalBorder {
-        //    public int Compare(T obj1, T obj2) {
-        //    return obj1.time.CompareTo(obj2.time);
-        //    }
-        //}
+        /// <summary>
+        /// This method will accept a dateInterval and calcualte a new dateInterval taking into account the dateIntervalEfficiencies
+        /// ASSUMPTION: the input dateInterval has an efficiency of 100%.
+        /// </summary>
+        /// <param name="dateInterval">
+        /// </param>
+        /// <param name="dateIntervalEfficiencies">
+        /// </param>
+        /// <param name="fixedEndPoint">
+        /// </param>
+        /// <returns>
+        /// The <see cref="DateInterval"/>.
+        /// </returns>
+        public static DateInterval thcristo3(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
+        {
+            if (dateIntervalEfficiencies.Count == 0)
+                return dateInterval;
 
-        //public class EfficiencyComparer<T> : IComparer<T> where T : DateIntervalEfficiency {
-        //    public int Compare(T obj1, T obj2) {
-        //    if (obj1.Priority == obj2.Priority)
-        //        return obj2.Efficiency.CompareTo(obj1.Efficiency);
+            DateIntervalCollection intvColl = new DateIntervalCollection(true);
 
-        //    return obj1.Priority.CompareTo(obj2.Priority);
-        //    }
-        //}
+            //We use this id generator for creating unique ID's to use 
+            //as keys in a dictionary
+            ObjectIDGenerator idGenerator = new ObjectIDGenerator();
+            bool firstTime;
+            Dictionary<long, DateIntervalEfficiency> dictIntervals = new Dictionary<long, DateIntervalEfficiency>();
 
-        //public static DateInterval Quicks01ver(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
-        //{
-        //    IntervalBorder[] borders = new IntervalBorder[2 * dateIntervalEfficiencies.Count];
-        //    IntervalHeap<DateIntervalEfficiency> efficiencies = new IntervalHeap<DateIntervalEfficiency>(dateIntervalEfficiencies.Count, new EfficiencyComparer<DateIntervalEfficiency>());
+            //Add efficiency intervals in a collection to sort their edges
+            //Also create a dictionary of unique IDs to intervals
+            foreach (DateIntervalEfficiency eff in dateIntervalEfficiencies)
+            {
+                intvColl.Add(eff);
+                dictIntervals.Add(idGenerator.GetId(eff, out firstTime), eff);
+            }
 
-        //    DateTime startTime = fixedEndPoint == FixedEndPoint.Min ? dateInterval.Min.Value : dateInterval.Max.Value;
-        //    DateTime currentTime = startTime;
-        //    long remainingTicks = dateInterval.Duration.Ticks;
-        //    bool flip = fixedEndPoint == FixedEndPoint.Max;
+            //In this list we will store the resulting efficiency intervals
+            List<DateIntervalEfficiency> efficiencyList = new List<DateIntervalEfficiency>();
 
-        //    int i = 0;
+            //Comparer to use for comparison between intervals
+            DateIntervalEfficiencyComparer comparer = new DateIntervalEfficiencyComparer(dictIntervals);
 
-        //    if (flip) { // if (fixedEndPoint == FixedEndPoint.Max)
-        //    DateTime dblStartTime = new DateTime(2 * startTime.Ticks);
-        //    foreach (var eff in dateIntervalEfficiencies) {
-        //        if (eff.Min.Value < startTime) {
-        //        borders[i++] = new IntervalBorder(eff.Max.Value < startTime ? dblStartTime.AddTicks(-eff.Max.Value.Ticks) : startTime, true, eff);
-        //        borders[i++] = new IntervalBorder(dblStartTime.AddTicks(-eff.Min.Value.Ticks), false, eff);
-        //        }
-        //    }
-        //    }
+            //We add and remove intervals in this dictionary as they come and go 
+            SortedDictionary<long, DateIntervalEfficiency> currentIntervals = new SortedDictionary<long, DateIntervalEfficiency>(comparer);
 
-        //    else { // if (fixedEndPoint == FixedEndPoint.Min)
-        //    foreach (var eff in dateIntervalEfficiencies) {
-        //        if (startTime < eff.Max.Value) {
-        //        borders[i++] = new IntervalBorder(startTime < eff.Min.Value ? eff.Min.Value : startTime, true, eff);
-        //        borders[i++] = new IntervalBorder(eff.Max.Value, false, eff);
-        //        }
-        //    }
-        //    }
+            //This is the interval to use for efficiency calculation
+            DateIntervalEfficiency priorityInterval = null;
 
-        //    int last = i;
+            //This is the last time when the efficiency changed
+            DateTime prevTime = DateTime.MinValue;
 
-        //    if (last > 0) {
-        //    Array.Sort(borders, 0, last, new TimeComparer<IntervalBorder>());
+            int numEdges = intvColl.DateEdges.Count;
+            int currentEdge = 0;
 
-        //    i = 0;
-        //    while (i < last) {
-        //        var b = borders[i];
+            //Loop through all interval edges
+            while (currentEdge < numEdges)
+            {
+                DateTime currentTime = intvColl.DateEdges[currentEdge].Value;
 
-        //        if (b.time == currentTime) {
-        //        if (b.isStart) efficiencies.Add(ref b.efficiency.handle, b.efficiency);
-        //        else efficiencies.Delete(b.efficiency.handle);
+                //Process all edges at this point in time
+                while (currentEdge < numEdges && intvColl.DateEdges[currentEdge].Value == currentTime)
+                {
+                    IEndPoint<DateTime> currentEndPoint = intvColl.DateEdges[currentEdge];
+                    long intervalID = idGenerator.GetId(currentEndPoint.Interval, out firstTime);
 
-        //        ++i;
-        //        }
+                    if (currentEndPoint.IsMin)
+                        //This interval starts, so add it to the sorted dictionary
+                        currentIntervals.Add(intervalID, dictIntervals[intervalID]);
+                    else
+                        //This interval ended, so remove it from the sorted dictionary
+                        currentIntervals.Remove(intervalID);
 
-        //        else {
-        //        TimeSpan period = b.time - currentTime;
-        //        long progress = efficiencies.IsEmpty ? period.Ticks : (long)(period.Ticks * 0.01 * efficiencies.FindMax().Efficiency);
+                    currentEdge++;
+                }
 
-        //        if (progress >= remainingTicks) {
-        //            long overDone = progress - remainingTicks;
-        //            remainingTicks = 0;
-        //            currentTime = b.time;
-        //            if (overDone > 0)
-        //            currentTime -= new TimeSpan(efficiencies.IsEmpty ? period.Ticks : (long)(overDone / (0.01 * efficiencies.FindMax().Efficiency)));
+                double oldEfficiency = (priorityInterval != null ? priorityInterval.Efficiency : 100);
+                double newEfficiency = (currentIntervals.Count > 0 ? currentIntervals.Values.First().Efficiency : 100);
 
-        //            break;
-        //        }
+                //Check if we are at the end
+                if (currentEdge == numEdges)
+                {
+                    if (oldEfficiency == newEfficiency)
+                        //Previous efficiency is 100%, add only one interval to the end
+                        efficiencyList.Add(new DateIntervalEfficiency(prevTime, DateTime.MaxValue, oldEfficiency));
+                    else
+                    {
+                        //Previous efficiency is not 100%, add two intervals to the end
+                        efficiencyList.Add(new DateIntervalEfficiency(prevTime, intvColl.DateEdges[currentEdge - 1].Value, oldEfficiency));
+                        efficiencyList.Add(new DateIntervalEfficiency(intvColl.DateEdges[currentEdge - 1].Value, DateTime.MaxValue, newEfficiency));
+                    }
+                }
+                else
+                {
+                    //Add a new interval only when efficiency changes
+                    if (oldEfficiency != newEfficiency)
+                    {
+                        efficiencyList.Add(new DateIntervalEfficiency(prevTime, intvColl.DateEdges[currentEdge - 1].Value, oldEfficiency));
+                        prevTime = intvColl.DateEdges[currentEdge - 1].Value;
+                    }
 
-        //        remainingTicks -= progress;
-        //        currentTime = b.time;
-        //        }
-        //    }
-        //    }
+                    //The interval to use is always the first (if any) in the sorted dictionary
+                    priorityInterval = (currentIntervals.Count > 0 ? currentIntervals.Values.First() : null);
+                }
+            }
 
-        //    if (remainingTicks > 0)
-        //    currentTime += new TimeSpan(remainingTicks);
+            //Create a new list to hold the points where efficiency changes
+            List<IEndPoint<DateTime>> changePoints = new List<IEndPoint<DateTime>>();
 
-        //    if (flip)
-        //    return new DateInterval(startTime.AddTicks(startTime.Ticks - currentTime.Ticks), startTime);
+            //efficiencyList contains already sorted intervals
+            foreach (DateIntervalEfficiency eff in efficiencyList)
+                changePoints.Add(eff.Min);
 
-        //    return new DateInterval(startTime, currentTime);
-        //}
-        //#endregion
+            changePoints.Add(efficiencyList.Last().Max);
+            numEdges = changePoints.Count;
+
+            int startEdge, endEdge, sign;
+            DateTime currentDate;
+
+            //Find the range of edges that are of interest
+            if (fixedEndPoint == FixedEndPoint.Min)
+            {
+                currentDate = dateInterval.Min.Value;
+                startEdge = changePoints.BinarySearch(dateInterval.Min);
+                if (startEdge < 0)
+                    startEdge = ~startEdge - 1;
+                endEdge = numEdges - 1;
+                sign = 1;
+            }
+            else
+            {
+                currentDate = dateInterval.Max.Value;
+                startEdge = changePoints.BinarySearch(dateInterval.Max);
+                if (startEdge < 0)
+                    startEdge = ~startEdge;
+                endEdge = 0;
+                sign = -1;
+            }
+
+            //We have to "consume" this time
+            double totalDays = dateInterval.Duration.TotalDays;
+
+            //This is the actual time used
+            double equivDays = 0;
+
+            DateInterval newInterval = dateInterval;
+            currentEdge = startEdge;
+
+            //Loop through the time points 
+            //and calculate the actual work done
+            //by taking into account the efficiencies.
+            while (currentEdge != endEdge)
+            {
+                int minEdge = (sign == 1 ? currentEdge : currentEdge - 1);
+                int maxEdge = (sign == 1 ? currentEdge + 1 : currentEdge);
+
+                DateTime minEdgeDate = changePoints[minEdge].Value;
+                DateTime maxEdgeDate = changePoints[maxEdge].Value;
+
+                double diffDays = Double.MaxValue;
+                DateTime newDate = (sign == 1 ? DateTime.MaxValue : DateTime.MinValue);
+
+                double currentEfficiency = (changePoints[minEdge].Interval as DateIntervalEfficiency).Efficiency;
+
+                if (currentEfficiency != 0)
+                {
+                    //Compute how much time is needed to complete the remaining task 
+                    //given the current interval's efficiency
+                    diffDays = totalDays * 100.0 / currentEfficiency;
+                    newDate = currentDate.AddDays(sign * diffDays);
+                }
+
+                if (currentEfficiency == 0)
+                {
+                    //No actual work is done, 
+                    //so just jump to the end of the interval
+                    newDate = (sign == 1 ? maxEdgeDate : minEdgeDate);
+                    equivDays += (newDate - currentDate).TotalDays * sign;
+                    currentDate = newDate;
+                }
+                else if ((sign > 0 && newDate > maxEdgeDate) || (sign < 0 && newDate < minEdgeDate))
+                {
+                    //This interval is not sufficient to complete the task,
+                    //so use all the interval's available time
+                    newDate = (sign == 1 ? maxEdgeDate : minEdgeDate);
+                    equivDays += (newDate - currentDate).TotalDays * sign;
+
+                    //Decrease the remaining task time and update the current point in time
+                    totalDays -= (newDate - currentDate).TotalDays * sign * currentEfficiency / 100.0;
+                    currentDate = newDate;
+                }
+                else
+                {
+                    //The task can be completed in this interval
+                    equivDays += diffDays;
+                    newInterval = new DateInterval((sign == 1 ? dateInterval.Min.Value : dateInterval.Max.Value.AddDays(sign * equivDays)), (sign == 1 ? dateInterval.Min.Value.AddDays(sign * equivDays) : dateInterval.Max.Value));
+                    break;
+                }
+
+                currentEdge += sign;
+            }
+
+            return newInterval;
+        }
+
+        #endregion
 
         #region Quicks01ver
+
+        public class IntervalBorder
+        {
+            public DateTime time;
+            public bool isStart;
+            public DateIntervalEfficiency efficiency;
+
+            public IntervalBorder(DateTime time, bool isStart, DateIntervalEfficiency efficiency)
+            {
+                this.time = time;
+                this.isStart = isStart;
+                this.efficiency = efficiency;
+            }
+        }
+
+        public class TimeComparer<T> : IComparer<T> where T : IntervalBorder
+        {
+            public int Compare(T obj1, T obj2)
+            {
+                return obj1.time.CompareTo(obj2.time);
+            }
+        }
+
+        public class EfficiencyComparer<T> : IComparer<T> where T : DateIntervalEfficiency
+        {
+            public int Compare(T obj1, T obj2)
+            {
+                if (obj1.Priority == obj2.Priority)
+                    return obj2.Efficiency.CompareTo(obj1.Efficiency);
+
+                return obj1.Priority.CompareTo(obj2.Priority);
+            }
+        }
+
+        public static DateInterval Quicks01ver(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
+        {
+            IntervalBorder[] borders = new IntervalBorder[2 * dateIntervalEfficiencies.Count];
+            IntervalHeap<DateIntervalEfficiency> efficiencies = new IntervalHeap<DateIntervalEfficiency>(dateIntervalEfficiencies.Count, new EfficiencyComparer<DateIntervalEfficiency>());
+
+            DateTime startTime = fixedEndPoint == FixedEndPoint.Min ? dateInterval.Min.Value : dateInterval.Max.Value;
+            DateTime currentTime = startTime;
+            long remainingTicks = dateInterval.Duration.Ticks;
+            bool flip = fixedEndPoint == FixedEndPoint.Max;
+
+            int i = 0;
+
+            if (flip)
+            { // if (fixedEndPoint == FixedEndPoint.Max)
+                DateTime dblStartTime = new DateTime(2 * startTime.Ticks);
+                foreach (var eff in dateIntervalEfficiencies)
+                {
+                    if (eff.Min.Value < startTime)
+                    {
+                        borders[i++] = new IntervalBorder(eff.Max.Value < startTime ? dblStartTime.AddTicks(-eff.Max.Value.Ticks) : startTime, true, eff);
+                        borders[i++] = new IntervalBorder(dblStartTime.AddTicks(-eff.Min.Value.Ticks), false, eff);
+                    }
+                }
+            }
+
+            else
+            { // if (fixedEndPoint == FixedEndPoint.Min)
+                foreach (var eff in dateIntervalEfficiencies)
+                {
+                    if (startTime < eff.Max.Value)
+                    {
+                        borders[i++] = new IntervalBorder(startTime < eff.Min.Value ? eff.Min.Value : startTime, true, eff);
+                        borders[i++] = new IntervalBorder(eff.Max.Value, false, eff);
+                    }
+                }
+            }
+
+            int last = i;
+
+            if (last > 0)
+            {
+                Array.Sort(borders, 0, last, new TimeComparer<IntervalBorder>());
+
+                i = 0;
+                while (i < last)
+                {
+                    var b = borders[i];
+
+                    if (b.time == currentTime)
+                    {
+                        if (b.isStart) efficiencies.Add(ref b.efficiency.handle, b.efficiency);
+                        else efficiencies.Delete(b.efficiency.handle);
+
+                        ++i;
+                    }
+
+                    else
+                    {
+                        TimeSpan period = b.time - currentTime;
+                        long progress = efficiencies.IsEmpty ? period.Ticks : (long)(period.Ticks * 0.01 * efficiencies.FindMax().Efficiency);
+
+                        if (progress >= remainingTicks)
+                        {
+                            long overDone = progress - remainingTicks;
+                            remainingTicks = 0;
+                            currentTime = b.time;
+                            if (overDone > 0)
+                                currentTime -= new TimeSpan(efficiencies.IsEmpty ? period.Ticks : (long)(overDone / (0.01 * efficiencies.FindMax().Efficiency)));
+
+                            break;
+                        }
+
+                        remainingTicks -= progress;
+                        currentTime = b.time;
+                    }
+                }
+            }
+
+            if (remainingTicks > 0)
+                currentTime += new TimeSpan(remainingTicks);
+
+            if (flip)
+                return new DateInterval(startTime.AddTicks(startTime.Ticks - currentTime.Ticks), startTime);
+
+            return new DateInterval(startTime, currentTime);
+        }
+
         public class IndexInterval
         {
             public int startIdx;
@@ -378,8 +626,8 @@ namespace Orc.Submissions
 
             public IndexInterval(int start = 0, int end = 0)
             {
-                startIdx = start;
-                endIdx = end;
+                this.startIdx = start;
+                this.endIdx = end;
             }
         }
 
@@ -390,8 +638,8 @@ namespace Orc.Submissions
 
             public ExtendedEfficiency(DateIntervalEfficiency eff, int startIdx, int endIdx)
             {
-                efficiency = eff;
-                indexInterval = new IndexInterval(startIdx, endIdx);
+                this.efficiency = eff;
+                this.indexInterval = new IndexInterval(startIdx, endIdx);
             }
         }
 
@@ -403,11 +651,11 @@ namespace Orc.Submissions
             public IntervalTreeNode(IntervalTreeNode parent, IndexInterval ii)
             {
                 this.parent = parent;
-                interval = ii;
+                this.interval = ii;
             }
         }
 
-        public class EfficiencyComparer<T> : IComparer<T> where T : ExtendedEfficiency
+        public class EfficiencyComparer2<T> : IComparer<T> where T : ExtendedEfficiency
         {
             public int Compare(T obj1, T obj2)
             {
@@ -498,7 +746,7 @@ namespace Orc.Submissions
 
             // Determine unique "support" points in time
 
-            var uniqueTimePoints = new HashSet<long>();
+            var uniqueTimePoints = new System.Collections.Generic.HashSet<long>();
             uniqueTimePoints.Add(fixedTimePoint);
 
             foreach (var eff in trimmedEfficiencies)
@@ -529,7 +777,7 @@ namespace Orc.Submissions
             var sortedEfficiencies = new List<ExtendedEfficiency>(trimmedEfficiencies.Count);
             foreach (var eff in trimmedEfficiencies)
                 sortedEfficiencies.Add(new ExtendedEfficiency(eff, ticksToSupportIndices[eff.Min.Value.Ticks], ticksToSupportIndices[eff.Max.Value.Ticks]));
-            sortedEfficiencies.Sort(new EfficiencyComparer<ExtendedEfficiency>());
+            sortedEfficiencies.Sort(new EfficiencyComparer2<ExtendedEfficiency>());
 
 
             // Core algorithm
@@ -1288,7 +1536,7 @@ namespace Orc.Submissions
             var result = new DateInterval(start, end);
             return result;
         }
-        public static IList<DateIntervalEfficiency> Collapse2(this IEnumerable<DateIntervalEfficiency> intervalCollection)
+        public static System.Collections.Generic.IList<DateIntervalEfficiency> Collapse2(this IEnumerable<DateIntervalEfficiency> intervalCollection)
         {
             if (intervalCollection == null)
             {
