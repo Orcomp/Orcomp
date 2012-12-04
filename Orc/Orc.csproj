@@ -108,10 +108,12 @@
     <Compile Include="Extensions\DateIntervalCollectionExtensions.cs" />
     <Compile Include="Extensions\DateIntervalExtensions.cs" />
     <Compile Include="Extensions\IntervalExtensions.cs" />
+    <Compile Include="Interface\IAccountForEfficiencies.cs" />
     <Compile Include="Interface\IDateInterval.cs" />
     <Compile Include="Interface\IEndPoint.cs" />
     <Compile Include="Interface\IInterval.cs" />
     <Compile Include="Interface\IIntervalContainer.cs" />
+    <Compile Include="NPerfWrappers\IIntervalContainerWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
