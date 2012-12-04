@@ -69,11 +69,11 @@
     //    }
     //}
 
-    //public class MoustafaS2 : IAccountForEfficiencies
-    //{
-    //    public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
-    //    {
-    //        return initialInterval.MoustafaS2(dateIntervalEfficiencies, fixedEndPoint);
-    //    }
-    //}
+    public class MoustafaS2 : IAccountForEfficiencies
+    {
+        public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
+        {
+            return initialInterval.MoustafaS2(dateIntervalEfficiencies, fixedEndPoint);
+        }
+    }
 }
