@@ -1,19 +1,20 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
     /// <summary>
 	/// http://www.codeproject.com/csharp/csquicksort.asp
 	/// </summary>
-	public class QuickSorter : SwapSorter
+    public class QuickSorter<T> : SwapSorter<T>
 	{
 		public QuickSorter()
 			:base()
 		{}
 
-		public QuickSorter(IComparer comparer, ISwap swapper)
+        public QuickSorter(IComparer<T> comparer, ISwap<T> swapper)
 			:base(comparer,swapper)
 		{}
 
@@ -21,12 +22,12 @@ namespace Orc.Algorithms.NSort.Generic
 		/// Sorts the array.
 		/// </summary>
 		/// <param name="array">The array to sort.</param>
-		public override void Sort(IList array)
+        public override void Sort(IList<T> array)
 		{
 			this.Sort(array, 0, array.Count-1);
 		}
 
-		public void Sort(IList array, int lower, int upper)
+        public void Sort(IList<T> array, int lower, int upper)
 		{
 			// Check for non-base case
 			if (lower < upper)
@@ -39,11 +40,11 @@ namespace Orc.Algorithms.NSort.Generic
 		}
 
         #region Internal
-        internal int Pivot(IList array, int lower, int upper)
+        internal int Pivot(IList<T> array, int lower, int upper)
         {
             // Pivot with first element
             int left=lower+1;
-            object pivot=array[lower];
+            T pivot=array[lower];
             int right=upper;
 
             // Partition array elements

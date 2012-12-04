@@ -2,24 +2,25 @@ namespace Orc.Algorithms.NSort.Generic
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class DoubleStorageMergeSort : SwapSorter
+    public class DoubleStorageMergeSort<T> : SwapSorter<T>
 	{
 		public DoubleStorageMergeSort() : base() {}
 
-		public DoubleStorageMergeSort(IComparer comparer, ISwap swapper)
+        public DoubleStorageMergeSort(IComparer<T> comparer, ISwap<T> swapper)
 			: base(comparer,swapper)
 		{}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
-			object[] scratch = new IComparable[list.Count];
+            var scratch = new T[list.Count];
 			this.Sort(list, 0, list.Count-1, scratch);
 		}
 
-		private void Sort(IList list, int fromPos, int toPos, object[] scratch) 
+        private void Sort(IList<T> list, int fromPos, int toPos, T[] scratch) 
 		{
 			int mid=0;
 			int i;

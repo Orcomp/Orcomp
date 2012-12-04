@@ -1,24 +1,25 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class QuickSortWithBubbleSort : SwapSorter
+    public class QuickSortWithBubbleSort<T> : SwapSorter<T>
 	{
 		public QuickSortWithBubbleSort() : base() {}
-		
-		public QuickSortWithBubbleSort(IComparer comparer, ISwap swapper)
+
+        public QuickSortWithBubbleSort(IComparer<T> comparer, ISwap<T> swapper)
 			:base(comparer,swapper)
 		{
 		}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
 			this.Sort1(list, 0, list.Count-1);
 		}
 
-		private void Sort2(IList list, int low, int high) 
+        private void Sort2(IList<T> list, int low, int high) 
 		{
 			int j;
 			int i;
@@ -35,11 +36,11 @@ namespace Orc.Algorithms.NSort.Generic
 			}
 		}
 
-		private void Sort1(IList list, int fromPos, int toPos) 
+        private void Sort1(IList<T> list, int fromPos, int toPos) 
 		{
 			int low;
 			int high;
-			object pivot;
+			T pivot;
 			
 			low = fromPos;
 			high = toPos;

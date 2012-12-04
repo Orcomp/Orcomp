@@ -2,6 +2,7 @@ namespace Orc.Algorithms.NSort.Generic
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
@@ -13,18 +14,18 @@ namespace Orc.Algorithms.NSort.Generic
 	/// This class serves as a base class for swap based sort algorithms.
 	/// </para>
 	/// </remarks>
-	public abstract class SwapSorter : ISorter
+	public abstract class SwapSorter<T> : ISorter<T>
 	{
-		private IComparer comparer;
-		private ISwap swapper;
+		private IComparer<T> comparer;
+		private ISwap<T> swapper;
 
 		public SwapSorter()
 		{
-			this.comparer = new ComparableComparer();
-			this.swapper = new DefaultSwap();
+			this.comparer = new ComparableComparer<T>();
+			this.swapper = new DefaultSwap<T>();
 		}
 
-		public SwapSorter(IComparer comparer, ISwap swapper)
+		public SwapSorter(IComparer<T> comparer, ISwap<T> swapper)
 		{
 			if (comparer == null)
 				throw new ArgumentNullException("comparer");
@@ -44,7 +45,7 @@ namespace Orc.Algorithms.NSort.Generic
 		/// <exception cref="ArgumentNullException">
 		/// Set property, the value is a null reference
 		/// </exception>
-		public IComparer Comparer
+		public IComparer<T> Comparer
 		{
 			get			
 			{
@@ -65,7 +66,7 @@ namespace Orc.Algorithms.NSort.Generic
 		/// The <see cref="ISwap"/> swapper.
 		/// </value>
 		/// <exception cref="ArgumentNullException">Swapper is a null reference</exception>
-		public ISwap Swapper
+		public ISwap<T> Swapper
 		{
 			get
 			{
@@ -79,6 +80,6 @@ namespace Orc.Algorithms.NSort.Generic
 			}
 		}
 
-		public abstract void Sort(IList list);
+		public abstract void Sort(IList<T> list);
 	}
 }

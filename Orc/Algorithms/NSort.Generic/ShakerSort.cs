@@ -1,19 +1,20 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class ShakerSort : SwapSorter
+    public class ShakerSort<T> : SwapSorter<T>
 	{
 		public ShakerSort() : base() {}
 
-		public ShakerSort(IComparer comparer, ISwap swapper)
+        public ShakerSort(IComparer<T> comparer, ISwap<T> swapper)
 			:base(comparer,swapper)
 		{
 		}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
 			int i;
 			int j;

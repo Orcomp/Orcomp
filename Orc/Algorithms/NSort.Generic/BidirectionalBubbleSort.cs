@@ -1,19 +1,20 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class BiDirectionalBubbleSort : SwapSorter
+    public class BiDirectionalBubbleSort<T> : SwapSorter<T>
 	{
 		public BiDirectionalBubbleSort() : base() {}
 
-		public BiDirectionalBubbleSort(IComparer comparer, ISwap swapper)
+        public BiDirectionalBubbleSort(IComparer<T> comparer, ISwap<T> swapper)
 			:base(comparer,swapper)
 		{
 		}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
 			int j;
 			int limit;

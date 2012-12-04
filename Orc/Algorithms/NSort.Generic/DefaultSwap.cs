@@ -1,27 +1,28 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
     /// <summary>
 	/// Default swap class
 	/// </summary>
-	public class DefaultSwap : ISwap
+	public class DefaultSwap<T> : ISwap<T>
 	{
-		public void Swap(IList array, int left, int right)
+		public void Swap(IList<T> array, int left, int right)
 		{
-			object swap=array[left];
+			T swap=array[left];
 			array[left]=array[right];
 			array[right]=swap;
 		}
 
-		public void Set(IList array, int left, int right)
+		public void Set(IList<T> array, int left, int right)
 		{
 			array[left]=array[right];
 		}
 
-		public void Set(IList array, int left, object obj)
+		public void Set(IList<T> array, int left, T obj)
 		{
 			array[left]=obj;
 		}

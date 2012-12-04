@@ -1,21 +1,22 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class ComboSort11 : SwapSorter
+    public class ComboSort11<T> : SwapSorter<T>
 	{
 		private const double c_COMBOSORTSHRINKFACTOR = 1.3;
 
 		public ComboSort11() : base() {}
 
-		public ComboSort11(IComparer comparer, ISwap swapper)
+        public ComboSort11(IComparer<T> comparer, ISwap<T> swapper)
 			:base(comparer,swapper)
 		{
 		}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
 			bool flipped=true;
 			int gap;

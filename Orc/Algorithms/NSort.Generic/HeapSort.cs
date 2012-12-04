@@ -1,19 +1,20 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class HeapSort : SwapSorter
+    public class HeapSort<T> : SwapSorter<T>
 	{
 		public HeapSort() : base() {}
 
-		public HeapSort(IComparer comparer, ISwap swapper)
+        public HeapSort(IComparer<T> comparer, ISwap<T> swapper)
 			:base(comparer,swapper)
 		{
 		}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
 			int n;
 			int i;
@@ -31,7 +32,7 @@ namespace Orc.Algorithms.NSort.Generic
 			} while (n>1);
 		}
 
-		private void DownHeap(IList list, int k, int n)
+        private void DownHeap(IList<T> list, int k, int n)
 		{
 			int j;
 			bool loop=true;

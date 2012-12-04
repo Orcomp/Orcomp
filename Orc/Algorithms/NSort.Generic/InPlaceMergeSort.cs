@@ -1,28 +1,29 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class InPlaceMergeSort : SwapSorter
+    public class InPlaceMergeSort<T> : SwapSorter<T>
 	{
 		public InPlaceMergeSort() : base() {}
 
-		public InPlaceMergeSort(IComparer comparer, ISwap swapper)
+        public InPlaceMergeSort(IComparer<T> comparer, ISwap<T> swapper)
 			: base(comparer,swapper)
 		{}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
 			this.Sort(list, 0, list.Count - 1);
 		}
 
-		private void Sort(IList list, int fromPos, int toPos) 
+        private void Sort(IList<T> list, int fromPos, int toPos) 
 		{
 			int end_low;
 			int start_high;
 			int i;
-			object tmp;
+			T tmp;
 			int mid;
 			
 			if (fromPos < toPos) 

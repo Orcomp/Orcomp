@@ -2,6 +2,7 @@ namespace Orc.Algorithms.NSort.Generic
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
@@ -30,17 +31,17 @@ namespace Orc.Algorithms.NSort.Generic
 	/// Ported to C# by Jonathand de Halleux
 	/// </para>
 	/// </remarks>
-	public class FastQuickSorter : SwapSorter
+    public class FastQuickSorter<T> : SwapSorter<T>
 	{
 		public FastQuickSorter()
 			:base()
 		{}
 
-		public FastQuickSorter(IComparer comparer, ISwap swapper)
+        public FastQuickSorter(IComparer<T> comparer, ISwap<T> swapper)
 			: base(comparer,swapper)
 		{}
-    
-		public override void Sort(IList list)
+
+        public override void Sort(IList<T> list)
 		{
 			this.QuickSort(list, 0, list.Count - 1);
 			this.InsertionSort(list,0,list.Count-1);
@@ -62,12 +63,12 @@ namespace Orc.Algorithms.NSort.Generic
 	    /// <param name="list">list to sort</param>
 	    /// <param name="lo0">left boundary of array partition</param>
 	    /// <param name="hi0">right boundary of array partition</param>
-	    internal void QuickSort(IList list, int l, int r)
+        internal void QuickSort(IList<T> list, int l, int r)
 	    {
 	        int M = 4;
 	        int i;
 	        int j;
-	        Object v;
+	        T v;
 
 	        if ((r-l)>M)
 	        {
@@ -102,11 +103,11 @@ namespace Orc.Algorithms.NSort.Generic
 	    }
 
 
-	    internal void InsertionSort(IList list, int lo0, int hi0)
+        internal void InsertionSort(IList<T> list, int lo0, int hi0)
 	    {
 	        int i;
 	        int j;
-	        Object v;
+	        T v;
     
 	        for (i=lo0+1;i<=hi0;i++)
 	        {

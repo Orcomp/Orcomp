@@ -1,6 +1,7 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
@@ -18,19 +19,19 @@ namespace Orc.Algorithms.NSort.Generic
 	/// http://www.cs.rit.edu/~atk/Java/Sorting/sorting.html</a>
 	/// </para>
 	/// </remarks>
-	public class BubbleSorter : SwapSorter
+    public class BubbleSorter<T> : SwapSorter<T>
 	{
 		public BubbleSorter()
 			:base()
 		{
 		}
 
-		public BubbleSorter(IComparer comparer, ISwap swapper)
+        public BubbleSorter(IComparer<T> comparer, ISwap<T> swapper)
 			:base(comparer,swapper)
 		{
 		}
 
-		public override void Sort(IList list)
+        public override void Sort(IList<T> list)
 		{
 			for (int i = list.Count; --i>=0; )
 			{

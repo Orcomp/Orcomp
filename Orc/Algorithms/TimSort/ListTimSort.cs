@@ -70,11 +70,13 @@ namespace Orc.Algorithms.TimSort
     using System.Collections.Generic;
     using System.Diagnostics;
 
+    using Orc.Algorithms.Interfaces;
+
     #region class ListTimSort<T>
 
 	/// <summary>TimSort implementation for List.</summary>
 	/// <typeparam name="T">Type of item.</typeparam>
-	internal class ListTimSort<T>
+	public class ListTimSort<T> : ISorter<T>
 	{
 		/// <summary>
 		/// This is the minimum sized sequence that will be merged.  Shorter
@@ -139,13 +141,21 @@ namespace Orc.Algorithms.TimSort
 		private int[] m_RunBase;
 		private int[] m_RunLength;
 
+        /// <summary>
+        ///  Added parameterless constructor to work with NPerf
+        /// </summary>
+        public ListTimSort()
+            :this(new List<T>(), Comparer<T>.Default.Compare)
+	    {
+	    }
+
 		/// <summary>
 		/// Prevents a default instance of the <see cref="TimSort&lt;T&gt;"/> class from being created.
 		/// Creates a TimSort instance to maintain the state of an ongoing sort.
 		/// </summary>
 		/// <param name="array">The array to be sorted.</param>
 		/// <param name="comparer">The comparator to determine the order of the sort.</param>
-		private ListTimSort(IList<T> array, Comparison<T> comparer)
+		public ListTimSort(IList<T> array, Comparison<T> comparer)
 		{
 			this.m_Array = array;
 			this.m_Comparer = comparer;
@@ -182,6 +192,15 @@ namespace Orc.Algorithms.TimSort
 		{
 			Sort(array, 0, array.Count, comparer);
 		}
+
+        /// <summary>
+        /// Implements the ISort interface
+        /// </summary>
+        /// <param name="array"></param>
+        public void Sort(IList<T> array)
+        {
+            Sort(array, Comparer<T>.Default.Compare);
+        }
 
 		/// <summary>Sorts the specified array.</summary>
 		/// <param name="a">Array to be sorted.</param>

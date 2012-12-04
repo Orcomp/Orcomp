@@ -1,19 +1,20 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class SelectionSort : SwapSorter
+    public class SelectionSort<T> : SwapSorter<T>
 	{
 		public SelectionSort() : base() {}
 
-		public SelectionSort(IComparer comparer, ISwap swapper)
+        public SelectionSort(IComparer<T> comparer, ISwap<T> swapper)
 			:base(comparer,swapper)
 		{
 		}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
 			int i;
 			int j;

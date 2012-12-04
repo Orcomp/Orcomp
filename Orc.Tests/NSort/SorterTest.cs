@@ -130,20 +130,20 @@ namespace Orc.Tests.NSort
 	}
 
 	[TestFixture]
-	public class ShearSorterTest : SorterTest
-	{
-		[SetUp]
-		public void SetUp()
-		{
-			this.Sorter = new ShearSorter();
-		}
+    //public class ShearSorterTest : SorterTest
+    //{
+    //    [SetUp]
+    //    public void SetUp()
+    //    {
+    //        this.Sorter = new ShearSorter();
+    //    }
 
-		[Test]
-		public void Test()
-		{
-			this.SortTest();
-		}
-	}
+    //    [Test]
+    //    public void Test()
+    //    {
+    //        this.SortTest();
+    //    }
+    //}
 
 
 	[TestFixture]

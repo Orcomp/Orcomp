@@ -1,23 +1,24 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class ShellSort : SwapSorter
+    public class ShellSort<T> : SwapSorter<T>
 	{
 		public ShellSort() : base() {}
 
-		public ShellSort(IComparer comparer, ISwap swapper)
+        public ShellSort(IComparer<T> comparer, ISwap<T> swapper)
 			: base(comparer,swapper)
 		{}
 
-		public override void Sort(IList list) 
+        public override void Sort(IList<T> list) 
 		{
 			int h;
 			int i;
 			int j;
-			object b;
+			T b;
 			bool loop=true;
 
 			h = 1;

@@ -1,6 +1,7 @@
 namespace Orc.Algorithms.Interfaces
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
 	/// Summary description for ISorter.
@@ -9,4 +10,9 @@ namespace Orc.Algorithms.Interfaces
 	{
 		void Sort(IList list);
 	}
+
+    public interface ISorter<T>
+    {
+        void Sort(IList<T> list);
+    }
 }

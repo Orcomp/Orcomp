@@ -2,21 +2,22 @@ namespace Orc.Algorithms.NSort.Generic
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
 
     /// <summary>
 	/// Default <see cref="IComparable"/> object comparer.
 	/// </summary>
-	public class ComparableComparer : IComparer
+	public class ComparableComparer<T> : IComparer<T>
 	{
-		public int Compare(IComparable x, Object y)
+		public int Compare(IComparable<T> x, T y)
 		{
 			return x.CompareTo(y);
 		}
 
         #region IComparer Members
-        int IComparer.Compare(Object x, Object y)
+        int IComparer<T>.Compare(T x, T y)
         {
-            return this.Compare((IComparable)x,y);
+            return this.Compare((IComparable<T>)x,y);
         }
 
         #endregion

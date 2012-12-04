@@ -1,22 +1,23 @@
 namespace Orc.Algorithms.NSort.Generic
 {
     using System.Collections;
+    using System.Collections.Generic;
 
     using Orc.Algorithms.Interfaces;
 
-    public class InsertionSort : SwapSorter
+    public class InsertionSort<T> : SwapSorter<T>
 	{
 		public InsertionSort() : base() {}
 
-		public InsertionSort(IComparer comparer, ISwap swapper)
+        public InsertionSort(IComparer<T> comparer, ISwap<T> swapper)
 			: base(comparer,swapper)
 		{}
-		
-		public override void Sort(IList list) 
+
+        public override void Sort(IList<T> list) 
 		{
 			int i;
 			int j;
-			object b;
+			T b;
 
 			for (i=1; i<list.Count ;i++)
 			{
