@@ -126,6 +126,7 @@
     <None Include="Entities\IntervalTreeRB\README.md" />
     <Content Include="Algorithms\Interfaces\LICENSE.txt" />
     <Content Include="Algorithms\Interfaces\README.txt" />
+    <Content Include="Algorithms\NSort.Generic\LICENSE.txt" />
     <Content Include="Algorithms\NSort.Generic\README.txt" />
     <Content Include="Algorithms\NSort\LICENSE.txt" />
     <Content Include="Algorithms\NSort\README.txt" />
