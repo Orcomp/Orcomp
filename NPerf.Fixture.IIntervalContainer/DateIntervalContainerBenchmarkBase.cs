@@ -1,4 +1,4 @@
-﻿namespace Orc.Tests.NPerf.IntervalContainer
+﻿namespace NPerf.Fixture.IIntervalContainer
 {
     using System;
 

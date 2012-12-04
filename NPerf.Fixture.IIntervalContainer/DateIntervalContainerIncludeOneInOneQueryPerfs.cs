@@ -1,4 +1,4 @@
-﻿namespace Orc.Tests.NPerf.IntervalContainer
+﻿namespace NPerf.Fixture.IIntervalContainer
 {
     using System;
     using System.Collections.Generic;
@@ -7,10 +7,10 @@
     using Orc.Entities;
     using Orc.Interface;
 
-    using global::NPerf.Framework;
+    using NPerf.Framework;
 
     [PerfTester(typeof(IIntervalContainer<DateTime>), 2, Description = "Interval Container Query method benchmark tests for DateTime interval", FeatureDescription = "Intervals count")]
-    public class DateIntervalContainerIncludedOneInOneQueryTests : DateIntervalContainerBenchmarkBase
+    public class DateIntervalContainerIncludedOneInOneQueryPerfs : DateIntervalContainerBenchmarkBase
     {
         [PerfSetUp]
         public void SetUp(int testIndex, IIntervalContainer<DateTime> intervalContainer)
@@ -30,7 +30,6 @@
         }
 
         [PerfTest]
-        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Query_MidPointToMaxSpanningInterval(IIntervalContainer<DateTime> container)
         {
             Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, 0, this.numberOfIntervals);
@@ -38,7 +37,6 @@
         }
 
         [PerfTest]
-        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Query_MidInterval(IIntervalContainer<DateTime> container)
         {
             Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, -1, 1);
@@ -46,7 +44,6 @@
         }
 
         [PerfTest]
-        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Query_MinToMaxSpanningInterval(IIntervalContainer<DateTime> container)
         {
             Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, -this.numberOfIntervals, this.numberOfIntervals);
@@ -54,7 +51,6 @@
         }
 
         [PerfTest]
-        [PerfIgnore("Should run AccountForEfficienciesTests tests")]
         public void Query_RigthEndInterval(IIntervalContainer<DateTime> container)
         {
             Interval<DateTime> queryInterval = this.ToDateTimeInterval(DateTime.Now, this.numberOfIntervals - 1, this.numberOfIntervals);

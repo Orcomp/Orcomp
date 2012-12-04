@@ -1,4 +1,4 @@
-﻿namespace Orc.Tests.NPerf.DateIntervalExtensionsAccountForEfficiencies
+﻿namespace NPerf.Fixture.IAccountForEfficiencies
 {
     using System;
     using System.Linq;
@@ -6,10 +6,10 @@
     using Orc.Entities;
     using Orc.Interface;
 
-    using global::NPerf.Framework;
+    using NPerf.Framework;
 
     [PerfTester(typeof(IAccountForEfficiencies), 2, Description = "Date Interval AccountForEfficiencies() method tests", FeatureDescription = "Intervals count")]
-    public class AccountForEfficienciesTests
+    public class AccountForEfficienciesPerfs
     {
         private const int IntevalStep = 500;
 
@@ -25,23 +25,23 @@
         [PerfSetUp]
         public void SetUp(int testIndex, IAccountForEfficiencies accountForEfficienciesCalculator)
         {
-            numberOfIntervals = CollectionCount(testIndex);
+            this.numberOfIntervals = this.CollectionCount(testIndex);
         }
 
         [PerfRunDescriptor]
         public double RunDescription(int testIndex)
         {
-            return CollectionCount(testIndex);
+            return this.CollectionCount(testIndex);
         }
 
         [PerfTest]
         public void FixedStartPointNoOverlapsWithoutOffset(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.Zero, numberOfIntervals)
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(this.now, TimeSpan.FromMinutes(1), TimeSpan.Zero, this.numberOfIntervals)
                 .Select(interval => new DateIntervalEfficiency(interval, 1)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
+            var initialInterval = new DateInterval(this.now, dateIntervalEfficiencies.Last().Max.Value);
 
             accountForEfficienciesCalculator.AccountForEfficiencies(initialInterval, dateIntervalEfficiencies, FixedEndPoint.Min);
         }
@@ -50,10 +50,10 @@
         public void FixedEndPointNoOverlapsWithoutOffset(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.Zero, numberOfIntervals)
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(this.now, TimeSpan.FromMinutes(1), TimeSpan.Zero, this.numberOfIntervals)
                 .Select(interval => new DateIntervalEfficiency(interval, 1)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
+            var initialInterval = new DateInterval(this.now, dateIntervalEfficiencies.Last().Max.Value);
 
             accountForEfficienciesCalculator.AccountForEfficiencies(initialInterval, dateIntervalEfficiencies, FixedEndPoint.Max);
         }
@@ -62,10 +62,10 @@
         public void FixedStartPointNoOverlapsWithOffset(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals)
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(this.now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), this.numberOfIntervals)
                 .Select(interval => new DateIntervalEfficiency(interval, 1)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
+            var initialInterval = new DateInterval(this.now, dateIntervalEfficiencies.Last().Max.Value);
 
             accountForEfficienciesCalculator.AccountForEfficiencies(initialInterval, dateIntervalEfficiencies, FixedEndPoint.Min);
         }
@@ -74,10 +74,10 @@
         public void FixedEndPointNoOverlapsWithOffset(IAccountForEfficiencies accountForEfficienciesCalculator)
         {
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals)
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(this.now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), this.numberOfIntervals)
                 .Select(interval => new DateIntervalEfficiency(interval, 1)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
+            var initialInterval = new DateInterval(this.now, dateIntervalEfficiencies.Last().Max.Value);
 
             accountForEfficienciesCalculator.AccountForEfficiencies(initialInterval, dateIntervalEfficiencies, FixedEndPoint.Max);
         }
@@ -90,10 +90,10 @@
 
 
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals)
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(this.now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), this.numberOfIntervals)
                 .Select(interval => new DateIntervalEfficiency(interval, 1)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
+            var initialInterval = new DateInterval(this.now, dateIntervalEfficiencies.Last().Max.Value);
 
             dateIntervalEfficiencies.Add(new DateIntervalEfficiency(initialInterval, 100, 1));
 
@@ -108,10 +108,10 @@
             //  50   150    50   150   50    150
 
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), numberOfIntervals)
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.NoOverlaps(this.now, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1), this.numberOfIntervals)
                 .Select((interval, i) => new DateIntervalEfficiency(interval, i % 2 == 0 ? 50 : 150)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.Last().Max.Value);
+            var initialInterval = new DateInterval(this.now, dateIntervalEfficiencies.Last().Max.Value);
 
             dateIntervalEfficiencies.Add(new DateIntervalEfficiency(initialInterval, 100));
 
@@ -128,10 +128,10 @@
             //        |-----|         60
 
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(now, TimeSpan.FromMinutes(1), numberOfIntervals)
-                .Select((interval, i) => new DateIntervalEfficiency(interval, numberOfIntervals - i)).ToList();
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(this.now, TimeSpan.FromMinutes(1), this.numberOfIntervals)
+                .Select((interval, i) => new DateIntervalEfficiency(interval, this.numberOfIntervals - i)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.First().Max.Value);
+            var initialInterval = new DateInterval(this.now, dateIntervalEfficiencies.First().Max.Value);
 
             accountForEfficienciesCalculator.AccountForEfficiencies(initialInterval, dateIntervalEfficiencies, FixedEndPoint.Min);
         }
@@ -146,10 +146,10 @@
             //        |-----|         60
 
             // 1% efficiency
-            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(now, TimeSpan.FromMinutes(1), numberOfIntervals)
-                .Select((interval, i) => new DateIntervalEfficiency(interval, numberOfIntervals - i)).ToList();
+            var dateIntervalEfficiencies = DateIntervalCollectionGenerator.OverlapsWithDecreasingDuration(this.now, TimeSpan.FromMinutes(1), this.numberOfIntervals)
+                .Select((interval, i) => new DateIntervalEfficiency(interval, this.numberOfIntervals - i)).ToList();
 
-            var initialInterval = new DateInterval(now, dateIntervalEfficiencies.First().Max.Value);
+            var initialInterval = new DateInterval(this.now, dateIntervalEfficiencies.First().Max.Value);
 
             dateIntervalEfficiencies.Add(new DateIntervalEfficiency(initialInterval, 100, 1));
 

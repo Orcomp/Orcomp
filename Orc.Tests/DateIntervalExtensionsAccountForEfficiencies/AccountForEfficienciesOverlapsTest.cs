@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NUnit.Framework;
-using Orc.Entities;
-using Orc.Extensions;
-
-namespace Orx.Tests
+﻿namespace Orc.Tests.DateIntervalExtensionsAccountForEfficiencies
 {
+    using System;
+    using System.Collections.Generic;
+
+    using NUnit.Framework;
+
+    using Orc.Entities;
+    using Orc.Extensions;
+
     [TestFixture]
     public class AccountForEfficienciesOverlapsTest
     {
@@ -18,7 +19,7 @@ namespace Orx.Tests
         public void Init()
         {
             this.now = DateTime.Now;
-            this.start = new DateTime(now.Year, now.Month, now.Day, 13, 0, 0);
+            this.start = new DateTime(this.now.Year, this.now.Month, this.now.Day, 13, 0, 0);
             this.dateIntervalEfficiencies = new List<DateIntervalEfficiency>();
         }
 
@@ -55,21 +56,21 @@ namespace Orx.Tests
             // Total duration is: 30 + 20 + 1 = 51 mins
 
             // Arrange
-            DateTime end = start.AddMinutes(60);
-            var dateInterval = new DateInterval(start, end);
+            DateTime end = this.start.AddMinutes(60);
+            var dateInterval = new DateInterval(this.start, end);
 
-            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start, start.AddMinutes(30)), 50);
-            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(30), start.AddMinutes(50)), 200);
-            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(50), start.AddMinutes(60)), 500, 1);
-            dateIntervalEfficiencies.Add(efficiency1);
-            dateIntervalEfficiencies.Add(efficiency2);
-            dateIntervalEfficiencies.Add(efficiency3);
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(this.start, this.start.AddMinutes(30)), 50);
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(30), this.start.AddMinutes(50)), 200);
+            var efficiency3 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(50), this.start.AddMinutes(60)), 500, 1);
+            this.dateIntervalEfficiencies.Add(efficiency1);
+            this.dateIntervalEfficiencies.Add(efficiency2);
+            this.dateIntervalEfficiencies.Add(efficiency3);
 
             // Act
-            var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
+            var newDateInterval = dateInterval.AccountForEfficiencies(this.dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(51));
+            var result = new DateInterval(this.start, this.start.AddMinutes(51));
             Assert.AreEqual(result, newDateInterval);
         }
 
@@ -100,22 +101,22 @@ namespace Orx.Tests
             // Total duration is: 10 + 30 + 10 + 10 + 5 = 65 mins
 
             // Arrange
-            DateTime end = start.AddMinutes(80);
+            DateTime end = this.start.AddMinutes(80);
 
-            var dateInterval = new DateInterval(start, end);
+            var dateInterval = new DateInterval(this.start, end);
 
-            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start, start.AddMinutes(50)), 200);
-            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(10), start.AddMinutes(40)), 50);
-            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(60), start.AddMinutes(80)), 300);
-            dateIntervalEfficiencies.Add(efficiency1);
-            dateIntervalEfficiencies.Add(efficiency2);
-            dateIntervalEfficiencies.Add(efficiency3);
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(this.start, this.start.AddMinutes(50)), 200);
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(10), this.start.AddMinutes(40)), 50);
+            var efficiency3 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(60), this.start.AddMinutes(80)), 300);
+            this.dateIntervalEfficiencies.Add(efficiency1);
+            this.dateIntervalEfficiencies.Add(efficiency2);
+            this.dateIntervalEfficiencies.Add(efficiency3);
 
             // Act
-            var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
+            var newDateInterval = dateInterval.AccountForEfficiencies(this.dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(65));
+            var result = new DateInterval(this.start, this.start.AddMinutes(65));
             Assert.AreEqual(result, newDateInterval);
         }
 
@@ -142,20 +143,20 @@ namespace Orx.Tests
             // Total duration is: 15 + 30 + 8 = 53 min
 
             // Arrange
-            DateTime end = start.AddMinutes(55);
+            DateTime end = this.start.AddMinutes(55);
 
-            var dateInterval = new DateInterval(start, end);
+            var dateInterval = new DateInterval(this.start, end);
 
-            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(15), start.AddMinutes(45)), 80, 1);
-            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(40), start.AddMinutes(60)), 200);
-            dateIntervalEfficiencies.Add(efficiency1);
-            dateIntervalEfficiencies.Add(efficiency2);
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(15), this.start.AddMinutes(45)), 80, 1);
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(40), this.start.AddMinutes(60)), 200);
+            this.dateIntervalEfficiencies.Add(efficiency1);
+            this.dateIntervalEfficiencies.Add(efficiency2);
 
             // Act
-            var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
+            var newDateInterval = dateInterval.AccountForEfficiencies(this.dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(53));
+            var result = new DateInterval(this.start, this.start.AddMinutes(53));
             Assert.AreEqual(result, newDateInterval);
         }
 
@@ -188,22 +189,22 @@ namespace Orx.Tests
             // Total duration is: 10 + 15 + 25 + 20 + 10 + 10 + 8 = 98 mins
 
             // Arrange
-            DateTime end = start.AddMinutes(90);
+            DateTime end = this.start.AddMinutes(90);
 
-            var dateInterval = new DateInterval(start, end);
+            var dateInterval = new DateInterval(this.start, end);
 
-            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(10), start.AddMinutes(50)), 90);
-            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(10), start.AddMinutes(25)), 30, 1);
-            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(70), start.AddMinutes(80)), 150);
-            dateIntervalEfficiencies.Add(efficiency1);
-            dateIntervalEfficiencies.Add(efficiency2);
-            dateIntervalEfficiencies.Add(efficiency3);
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(10), this.start.AddMinutes(50)), 90);
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(10), this.start.AddMinutes(25)), 30, 1);
+            var efficiency3 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(70), this.start.AddMinutes(80)), 150);
+            this.dateIntervalEfficiencies.Add(efficiency1);
+            this.dateIntervalEfficiencies.Add(efficiency2);
+            this.dateIntervalEfficiencies.Add(efficiency3);
 
             // Act
-            var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
+            var newDateInterval = dateInterval.AccountForEfficiencies(this.dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(98));
+            var result = new DateInterval(this.start, this.start.AddMinutes(98));
             Assert.AreEqual(result, newDateInterval);
         }
 
@@ -234,22 +235,22 @@ namespace Orx.Tests
             // Total duration is: 10 + 45 + 36 = 91
 
             // Arrange
-            DateTime end = start.AddMinutes(100);
+            DateTime end = this.start.AddMinutes(100);
 
-            var dateInterval = new DateInterval(start, end);
+            var dateInterval = new DateInterval(this.start, end);
 
-            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(10), start.AddMinutes(55)), 120, 1);
-            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(15), start.AddMinutes(50)), 100);
-            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(20), start.AddMinutes(45)), 30);
-            dateIntervalEfficiencies.Add(efficiency1);
-            dateIntervalEfficiencies.Add(efficiency2);
-            dateIntervalEfficiencies.Add(efficiency3);
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(10), this.start.AddMinutes(55)), 120, 1);
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(15), this.start.AddMinutes(50)), 100);
+            var efficiency3 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(20), this.start.AddMinutes(45)), 30);
+            this.dateIntervalEfficiencies.Add(efficiency1);
+            this.dateIntervalEfficiencies.Add(efficiency2);
+            this.dateIntervalEfficiencies.Add(efficiency3);
 
             // Act
-            var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
+            var newDateInterval = dateInterval.AccountForEfficiencies(this.dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(91));
+            var result = new DateInterval(this.start, this.start.AddMinutes(91));
             Assert.AreEqual(result, newDateInterval);
         }
 
@@ -286,22 +287,22 @@ namespace Orx.Tests
             // Total duration is: 10 + 5 + 5 + 25 + 5 + 5 + 45 + 15.5 = 115.5 mins
 
             // Arrange
-            DateTime end = start.AddMinutes(100);
+            DateTime end = this.start.AddMinutes(100);
 
-            var dateInterval = new DateInterval(start, end);
+            var dateInterval = new DateInterval(this.start, end);
 
-            var efficiency1 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(10), start.AddMinutes(55)), 120);
-            var efficiency2 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(15), start.AddMinutes(50)), 100);
-            var efficiency3 = new DateIntervalEfficiency(new DateInterval(start.AddMinutes(20), start.AddMinutes(45)), 30);
-            dateIntervalEfficiencies.Add(efficiency1);
-            dateIntervalEfficiencies.Add(efficiency2);
-            dateIntervalEfficiencies.Add(efficiency3);
+            var efficiency1 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(10), this.start.AddMinutes(55)), 120);
+            var efficiency2 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(15), this.start.AddMinutes(50)), 100);
+            var efficiency3 = new DateIntervalEfficiency(new DateInterval(this.start.AddMinutes(20), this.start.AddMinutes(45)), 30);
+            this.dateIntervalEfficiencies.Add(efficiency1);
+            this.dateIntervalEfficiencies.Add(efficiency2);
+            this.dateIntervalEfficiencies.Add(efficiency3);
 
             // Act
-            var newDateInterval = dateInterval.AccountForEfficiencies(dateIntervalEfficiencies);
+            var newDateInterval = dateInterval.AccountForEfficiencies(this.dateIntervalEfficiencies);
 
             // Assert
-            var result = new DateInterval(start, start.AddMinutes(115.5));
+            var result = new DateInterval(this.start, this.start.AddMinutes(115.5));
             Assert.AreEqual(result, newDateInterval);
         }
     }

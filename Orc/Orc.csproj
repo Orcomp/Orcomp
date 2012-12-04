@@ -72,6 +72,7 @@
     <Compile Include="Interface\IEndPoint.cs" />
     <Compile Include="Interface\IInterval.cs" />
     <Compile Include="Interface\IIntervalContainer.cs" />
+    <Compile Include="NPerfWrappers\IIntervalContainerWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

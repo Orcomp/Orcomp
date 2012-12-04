@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48746827-1EB5-4E31-8ED1-4F5CBB588FB2}</ProjectGuid>
+    <ProjectGuid>{4FF2B2D1-5E7B-458E-8FAA-22FA708DDD74}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Orc.Tests.NPerf</RootNamespace>
-    <AssemblyName>Orc.Tests.NPerf</AssemblyName>
+    <RootNamespace>Nperf.Fixture.IAccountForEfficiencies</RootNamespace>
+    <AssemblyName>Nperf.Fixture.IAccountForEfficiencies</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,11 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateIntervalExtensionsAccountForEfficiencies\AccountForEfficienciesTests.cs" />
-    <Compile Include="IntervalContainer\DateIntervalContainer.Add.Tests.cs" />
-    <Compile Include="IntervalContainer\DateIntervalContainer.IncludeOneInOne.Query.Tests.cs" />
-    <Compile Include="IntervalContainer\DateIntervalContainerBenchmarkBase.cs" />
-    <Compile Include="IntervalContainer\DateIntervalContainerWrappers.cs" />
+    <Compile Include="AccountForEfficienciesPerfs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
