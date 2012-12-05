@@ -16,6 +16,7 @@ namespace Orc.Tests
 
     using Orc.Extensions;
     using Orc.Interval;
+    using Orc.Interval.Extensions;
     using Orc.Interval.Interface;
 
     /// <summary>

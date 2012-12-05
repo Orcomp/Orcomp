@@ -1,10 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orcomp", "Orcomp\Orcomp.csproj", "{4082C63F-4E32-463F-BE33-C302ED8A3255}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orcomp.Tests", "Orcomp.Tests\Orcomp.Tests.csproj", "{4BD72547-7202-4A62-A410-6DD815A6FA86}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D77A13B3-C446-4FF6-A775-4C2AFC95C545}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -13,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orcomp.Benchmarks", "Orcomp.Benchmarks\Orcomp.Benchmarks.csproj", "{7199DB15-C366-4E55-97AB-B5166932F45C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Benchmarks", "Orcomp.Benchmarks\Orc.Benchmarks.csproj", "{7199DB15-C366-4E55-97AB-B5166932F45C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomtestCases", "RandomtestCases\RandomtestCases.csproj", "{EC4AAE9E-4076-495E-BEDC-87AF2C44AE91}"
 EndProject
@@ -44,28 +40,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Debug|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Debug|Mixed Platforms.Build.0 = Release|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Debug|x86.Build.0 = Debug|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4082C63F-4E32-463F-BE33-C302ED8A3255}.Release|x86.ActiveCfg = Release|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Debug|x86.Build.0 = Debug|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4BD72547-7202-4A62-A410-6DD815A6FA86}.Release|x86.ActiveCfg = Release|Any CPU
 		{7199DB15-C366-4E55-97AB-B5166932F45C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7199DB15-C366-4E55-97AB-B5166932F45C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7199DB15-C366-4E55-97AB-B5166932F45C}.Debug|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -152,9 +126,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4FF2B2D1-5E7B-458E-8FAA-22FA708DDD74} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
 		{96F08E8A-780D-4A08-83D3-7CD0703746C7} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
 		{8B6EB19D-443C-4692-9FAC-3D7357F3EA13} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
 		{9FC62063-FDB0-4341-B5E0-897469F0CCC4} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
+		{4FF2B2D1-5E7B-458E-8FAA-22FA708DDD74} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
 	EndGlobalSection
 EndGlobal

@@ -37,24 +37,19 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Orcomp.Benchmarks\Orcomp.Benchmarks.csproj">
+    <ProjectReference Include="..\Orcomp.Benchmarks\Orc.Benchmarks.csproj">
       <Project>{7199DB15-C366-4E55-97AB-B5166932F45C}</Project>
-      <Name>Orcomp.Benchmarks</Name>
+      <Name>Orc.Benchmarks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Orcomp\Orcomp.csproj">
-      <Project>{4082C63F-4E32-463F-BE33-C302ED8A3255}</Project>
-      <Name>Orcomp</Name>
+    <ProjectReference Include="..\Orc\Orc.csproj">
+      <Project>{71f9cf8b-53a6-4626-bc89-ce4862d234a8}</Project>
+      <Name>Orc</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

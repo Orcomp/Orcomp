@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Xunit;
 
-namespace Orcomp.Benchmarks
+namespace Orc.Benchmarks
 {
+    using Orc.Algorithms;
+
     public static class ListWeaverBenchmark
     {
 
@@ -55,7 +56,7 @@ namespace Orcomp.Benchmarks
             s.Stop();
 
             // Check that the two sequences are correct.
-            Assert.True(result.SequenceEqual( Enumerable.Range( 1, finalSequenceLength ) ));
+            Debug.Assert(result.SequenceEqual( Enumerable.Range( 1, finalSequenceLength )));
 
             return s.ElapsedMilliseconds;
         }
@@ -83,7 +84,7 @@ namespace Orcomp.Benchmarks
             s.Stop();
 
             // Check that the two sequences are correct.
-            Assert.True(result.SequenceEqual(Enumerable.Range(1, finalSequenceLength)));
+            Debug.Assert(result.SequenceEqual(Enumerable.Range(1, finalSequenceLength)));
 
             return s.ElapsedMilliseconds;
         }

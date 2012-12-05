@@ -7,6 +7,7 @@
 
     using Orc.Extensions;
     using Orc.Interval;
+    using Orc.Interval.Extensions;
 
     [TestFixture]
     public class AccountForEfficienciesOverlapsTest

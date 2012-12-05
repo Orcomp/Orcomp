@@ -9,6 +9,7 @@
 
     using Orc.Extensions;
     using Orc.Interval;
+    using Orc.Interval.Extensions;
 
     public class AccountForEfficienciesBenchmark
     {

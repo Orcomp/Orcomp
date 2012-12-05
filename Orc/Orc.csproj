@@ -33,14 +33,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\ListWeaver.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISorter.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISwap.cs" />
     <Compile Include="Algorithms\Sort\NSort.Generic\BidirectionalBubbleSort.cs" />
@@ -83,6 +79,15 @@
     <Compile Include="Algorithms\Sort\TimSort\ArrayTimSort.cs" />
     <Compile Include="Algorithms\Sort\TimSort\ListTimSort.cs" />
     <Compile Include="Algorithms\Sort\TimSort\TimSortExtensions.cs" />
+    <Compile Include="Entities\Constraint.cs" />
+    <Compile Include="Entities\Interface\ITask.cs" />
+    <Compile Include="Entities\LevelIndicator.cs" />
+    <Compile Include="Entities\Task.cs" />
+    <Compile Include="Entities\TaskType.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\MiscExtensions.cs" />
+    <Compile Include="Extensions\TaskCollectionExtensions.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Interval\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Interval\EndPointMinFirstComparer.cs" />
     <Compile Include="DataStructures\IntervalSkipList\IntervalSkipList.cs" />
@@ -108,9 +113,9 @@
     <Compile Include="DataStructures\IntervalSkipList\SkipList\IScanner.cs" />
     <Compile Include="Interval\Point.cs" />
     <Compile Include="DataStructures\IntervalSkipList\SkipList\ScanRange.cs" />
-    <Compile Include="Extensions\DateIntervalCollectionExtensions.cs" />
-    <Compile Include="Extensions\DateIntervalExtensions.cs" />
-    <Compile Include="Extensions\IntervalExtensions.cs" />
+    <Compile Include="Interval\Extensions\DateIntervalCollectionExtensions.cs" />
+    <Compile Include="Interval\Extensions\DateIntervalExtensions.cs" />
+    <Compile Include="Interval\Extensions\IntervalExtensions.cs" />
     <Compile Include="Interval\Interface\IDateInterval.cs" />
     <Compile Include="Interval\Interface\IEndPoint.cs" />
     <Compile Include="Interval\Interface\IInterval.cs" />
@@ -118,12 +123,15 @@
     <Compile Include="NPerfGenericWrappers\IIntervalContainerDateTimeWrapper.cs" />
     <Compile Include="NPerfGenericWrappers\ISorterIntWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Submissions\GetSortedDateTimes.cs" />
+    <Compile Include="Utilities\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Docs\Interval.md" />
     <None Include="Docs\Links.md" />
     <None Include="Interval\Interval.cd" />
     <None Include="DataStructures\RangeTree\README.md" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DataStructures\IntervalTreeRB\README.md" />

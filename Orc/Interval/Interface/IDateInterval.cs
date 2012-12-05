@@ -22,5 +22,15 @@ namespace Orc.Interval.Interface
         /// The duration.
         /// </value>
         TimeSpan Duration { get; }
+
+        /// <summary>
+        /// DateInterval Start time
+        /// </summary>
+        DateTime StartTime { get; }
+
+        /// <summary>
+        /// DateInterval End time
+        /// </summary>
+        DateTime EndTime { get; }
     }
 }

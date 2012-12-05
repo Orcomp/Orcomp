@@ -16,7 +16,7 @@ namespace Orc.Interval
     /// The date interval.
     /// By Default the min endpoint is inclusive and the max is exclusive
     /// </summary>
-    public class DateInterval : Interval<DateTime>, IDateInterval
+    public class DateInterval : Interval<DateTime>, IDateInterval, IComparable<DateInterval>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DateInterval"/> class.
@@ -96,6 +96,51 @@ namespace Orc.Interval
         /// </value>
         public TimeSpan Duration { get; private set; }
 
-        // TODO: Need to implement IComparable<>
+        /// <summary>
+        /// Get the Start time
+        /// </summary>
+        public DateTime StartTime
+        {
+            get
+            {
+                return Min.Value;
+            }
+        }
+
+        /// <summary>
+        /// Get the End time
+        /// </summary>
+        public DateTime EndTime
+        {
+            get
+            {
+                return Max.Value;
+            }
+        }
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// Smallest Min comes first. If two Min have the same value. Smallest Max comes first.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public int CompareTo(DateInterval other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            var result = this.Min.CompareTo(other.Min);
+
+            if (result == 0)
+            {
+                result = this.Max.CompareTo(other.Max);
+            }
+
+            return result;
+        }
     }
 }
