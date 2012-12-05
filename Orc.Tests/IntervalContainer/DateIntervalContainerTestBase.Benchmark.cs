@@ -78,7 +78,7 @@
         [Timeout(60 * 1000)]
         public void Add_Remove_BenchmarkSequentialIntervals_Test()
         {
-            const int numberOfIntervals = 100000;
+            const int numberOfIntervals = 1000;
             const int intervalLength = 5;
             const int spaceLength = 1;
             const int intervalAndSpaceLength = intervalLength + spaceLength;            

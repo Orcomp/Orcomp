@@ -198,11 +198,19 @@ namespace Orc.Benchmarks
             return output.OrderBy( x => x);
         }
 
-        public static List<DateTime> GetSortedDateTimesQuickSort(List<DateInterval> orderedDateIntervals )
+        public static IEnumerable<DateTime> GetSortedDateTimesQuickSort(List<DateInterval> orderedDateIntervals )
         {
-            var dateTimes = new List<DateTime>(2*orderedDateIntervals.Count);
-            orderedDateIntervals.ForEach(x => dateTimes.AddRange(new List<DateTime> { x.StartTime, x.EndTime }));
-            dateTimes.Sort();
+            var dateTimes = new DateTime[2*orderedDateIntervals.Count];
+
+            var DateIntervals = orderedDateIntervals.ToArray();
+
+            for (int i = 0; i < DateIntervals.Length; i++)
+            {
+                dateTimes[i] = DateIntervals[i].StartTime;
+                dateTimes[i+1] = DateIntervals[i].EndTime;
+            }
+
+            Array.Sort(dateTimes);
 
             return dateTimes;
         }

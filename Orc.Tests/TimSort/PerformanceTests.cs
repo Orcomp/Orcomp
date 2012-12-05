@@ -27,7 +27,7 @@ namespace Orc.Tests.TimSort
     [TestFixture]
 	public class PerformanceTests
 	{
-		const int maxSize = (int.MaxValue / 100) / sizeof(int);
+		const int maxSize = 100000;
 		const int seed = 1234;
 
 		public static int Compare(int a, int b)

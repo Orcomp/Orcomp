@@ -15,16 +15,17 @@
         {
             Contestants = new Dictionary<string, Func<List<DateInterval>, IEnumerable<DateTime>>>();
             //Contestants.Add("MoustafaS", MoustafaS);
-            Contestants.Add("Zaher", Zaher);
+            //Contestants.Add("Zaher", Zaher);
             //Contestants.Add("aus1", Aus1);
-            Contestants.Add("Renze", Renze);
-            Contestants.Add("RenzeExtended", RenzeExtended);
+            //Contestants.Add("Renze", Renze);
+            //Contestants.Add("RenzeExtended", RenzeExtended);
             //Contestants.Add("V_Tom_R", V_Tom_R);
             //Contestants.Add("SoftwareBender", SoftwareBender);
             //Contestants.Add("ErwinReid", ErwinReid);
             //Contestants.Add("Mihai", Mihai);
             //Contestants.Add("bawr", Bawr);
             Contestants.Add("c6c", C6c);
+            Contestants.Add("c6c_mod", C6c_mod);
         }
 
         public static IEnumerable<DateTime> Run(this List<DateInterval> orderedDateIntervals, string contestant)
@@ -487,6 +488,39 @@
 
             if (!CheckSorted(endDateTimes))
                 Array.Sort(endDateTimes);
+            return MergeSortedArrays(startDateTimes, endDateTimes);
+        }
+
+        public static IEnumerable<DateTime> C6c_mod(this List<DateInterval> orderedDateIntervals)
+        {
+            // c6c version modified
+
+            var dateIntervals = orderedDateIntervals.ToArray();
+
+            var startDateTimes = new DateTime[dateIntervals.Length];
+            var endDateTimes = new DateTime[dateIntervals.Length];
+
+            bool areEndPointsSorted = true;
+            DateTime previousEndPoint = DateTime.MinValue;
+
+            for (int i = 0; i < dateIntervals.Length; i++)
+            {
+                startDateTimes[i] = dateIntervals[i].StartTime;
+                endDateTimes[i] = dateIntervals[i].EndTime;
+
+                if (areEndPointsSorted && (previousEndPoint > endDateTimes[i]))
+                {
+                    areEndPointsSorted = false;
+                }
+
+                previousEndPoint = endDateTimes[i];
+            }
+
+            if (!areEndPointsSorted)
+            {
+                Array.Sort(endDateTimes);
+            }
+
             return MergeSortedArrays(startDateTimes, endDateTimes);
         }
 

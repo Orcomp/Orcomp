@@ -44,7 +44,7 @@ namespace RandomtestCases
                         if (SmallestFailingTestCases == null || SmallestFailingTestCases.Count() > orderedDateRanges.Count())
                         {
                             SmallestFailingTestCases = orderedDateRanges;
-                            SmallestReferenceResult = Reference;
+                            SmallestReferenceResult = Reference.ToList();
                             SmallestSubmittedResult = Submission;
                             CurrentMaxDateRanges = SmallestFailingTestCases.Count();
                             errContestants = currentErr;
