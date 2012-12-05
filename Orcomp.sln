@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPerf.Fixture.ISorter", "NP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPerf.Fixture.ISorterInt", "NPerf.Fixture.ISorterInt\NPerf.Fixture.ISorterInt.csproj", "{9FC62063-FDB0-4341-B5E0-897469F0CCC4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NPerf.Fixtures", "NPerf.Fixtures", "{6F9F71E8-BB53-4C0E-A253-23EC7C86813C}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Orcomp.vsmdi
@@ -137,8 +139,8 @@ Global
 		{8B6EB19D-443C-4692-9FAC-3D7357F3EA13}.Release|x86.ActiveCfg = Release|Any CPU
 		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Debug|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Debug|Mixed Platforms.Build.0 = Release|Any CPU
 		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FC62063-FDB0-4341-B5E0-897469F0CCC4}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -148,5 +150,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4FF2B2D1-5E7B-458E-8FAA-22FA708DDD74} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
+		{96F08E8A-780D-4A08-83D3-7CD0703746C7} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
+		{8B6EB19D-443C-4692-9FAC-3D7357F3EA13} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
+		{9FC62063-FDB0-4341-B5E0-897469F0CCC4} = {6F9F71E8-BB53-4C0E-A253-23EC7C86813C}
 	EndGlobalSection
 EndGlobal

@@ -6,9 +6,9 @@
 
     using NUnit.Framework;
 
-    using Orc.Entities;
-    using Orc.Entities.IntervalTreeAVL;
-    using Orc.Interface;
+    using Orc.DataStructures.IntervalTreeAVL;
+    using Orc.Interval;
+    using Orc.Interval.Interface;
 
     [TestFixture]
     public class IntervalTreeAVLTest : DateIntervalContainerTestBase
@@ -61,7 +61,7 @@
             intervals.Add(new Interval<int>(1, 2));
             intervals.Add(new Interval<int>(1, 3));
 
-            var intervalContainer = new Entities.IntervalTreeRB.IntervalTree<int>();
+            var intervalContainer = new DataStructures.IntervalTreeRB.IntervalTree<int>();
             intervals.ForEach(intervalContainer.Add);
 
             //Act

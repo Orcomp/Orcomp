@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Orc.Entities;
-    using Orc.Interface;
-
     using NPerf.Framework;
+
+    using Orc.Interval;
+    using Orc.Interval.Interface;
 
     [PerfTester(typeof(IIntervalContainer<DateTime>), 2, Description = "Interval Container Query method benchmark tests for DateTime interval", FeatureDescription = "Intervals count")]
     public class DateIntervalContainerIncludedOneInOneQueryPerfs : DateIntervalContainerBenchmarkBase

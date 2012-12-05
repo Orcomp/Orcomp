@@ -7,8 +7,8 @@
 
     using NUnit.Framework;
 
-    using Orc.Entities;
     using Orc.Extensions;
+    using Orc.Interval;
 
     public class AccountForEfficienciesBenchmark
     {

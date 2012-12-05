@@ -6,9 +6,9 @@
 
     using NUnit.Framework;
 
-    using Orc.Entities;
-    using Orc.Entities.IntervalTreeRB;
-    using Orc.Interface;
+    using Orc.DataStructures.IntervalTreeRB;
+    using Orc.Interval;
+    using Orc.Interval.Interface;
 
     [TestFixture, Ignore]
     public class IntervalTreeRBTest : DateIntervalContainerTestBase

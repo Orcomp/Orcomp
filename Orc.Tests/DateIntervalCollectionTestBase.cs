@@ -12,7 +12,7 @@ namespace Orc.Tests
 
     using NUnit.Framework;
 
-    using Orc.Entities;
+    using Orc.Interval;
 
     /// <summary>
     /// Common logic for date interval collection tests 

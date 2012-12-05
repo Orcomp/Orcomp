@@ -11,7 +11,7 @@ namespace Orc.Extensions
     using System.Collections.Generic;
     using System.Linq;
 
-    using Orc.Entities;
+    using Orc.Interval;
 
     /// <summary>
     /// The date interval collection extensions.

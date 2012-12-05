@@ -5,8 +5,8 @@
 
     using NUnit.Framework;
 
-    using Orc.Entities;
     using Orc.Extensions;
+    using Orc.Interval;
 
     [TestFixture]
     public class AccountForEfficienciesNoOverlapTest

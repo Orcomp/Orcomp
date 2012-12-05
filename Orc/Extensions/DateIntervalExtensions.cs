@@ -12,7 +12,7 @@ namespace Orc.Extensions
     using System;
     using System.Collections.Generic;
 
-    using Orc.Entities;
+    using Orc.Interval;
 
     /// <summary>
     /// The date interval extensions.

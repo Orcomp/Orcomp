@@ -13,8 +13,7 @@ namespace Orc.Tests
 
     using NUnit.Framework;
 
-    using Orc.Entities;
-    using Orc.Interface;
+    using Orc.Interval;
 
     [TestFixture]
     public class DateEndPointTest

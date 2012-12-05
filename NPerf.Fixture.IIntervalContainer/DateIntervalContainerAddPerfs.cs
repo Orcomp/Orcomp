@@ -2,9 +2,9 @@
 {
     using System;
 
-    using Orc.Interface;
-
     using NPerf.Framework;
+
+    using Orc.Interval.Interface;
 
     [PerfTester(typeof(IIntervalContainer<DateTime>), 2, Description = "Interval Container Add method benchmark tests for DateTime interval", FeatureDescription = "Intervals count")]
     public class DateIntervalContainerAddPerfs : DateIntervalContainerBenchmarkBase

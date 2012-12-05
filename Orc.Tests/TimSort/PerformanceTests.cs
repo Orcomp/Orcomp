@@ -22,7 +22,7 @@ namespace Orc.Tests.TimSort
 
     using System.Collections.Generic;
 
-    using Orc.Algorithms.TimSort;
+    using Orc.Algorithms.Sort.TimSort;
 
     [TestFixture]
 	public class PerformanceTests

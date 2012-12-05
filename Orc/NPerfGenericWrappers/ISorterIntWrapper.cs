@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Orc.NPerfWrappers
+﻿namespace Orc.NPerfGenericWrappers
 {
-    public class QuickSorter_Int : Orc.Algorithms.NSort.Generic.QuickSorter<int>{ }
-    public class TimSort_Int : Orc.Algorithms.TimSort.ListTimSort<int>{ }
+    using Orc.Algorithms.Sort;
+    using Orc.Algorithms.Sort.TimSort;
+
+    //public class QuickSorter_Int : Orc.Algorithms.NSort.Generic.QuickSorter<int>{ }
+    public class TimSort_Int : ListTimSort<int>{ }
+    public class QuickSortBaseClass_Int :QuickSortBaseClass<int> { }
 }

@@ -5,8 +5,8 @@ namespace Orc.Tests.NSort
 
     using NUnit.Framework;
 
-    using Orc.Algorithms.Interfaces;
-    using Orc.Algorithms.NSort;
+    using Orc.Algorithms.Sort.Interfaces;
+    using Orc.Algorithms.Sort.NSort;
 
     /// <summary>
 	/// Summary description for SorterTest.

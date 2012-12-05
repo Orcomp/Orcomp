@@ -5,7 +5,7 @@
 
     using NUnit.Framework;
 
-    using Orc.Entities;
+    using Orc.Interval;
 
     public partial class DateIntervalContainerTestBase
     {

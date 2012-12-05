@@ -7,8 +7,8 @@
 
     using NUnit.Framework;
 
-    using Orc.Entities;
-    using Orc.Interface;
+    using Orc.Interval;
+    using Orc.Interval.Interface;
 
     public partial class DateIntervalContainerTestBase
     {

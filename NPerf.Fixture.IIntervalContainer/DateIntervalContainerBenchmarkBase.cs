@@ -2,7 +2,7 @@
 {
     using System;
 
-    using Orc.Entities;
+    using Orc.Interval;
 
     public abstract class DateIntervalContainerBenchmarkBase
     {

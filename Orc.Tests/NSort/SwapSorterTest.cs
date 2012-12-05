@@ -4,7 +4,7 @@ namespace Orc.Tests.NSort
 
     using NUnit.Framework;
 
-    using Orc.Algorithms.NSort;
+    using Orc.Algorithms.Sort.NSort;
 
     /// <summary>
 	/// Summary description for SwapSorterTest.

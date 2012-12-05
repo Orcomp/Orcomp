@@ -3,10 +3,12 @@
     using System;
     using System.Linq;
 
-    using Orc.Entities;
-    using Orc.Interface;
-
     using NPerf.Framework;
+
+    using Nperf.Fixture.IAccountForEfficiencies;
+
+    using Orc.Interval;
+    using Orc.Interval.Interface;
 
     [PerfTester(typeof(IAccountForEfficiencies), 2, Description = "Date Interval AccountForEfficiencies() method tests", FeatureDescription = "Intervals count")]
     public class AccountForEfficienciesPerfs

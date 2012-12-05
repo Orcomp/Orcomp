@@ -4,8 +4,8 @@
 
     using NUnit.Framework;
 
-    using Orc.Entities.RangeTree;
-    using Orc.Interface;
+    using Orc.DataStructures.RangeTree;
+    using Orc.Interval.Interface;
 
     [TestFixture]
     public class RangeTree : DateIntervalContainerTestBase
