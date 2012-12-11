@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="AccountForEfficiencies\AccountForEfficiencies.cs" />
     <Compile Include="AccountForEfficiencies\AccountForEfficienciesWrappers.cs" />
+    <Compile Include="AccountForEfficiencies\SpecialIntervalTree\IntervalNode.cs" />
+    <Compile Include="AccountForEfficiencies\SpecialIntervalTree\IntervalTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +54,7 @@
       <Name>Orc</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

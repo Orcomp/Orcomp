@@ -45,6 +45,14 @@
         }
     }
 
+    public class thcristo4 : IAccountForEfficiencies
+    {
+        public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
+        {
+            return initialInterval.thcristo4(dateIntervalEfficiencies, fixedEndPoint);
+        }
+    }
+
     public class Quicks01lver : IAccountForEfficiencies
     {
         public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
@@ -61,6 +69,14 @@
     //    }
     //}
 
+    public class Quicks01lver3 : IAccountForEfficiencies
+    {
+        public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
+        {
+            return initialInterval.Quicks01ver(dateIntervalEfficiencies, fixedEndPoint);
+        }
+    }
+
     //public class MoustafaS : IAccountForEfficiencies
     //{
     //    public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
@@ -69,11 +85,11 @@
     //    }
     //}
 
-    public class MoustafaS2 : IAccountForEfficiencies
-    {
-        public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
-        {
-            return initialInterval.MoustafaS2(dateIntervalEfficiencies, fixedEndPoint);
-        }
-    }
+    //public class MoustafaS2 : IAccountForEfficiencies
+    //{
+    //    public DateInterval AccountForEfficiencies(DateInterval initialInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint)
+    //    {
+    //        return initialInterval.MoustafaS2(dateIntervalEfficiencies, fixedEndPoint);
+    //    }
+    //}
 }
