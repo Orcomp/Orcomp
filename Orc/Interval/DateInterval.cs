@@ -74,6 +74,16 @@ namespace Orc.Interval
         }
 
         /// <summary>
+        /// Instantiate DateInterval from EndPoints data.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public DateInterval(DateEndPoint start, DateEndPoint end)
+            :this(start.Value, end.Value, start.IsInclusive, end.IsInclusive)
+        {
+        }
+
+        /// <summary>
         /// Return the overlap with other interval
         /// </summary>
         /// <param name="other">

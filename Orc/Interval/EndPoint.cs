@@ -276,6 +276,7 @@ namespace Orc.Interval
             {
                 int hash = 17;
 
+                //hash = hash * 23 + this.Interval.GetHashCode();
                 hash = hash * 23 + this.EndPointType.GetHashCode();
                 hash = hash * 23 + EqualityComparer<T>.Default.GetHashCode(this.Value);
                 hash = hash * 23 + this.IsInclusive.GetHashCode();
