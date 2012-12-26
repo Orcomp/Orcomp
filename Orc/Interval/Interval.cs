@@ -217,6 +217,7 @@ namespace Orc.Interval
             {
                 return true;
             }
+
             // NOTE: Not sure whether to include type comparision yet. Leave comment below.
             // return (this.GetType() == other.GetType()) && (this.CompareTo(other) == 0);
 
@@ -231,8 +232,20 @@ namespace Orc.Interval
         /// </returns>
         public override int GetHashCode()
         {
-            return this.Min.GetHashCode() ^ this.Max.GetHashCode();
+            // http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
+
+            unchecked
+            {
+                int hash = 17;
+
+                hash = hash * 23 + (this.Min == null ? 0 : this.Min.GetHashCode());
+                hash = hash * 23 + (this.Max == null ? 0 : this.Max.GetHashCode());
+
+                return hash;
+            }
         }
+
+
         /// <summary>
         /// Checks whether a point is contained within the interval
         /// </summary>

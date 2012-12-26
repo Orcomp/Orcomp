@@ -12,6 +12,7 @@ namespace Orc.Interval
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
 
     using Orc.Interval.Interface;
 
@@ -113,6 +114,7 @@ namespace Orc.Interval
         /// <value>
         /// The interval.
         /// </value>
+        [IgnoreDataMember]
         public IInterval<T> Interval
         {
             get
@@ -266,15 +268,19 @@ namespace Orc.Interval
         /// <returns>
         /// A hash code for the current <see cref="T:System.Object"/>.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
+            // http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
+
             unchecked
             {
-                int hashCode = this.EndPointType.GetHashCode();
-                hashCode = (hashCode * 397) ^ EqualityComparer<T>.Default.GetHashCode(this.Value);
-                hashCode = (hashCode * 397) ^ this.IsInclusive.GetHashCode();
-                return hashCode;
+                int hash = 17;
+
+                hash = hash * 23 + this.EndPointType.GetHashCode();
+                hash = hash * 23 + EqualityComparer<T>.Default.GetHashCode(this.Value);
+                hash = hash * 23 + this.IsInclusive.GetHashCode();
+
+                return hash;
             }
         }
 
