@@ -3,8 +3,9 @@
   using System;
   using System.Collections.Generic;
 
+  using Orc.Interval;
 
-  public class IntervalTree
+    public class IntervalTree
   {
     private readonly HashSet<long> UniqueTimePoints = new HashSet<long>();
     private readonly Dictionary<long, int> TimeToSupportIndex = new Dictionary<long, int>();

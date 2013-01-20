@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using Orc.Entities;
+    using Orc.Interval;
 
     public interface IAccountForEfficiencies
     {

@@ -7,9 +7,9 @@ namespace Orc.Tests.DateIntervalExtensionsAccountForEfficiencies
 
     using NUnit.Framework;
 
-    using Orc.Extensions;
     using Orc.Interval;
-    using Orc.Interval.Extensions;
+    //using Orc.Interval.Extensions;
+    using Orc.Competitions.AccountForEfficiencies;
 
     public class AccountForEfficienciesBenchmark
     {

@@ -5,7 +5,7 @@
     using System.Diagnostics;
     using System.Linq;
 
-    using Orc.Interface;
+    using Orc.Interval;
 
     public static class DateIntervalCollectionGenerator
     {

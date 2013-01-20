@@ -7,11 +7,14 @@
 
     using C5;
 
+    using Orc.DataStructures.RangeTree;
     using Orc.Entities;
-    using Orc.Entities.IntervalTreeRB;
-    using Orc.Entities.RangeTree;
+    using Orc.DataStructures.IntervalTreeRB;
+    using Orc.DataStructures.RangeTree;
     using Orc.Entities.SpecialIntervalTree;
     using Orc.Interface;
+    using Orc.Interval;
+    using Orc.Interval.Interface;
 
     public static class AccountForEfficiencies
     {
@@ -863,31 +866,6 @@
             }
         }
 
-        /*
-        So here the overview:
-
-        I ended up with a tree of inclusions and integrating every "delta"-interval there is. When complete, I start from the beginning and move forward until the work is done.
-
-        Back in my student days, I did a similar structure in an image processing project while working in the institute for medical informatics at the RWTH Aachen. We did hierarchical image segmentation, building a tree of regions, with each region containing a set of pixels. Neighbouring regions got merged at some point during the process based on different similarity measures between them, until u end up with the whole iamge as a single region - the root.
-        More interesting is the data storage. In the leaves you store the pixels directly, but when you're higher up the hierarchy that would give you a huge memory usage and data redundancy. But when not stored, you still have to access them somehow. You can accumulate th em, inevitably visiting each child node and copying the pixels from each leaf into an array - a slowdown, so still bad.
-        So I did this tree where all the pixels lie in a single array, and the order of the pixels being implicitly defined by the tree structure. And the pixels for every node turn out to be sequential regions in the array, so we only have to store start and end points and at the same time gaining O(1) random access to the pixels of each region.
-        This definitely bears similarities with the current solution of our little interval problem. Only kind of upside-down... This is the idea I expanded on and ended up with the following algorithm.
-
-        In short:
-
-        For every interval, we scan this described single data array from left to right, according to the interval dimension and position. We create a 'Time -> Array Index' mapping, and for every interval we get its start and end index, just like in my above example. We scan from left to r ight, marking every array element we go over, with the interval it belongs to. If we meet another interval, we mark it as a child for the next "parent node" and then we jump over it. While advancing, we multiply the delta time intervals (in ticks) by the current ruling efficiency. This creates our "leafs", which is our foundation for the tree. Overlapping/neighbouring intervals get "merged" by creating a new parent node having extents to fit all its children in. So whenever there is an existent interval in the borders of the currently processed efficiency, it will become a child of the newly created parent node. As an optimization, we readjust the paths from leaf to parent, since only the topmost parent is used, thus giving us amortized O(1) for accessing the parent from the leaf.
-        On every "time point", we store the "efficient ticks" info, being the time of the delta interval in ticks multiplied by the ruling efficiency for it. We init the ticks array with real time duration (i.e. 100% efficiency) and on every "time point" we process, we multiply by the efficiency.
-        At the end of all of this, we just begin at point zero and go forward until we reach our goal.
-        For fixed end point, logic is like last time - only flip, with the endpoint being the center of the "mirroring".
-
-        By the way, I saw that you had some IntervalTree... structures there. I didn't check them out, I used only my own stuff for the first version. Most probably there are a few possibilities to make this prettier and more "OOP", but I went for the "pure" and raw algorithm with minimal, fast and spot-on data structures, so those things went mostly unconsidered.
-
-        All in all, it got more complex and more tedious to develop than the simple queue algorithm, but the idea is so smart and ingenious (hehe) that it was worth the extra time :) I am just not sure at what input sizes it will show its superiority over t he queue approach however, which itself should be very fast and very close complexity-wise to this one - the only drawback of the queue seems to be the O(log(n)) addition time of elements.
-
-        I got rid of the priority queue in the end, but I again ended up with some kind of tree :) Some "heavy duty" performance tests would be great to measure and see the differences! (Of course I didn't bother to write some, lol)
-
-        That's about it, please check it out and tell me what you think! :)
-         * */
         public static DateInterval Quicks01lver2(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
         {
             // Check for empty list

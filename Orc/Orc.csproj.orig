@@ -40,8 +40,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Algorithms\ListWeaver.cs" />
-    <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISorter.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISwap.cs" />
     <Compile Include="Algorithms\Sort\NSort.Generic\BidirectionalBubbleSort.cs" />
@@ -69,9 +69,9 @@
     <Compile Include="Algorithms\Sort\NSort\DefaultSwap.cs" />
     <Compile Include="Algorithms\Sort\NSort\DoubleStorageMergeSort.cs" />
     <Compile Include="Algorithms\Sort\NSort\FastQuickSorter.cs" />
+    <Compile Include="Algorithms\Sort\NSort\HeapSort.cs" />
     <Compile Include="Algorithms\Sort\NSort\InPlaceMergeSort.cs" />
     <Compile Include="Algorithms\Sort\NSort\InsertionSort.cs" />
-    <Compile Include="Algorithms\Sort\NSort\HeapSort.cs" />
     <Compile Include="Algorithms\Sort\NSort\OddEvenTransportSorter.cs" />
     <Compile Include="Algorithms\Sort\NSort\QuickSorter.cs" />
     <Compile Include="Algorithms\Sort\NSort\QuickSortWithBubbleSort.cs" />
@@ -93,7 +93,6 @@
     <Compile Include="Extensions\MiscExtensions.cs" />
     <Compile Include="Extensions\TaskCollectionExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
-    <Compile Include="Interface\IAccountForEfficiencies.cs" />
     <Compile Include="Interval\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Interval\EndPointMinFirstComparer.cs" />
     <Compile Include="DataStructures\IntervalSkipList\IntervalSkipList.cs" />
@@ -128,6 +127,41 @@
     <Compile Include="Interval\Interface\IIntervalContainer.cs" />
     <Compile Include="NPerfGenericWrappers\IIntervalContainerDateTimeWrapper.cs" />
     <Compile Include="NPerfGenericWrappers\ISorterIntWrapper.cs" />
+=======
+    <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
+    <Compile Include="Entities\EndPointMinFirstComparer.cs" />
+    <Compile Include="Entities\IntervalSkipList\IntervalSkipList.cs" />
+    <Compile Include="Entities\IntervalTreeAVL\IntervalTree.cs" />
+    <Compile Include="Entities\IntervalTreeRB\IntervalNode.cs" />
+    <Compile Include="Entities\IntervalTreeRB\IntervalTree.cs" />
+    <Compile Include="Entities\RangeTree\RangeTree.cs" />
+    <Compile Include="Entities\RangeTree\RangeTreeNode.cs" />
+    <Compile Include="Entities\SkipList.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\BDSkipList.cs" />
+    <Compile Include="Entities\DateEndPoint.cs" />
+    <Compile Include="Entities\DateInterval.cs" />
+    <Compile Include="Entities\DateIntervalCollection.cs" />
+    <Compile Include="Entities\DateIntervalEfficiency.cs" />
+    <Compile Include="Entities\EndPoint.cs" />
+    <Compile Include="Entities\EndPointType.cs" />
+    <Compile Include="Entities\EndPointWithIntervalEqualityComparer.cs" />
+    <Compile Include="Entities\FixedEndPoint.cs" />
+    <Compile Include="Entities\Interval.cs" />
+    <Compile Include="Entities\IntervalSkipList\IntervalNode.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\IScannable.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\IScannableDictionary.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\IScanner.cs" />
+    <Compile Include="Entities\Point.cs" />
+    <Compile Include="Entities\IntervalSkipList\SkipList\ScanRange.cs" />
+    <Compile Include="Extensions\DateIntervalCollectionExtensions.cs" />
+    <Compile Include="Extensions\DateIntervalExtensions.cs" />
+    <Compile Include="Extensions\IntervalExtensions.cs" />
+    <Compile Include="Interface\IAccountForEfficiencies.cs" />
+    <Compile Include="Interface\IDateInterval.cs" />
+    <Compile Include="Interface\IEndPoint.cs" />
+    <Compile Include="Interface\IInterval.cs" />
+    <Compile Include="Interface\IIntervalContainer.cs" />
+>>>>>>> AccountForEfficienciesSubmissions
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Submissions\GetSortedDateTimes.cs" />
     <Compile Include="Utilities\MathUtils.cs" />
