@@ -1,4 +1,4 @@
-﻿namespace Orc.Tests.DateIntervalExtensionsAccountForEfficiencies
+namespace Orc.Tests.DateIntervalExtensionsAccountForEfficiencies
 {
     using System;
     using System.Collections.Generic;

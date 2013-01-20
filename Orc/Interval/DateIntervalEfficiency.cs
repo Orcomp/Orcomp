@@ -11,6 +11,8 @@ namespace Orc.Interval
 {
     using System;
 
+    using C5;
+
     /// <summary>
     /// The date interval efficiency.
     /// </summary>
@@ -78,5 +80,7 @@ namespace Orc.Interval
         /// The priority.
         /// </value>
         public int Priority { get; set; }
+
+        public IPriorityQueueHandle<DateIntervalEfficiency> handle;
     }
 }

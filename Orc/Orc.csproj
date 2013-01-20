@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>Libs\C5.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -38,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\ListWeaver.cs" />
+    <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISorter.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISwap.cs" />
     <Compile Include="Algorithms\Sort\NSort.Generic\BidirectionalBubbleSort.cs" />
@@ -65,7 +69,7 @@
     <Compile Include="Algorithms\Sort\NSort\DefaultSwap.cs" />
     <Compile Include="Algorithms\Sort\NSort\DoubleStorageMergeSort.cs" />
     <Compile Include="Algorithms\Sort\NSort\FastQuickSorter.cs" />
-    <Compile Include="Algorithms\Sort\NSort\HeapSort.cs" />
+    <Compile Include="Interface\IAccountForEfficiencies.cs" />
     <Compile Include="Algorithms\Sort\NSort\InPlaceMergeSort.cs" />
     <Compile Include="Algorithms\Sort\NSort\InsertionSort.cs" />
     <Compile Include="Algorithms\Sort\NSort\OddEvenTransportSorter.cs" />
