@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Orc.Extensions
+namespace Orc.Competitions.AccountForEfficiencies
 {
     using System;
     using System.Collections.Generic;
@@ -34,7 +34,7 @@ namespace Orc.Extensions
         /// </returns>
         public static DateInterval AccountForEfficiencies(this DateInterval dateInterval, List<DateIntervalEfficiency> dateIntervalEfficiencies, FixedEndPoint fixedEndPoint = FixedEndPoint.Min)
         {
-            throw new NotImplementedException();
+            return Orc.Submissions.AccountForEfficiencies.AccountForEfficiencies.Quicks01lver3(dateInterval, dateIntervalEfficiencies, fixedEndPoint);
         }
     }
 }

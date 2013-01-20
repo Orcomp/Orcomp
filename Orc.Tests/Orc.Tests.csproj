@@ -82,6 +82,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Orc.Competitions\Orc.Competitions.csproj">
+      <Project>{ee970d10-607f-4508-bee8-a7a9b0123fdb}</Project>
+      <Name>Orc.Competitions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orc\Orc.csproj">
       <Project>{71F9CF8B-53A6-4626-BC89-CE4862D234A8}</Project>
       <Name>Orc</Name>
