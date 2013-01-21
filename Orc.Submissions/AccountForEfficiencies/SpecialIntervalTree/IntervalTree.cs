@@ -1,9 +1,9 @@
-﻿namespace Orc.Entities.SpecialIntervalTree
+﻿namespace Orc.Submissions.AccountForEfficiencies.SpecialIntervalTree
 {
-  using System;
-  using System.Collections.Generic;
+    using System;
+    using System.Collections.Generic;
 
-  using Orc.Interval;
+    using Orc.Interval;
 
     public class IntervalTree
   {
@@ -18,22 +18,22 @@
 
     public bool AddSupportPoint(long time)
     {
-      return UniqueTimePoints.Add(time);
+      return this.UniqueTimePoints.Add(time);
     }
 
     public int GetSupportIndexAtTime(long time)
     {
-      return TimeToSupportIndex[time];
+      return this.TimeToSupportIndex[time];
     }
 
     public IntervalNode GetTopNodeAtTime(long time)
     {
-      return this.GetTopNodeAtIndex(TimeToSupportIndex[time]);
+      return this.GetTopNodeAtIndex(this.TimeToSupportIndex[time]);
     }
 
     public IntervalNode GetTopNodeAtIndex(int idx)
     {
-      IntervalNode topNode = SupportPoints[idx];
+      IntervalNode topNode = this.SupportPoints[idx];
       if (topNode != null && topNode.parent != null) {
         // Get the "top" node
         IntervalNode top = topNode.parent;
@@ -56,29 +56,29 @@
 
     public void InitSupportAndMapping()
     {
-      EffectiveDeltaTime = new long[UniqueTimePoints.Count];
-      RealTimePoints = new long[UniqueTimePoints.Count];
+      this.EffectiveDeltaTime = new long[this.UniqueTimePoints.Count];
+      this.RealTimePoints = new long[this.UniqueTimePoints.Count];
 
       // Sort time points
-      UniqueTimePoints.CopyTo(RealTimePoints);
-      Array.Sort(RealTimePoints);
+      this.UniqueTimePoints.CopyTo(this.RealTimePoints);
+      Array.Sort(this.RealTimePoints);
 
       // Create 'time -> support point index' mapping and integrate delta periods with 100% efficiency
-      TimeToSupportIndex.Add(RealTimePoints[0], 0);
-      EffectiveDeltaTime[0] = 0;
-      for (int i = 1; i < RealTimePoints.Length; ++i) {
-        TimeToSupportIndex.Add(RealTimePoints[i], i);                  // Create map entry
-        EffectiveDeltaTime[i] = RealTimePoints[i] - RealTimePoints[i - 1]; // Integrate period from (i-1)'th to i'th time point
+      this.TimeToSupportIndex.Add(this.RealTimePoints[0], 0);
+      this.EffectiveDeltaTime[0] = 0;
+      for (int i = 1; i < this.RealTimePoints.Length; ++i) {
+        this.TimeToSupportIndex.Add(this.RealTimePoints[i], i);                  // Create map entry
+        this.EffectiveDeltaTime[i] = this.RealTimePoints[i] - this.RealTimePoints[i - 1]; // Integrate period from (i-1)'th to i'th time point
       }
 
       // Init support points array holding references to the node, "covering" the current time point
-      SupportPoints = new IntervalNode[RealTimePoints.Length];
+      this.SupportPoints = new IntervalNode[this.RealTimePoints.Length];
     }
 
     public void MergeAndIntegrate(DateIntervalEfficiency eff)
     {
-      int leftIdx  = GetSupportIndexAtTime(eff.Min.Value.Ticks);
-      int rightIdx = GetSupportIndexAtTime(eff.Max.Value.Ticks);
+      int leftIdx  = this.GetSupportIndexAtTime(eff.Min.Value.Ticks);
+      int rightIdx = this.GetSupportIndexAtTime(eff.Max.Value.Ticks);
 
       IntervalNode leftNode  = this.GetTopNodeAtIndex(leftIdx);
       IntervalNode rightNode = this.GetTopNodeAtIndex(rightIdx);
@@ -112,12 +112,12 @@
       // Scanning from left to right
 
       // Marking the start point, but skipping the integration, since it contains the ticks from the previous delta interval
-      SupportPoints[leftIdx] = newLeafNode;
+      this.SupportPoints[leftIdx] = newLeafNode;
 
       // Mark empty support points inside interval range, while jumping over the already "marked" intervals
       while (++leftIdx <= rightIdx) {
         // Integrate the delta interval
-        EffectiveDeltaTime[leftIdx] = (long)(EffectiveDeltaTime[leftIdx] * 0.01 * eff.Efficiency);
+        this.EffectiveDeltaTime[leftIdx] = (long)(this.EffectiveDeltaTime[leftIdx] * 0.01 * eff.Efficiency);
 
         IntervalNode curTopNode = this.GetTopNodeAtIndex(leftIdx);
         if (curTopNode != null)
@@ -125,7 +125,7 @@
           leftIdx = curTopNode.endIdx;
         else
           // "Brand" point with the current node
-          SupportPoints[leftIdx] = newLeafNode;
+          this.SupportPoints[leftIdx] = newLeafNode;
       }
 
       // Create links to new top node
@@ -135,27 +135,27 @@
         newLeafNode.parent = newTopNode;
 
         // Check if we have the whole support range covered
-        if (newTopNode.startIdx == 0 && newTopNode.endIdx == SupportPoints.Length - 1)
-          IsFullyCovered = true;
+        if (newTopNode.startIdx == 0 && newTopNode.endIdx == this.SupportPoints.Length - 1)
+          this.IsFullyCovered = true;
       }
     }
 
     public long AccumulateEffectiveTime(long realTicks)
     {
       int idx = 0;
-      while (++idx < EffectiveDeltaTime.Length && realTicks > 0)
-        realTicks -= EffectiveDeltaTime[idx];
+      while (++idx < this.EffectiveDeltaTime.Length && realTicks > 0)
+        realTicks -= this.EffectiveDeltaTime[idx];
       --idx;
 
       // Check if the end is before the last processed support point time
       if (realTicks < 0) {
-        double frac = -realTicks / (double)EffectiveDeltaTime[idx];
-        long overTime = (long)(frac * (RealTimePoints[idx] - RealTimePoints[idx - 1]));
+        double frac = -realTicks / (double)this.EffectiveDeltaTime[idx];
+        long overTime = (long)(frac * (this.RealTimePoints[idx] - this.RealTimePoints[idx - 1]));
 
-        return RealTimePoints[idx] - overTime - RealTimePoints[0];
+        return this.RealTimePoints[idx] - overTime - this.RealTimePoints[0];
       }
 
-      return RealTimePoints[idx] + realTicks - RealTimePoints[0];
+      return this.RealTimePoints[idx] + realTicks - this.RealTimePoints[0];
     }
   }
 }

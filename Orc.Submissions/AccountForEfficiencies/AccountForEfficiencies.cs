@@ -11,10 +11,10 @@
     using Orc.Entities;
     using Orc.DataStructures.IntervalTreeRB;
     using Orc.DataStructures.RangeTree;
-    using Orc.Entities.SpecialIntervalTree;
     using Orc.Interface;
     using Orc.Interval;
     using Orc.Interval.Interface;
+    using Orc.Submissions.AccountForEfficiencies.SpecialIntervalTree;
 
     public static class AccountForEfficiencies
     {

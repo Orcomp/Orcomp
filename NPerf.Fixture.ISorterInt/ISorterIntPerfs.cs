@@ -9,7 +9,7 @@
     using Orc.Algorithms.Sort.Interfaces;
 
     [PerfTester(typeof(ISorter<int>), 10, Description = "Sort Algorithm benchmark", FeatureDescription = "Collection size")]
-    public class SmallNumberOfElementsTester
+    public class ISorterIntPerfs
     {
         private List<int> list;
 

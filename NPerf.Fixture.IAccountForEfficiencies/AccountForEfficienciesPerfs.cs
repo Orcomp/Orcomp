@@ -5,10 +5,8 @@
 
     using NPerf.Framework;
 
-    using Nperf.Fixture.IAccountForEfficiencies;
-
     using Orc.Interval;
-    using Orc.Interval.Interface;
+    using Orc.Interface;
 
     [PerfTester(typeof(IAccountForEfficiencies), 2, Description = "Date Interval AccountForEfficiencies() method tests", FeatureDescription = "Intervals count")]
     public class AccountForEfficienciesPerfs

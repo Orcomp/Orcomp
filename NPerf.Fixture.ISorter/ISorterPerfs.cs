@@ -8,7 +8,7 @@
     using Orc.Algorithms.Sort.Interfaces;
 
     [PerfTester(typeof(ISorter), 10, Description = "Sort Algorithm benchmark", FeatureDescription = "Collection size")]
-    public class SmallNumberOfElementsTester
+    public class ISorterPerfs
     {
         private ArrayList list;
 
