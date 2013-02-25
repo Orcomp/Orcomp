@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{628B699C-AB33-492F-8F7B-3CA34CE2DD3E}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Orc</RootNamespace>
+    <AssemblyName>Orc</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\..\packages\C5.2.1.4492.18142\lib\sl50\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core">
+      <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Orc\Algorithms\ListWeaver.cs">
+      <Link>Algorithms\ListWeaver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\Interfaces\ISorter.cs">
+      <Link>Algorithms\Sort\Interfaces\ISorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\Interfaces\ISwap.cs">
+      <Link>Algorithms\Sort\Interfaces\ISwap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\BidirectionalBubbleSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\BidirectionalBubbleSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\BubbleSorter.cs">
+      <Link>Algorithms\Sort\NSort.Generic\BubbleSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ComboSort11.cs">
+      <Link>Algorithms\Sort\NSort.Generic\ComboSort11.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ComparableComparer.cs">
+      <Link>Algorithms\Sort\NSort.Generic\ComparableComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\DefaultSwap.cs">
+      <Link>Algorithms\Sort\NSort.Generic\DefaultSwap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\DoubleStorageMergeSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\DoubleStorageMergeSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\FastQuickSorter.cs">
+      <Link>Algorithms\Sort\NSort.Generic\FastQuickSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\HeapSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\HeapSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\InPlaceMergeSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\InPlaceMergeSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\InsertionSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\InsertionSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\OddEvenTransportSorter.cs">
+      <Link>Algorithms\Sort\NSort.Generic\OddEvenTransportSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\QuickSorter.cs">
+      <Link>Algorithms\Sort\NSort.Generic\QuickSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\QuickSortWithBubbleSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\QuickSortWithBubbleSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\SelectionSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\SelectionSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ShakerSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\ShakerSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ShearSorter.cs">
+      <Link>Algorithms\Sort\NSort.Generic\ShearSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ShellSort.cs">
+      <Link>Algorithms\Sort\NSort.Generic\ShellSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\SwapSorter.cs">
+      <Link>Algorithms\Sort\NSort.Generic\SwapSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\BidirectionalBubbleSort.cs">
+      <Link>Algorithms\Sort\NSort\BidirectionalBubbleSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\BubbleSorter.cs">
+      <Link>Algorithms\Sort\NSort\BubbleSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ComboSort11.cs">
+      <Link>Algorithms\Sort\NSort\ComboSort11.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ComparableComparer.cs">
+      <Link>Algorithms\Sort\NSort\ComparableComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\DefaultSwap.cs">
+      <Link>Algorithms\Sort\NSort\DefaultSwap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\DoubleStorageMergeSort.cs">
+      <Link>Algorithms\Sort\NSort\DoubleStorageMergeSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\FastQuickSorter.cs">
+      <Link>Algorithms\Sort\NSort\FastQuickSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\HeapSort.cs">
+      <Link>Algorithms\Sort\NSort\HeapSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\InPlaceMergeSort.cs">
+      <Link>Algorithms\Sort\NSort\InPlaceMergeSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\InsertionSort.cs">
+      <Link>Algorithms\Sort\NSort\InsertionSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\OddEvenTransportSorter.cs">
+      <Link>Algorithms\Sort\NSort\OddEvenTransportSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\QuickSorter.cs">
+      <Link>Algorithms\Sort\NSort\QuickSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\QuickSortWithBubbleSort.cs">
+      <Link>Algorithms\Sort\NSort\QuickSortWithBubbleSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\SelectionSort.cs">
+      <Link>Algorithms\Sort\NSort\SelectionSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ShakerSort.cs">
+      <Link>Algorithms\Sort\NSort\ShakerSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ShearSorter.cs">
+      <Link>Algorithms\Sort\NSort\ShearSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ShellSort.cs">
+      <Link>Algorithms\Sort\NSort\ShellSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\SwapSorter.cs">
+      <Link>Algorithms\Sort\NSort\SwapSorter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\QuickSortBaseClass.cs">
+      <Link>Algorithms\Sort\QuickSortBaseClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\TimSort\ArrayTimSort.cs">
+      <Link>Algorithms\Sort\TimSort\ArrayTimSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\TimSort\ListTimSort.cs">
+      <Link>Algorithms\Sort\TimSort\ListTimSort.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Algorithms\Sort\TimSort\TimSortExtensions.cs">
+      <Link>Algorithms\Sort\TimSort\TimSortExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalSkipList\IntervalNode.cs">
+      <Link>DataStructures\IntervalSkipList\IntervalNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalSkipList\IntervalSkipList.cs">
+      <Link>DataStructures\IntervalSkipList\IntervalSkipList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalSkipList\SkipList\BDSkipList.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\BDSkipList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalSkipList\SkipList\IScannable.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\IScannable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalSkipList\SkipList\IScannableDictionary.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\IScannableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalSkipList\SkipList\IScanner.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\IScanner.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalSkipList\SkipList\ScanRange.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\ScanRange.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalTreeAVL\IntervalTree.cs">
+      <Link>DataStructures\IntervalTreeAVL\IntervalTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalTreeRB\IntervalNode.cs">
+      <Link>DataStructures\IntervalTreeRB\IntervalNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\IntervalTreeRB\IntervalTree.cs">
+      <Link>DataStructures\IntervalTreeRB\IntervalTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\RangeTree\RangeTree.cs">
+      <Link>DataStructures\RangeTree\RangeTree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\RangeTree\RangeTreeNode.cs">
+      <Link>DataStructures\RangeTree\RangeTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\DataStructures\SkipList.cs">
+      <Link>DataStructures\SkipList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Entities\Constraint.cs">
+      <Link>Entities\Constraint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Entities\DateIntervalCollectionGenerator.cs">
+      <Link>Entities\DateIntervalCollectionGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Entities\Interface\ITask.cs">
+      <Link>Entities\Interface\ITask.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Entities\LevelIndicator.cs">
+      <Link>Entities\LevelIndicator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Entities\Task.cs">
+      <Link>Entities\Task.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Entities\TaskType.cs">
+      <Link>Entities\TaskType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Extensions\DateTimeExtensions.cs">
+      <Link>Extensions\DateTimeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Extensions\MiscExtensions.cs">
+      <Link>Extensions\MiscExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Extensions\TaskCollectionExtensions.cs">
+      <Link>Extensions\TaskCollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Extensions\TaskExtensions.cs">
+      <Link>Extensions\TaskExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interface\IAccountForEfficiencies.cs">
+      <Link>Interface\IAccountForEfficiencies.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\DateEndPoint.cs">
+      <Link>Interval\DateEndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\DateInterval.cs">
+      <Link>Interval\DateInterval.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\DateIntervalCollection.cs">
+      <Link>Interval\DateIntervalCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\DateIntervalCollectionGenerator.cs">
+      <Link>Interval\DateIntervalCollectionGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\DateIntervalEfficiency.cs">
+      <Link>Interval\DateIntervalEfficiency.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\EndPoint.cs">
+      <Link>Interval\EndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\EndPointMinFirstComparer.cs">
+      <Link>Interval\EndPointMinFirstComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\EndPointType.cs">
+      <Link>Interval\EndPointType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\EndPointWithIntervalEqualityComparer.cs">
+      <Link>Interval\EndPointWithIntervalEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Extensions\DateIntervalCollectionExtensions.cs">
+      <Link>Interval\Extensions\DateIntervalCollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Extensions\DateIntervalExtensions.cs">
+      <Link>Interval\Extensions\DateIntervalExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Extensions\IntervalExtensions.cs">
+      <Link>Interval\Extensions\IntervalExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\FixedEndPoint.cs">
+      <Link>Interval\FixedEndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Interface\IDateInterval.cs">
+      <Link>Interval\Interface\IDateInterval.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Interface\IEndPoint.cs">
+      <Link>Interval\Interface\IEndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Interface\IInterval.cs">
+      <Link>Interval\Interface\IInterval.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Interface\IIntervalContainer.cs">
+      <Link>Interval\Interface\IIntervalContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Interval.cs">
+      <Link>Interval\Interval.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Interval\Point.cs">
+      <Link>Interval\Point.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\NPerfGenericWrappers\IIntervalContainerDateTimeWrapper.cs">
+      <Link>NPerfGenericWrappers\IIntervalContainerDateTimeWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\NPerfGenericWrappers\ISorterIntWrapper.cs">
+      <Link>NPerfGenericWrappers\ISorterIntWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Submissions\GetSortedDateTimes.cs">
+      <Link>Submissions\GetSortedDateTimes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Orc\Utilities\MathUtils.cs">
+      <Link>Utilities\MathUtils.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="..\..\Orc\Algorithms\Sort\Interfaces\LICENSE.txt">
+      <Link>Algorithms\Sort\Interfaces\LICENSE.txt</Link>
+    </Content>
+    <Content Include="..\..\Orc\Algorithms\Sort\Interfaces\README.txt">
+      <Link>Algorithms\Sort\Interfaces\README.txt</Link>
+    </Content>
+    <Content Include="..\..\Orc\Algorithms\Sort\NSort.Generic\LICENSE.txt">
+      <Link>Algorithms\Sort\NSort.Generic\LICENSE.txt</Link>
+    </Content>
+    <Content Include="..\..\Orc\Algorithms\Sort\NSort.Generic\README.txt">
+      <Link>Algorithms\Sort\NSort.Generic\README.txt</Link>
+    </Content>
+    <Content Include="..\..\Orc\Algorithms\Sort\NSort\LICENSE.txt">
+      <Link>Algorithms\Sort\NSort\LICENSE.txt</Link>
+    </Content>
+    <Content Include="..\..\Orc\Algorithms\Sort\NSort\README.txt">
+      <Link>Algorithms\Sort\NSort\README.txt</Link>
+    </Content>
+    <Content Include="..\..\Orc\Algorithms\Sort\TimSort\License.txt">
+      <Link>Algorithms\Sort\TimSort\License.txt</Link>
+    </Content>
+    <Content Include="..\..\Orc\DataStructures\RangeTree\LICENSE.txt">
+      <Link>DataStructures\RangeTree\LICENSE.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Orc\DataStructures\IntervalTreeRB\README.md">
+      <Link>DataStructures\IntervalTreeRB\README.md</Link>
+    </None>
+    <None Include="..\..\Orc\DataStructures\RangeTree\README.md">
+      <Link>DataStructures\RangeTree\README.md</Link>
+    </None>
+    <None Include="..\..\Orc\Docs\Interval.md">
+      <Link>Docs\Interval.md</Link>
+    </None>
+    <None Include="..\..\Orc\Docs\Links.md">
+      <Link>Docs\Links.md</Link>
+    </None>
+    <None Include="..\..\Orc\Interval\Interval.cd">
+      <Link>Interval\Interval.cd</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

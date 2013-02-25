@@ -4,8 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
-    using System.Runtime.Serialization;
-
+    using System.Runtime.CompilerServices;
     using Orc.Entities;
     using Orc.Entities.Interface;
     using Orc.Interval;
@@ -132,12 +131,9 @@
             Collection<ITask> newTaskCollection = new Collection<ITask>(taskCollection.ToList());
 
             //Cache indexes of the collection for fast retrieval
-            ObjectIDGenerator oidGen = new ObjectIDGenerator();
-            bool firstTime;
-
-            Dictionary<long, int> indexDict = new Dictionary<long, int>();
+            Dictionary<int, int> indexDict = new Dictionary<int, int>();
             for (int i = 0; i < newTaskCollection.Count; i++)
-                indexDict.Add(oidGen.GetId(newTaskCollection[i], out firstTime), i);
+                indexDict.Add(RuntimeHelpers.GetHashCode(newTaskCollection[i]),  i);
 
             int iterations = 0;
 
@@ -161,7 +157,7 @@
                 foreach (Task task in tasksToMove)
                 {
                     //Last task cannot be moved
-                    if (indexDict[oidGen.GetId(task, out firstTime)] == newTaskCollection.Count - 1)
+                    if (indexDict[RuntimeHelpers.GetHashCode(task)] == newTaskCollection.Count - 1)
                         continue;
 
                     double oldQuantity = task.GetQuantity(outOfRangePoint.Key);
@@ -178,7 +174,7 @@
                             newStartTime = task.StartTime.AddHours(diffQ / task.QuantityPerHour);
 
                     //Do not move task further than the next task of the same type in sequence
-                    DateTime maxAllowedStartTime = GetMaxAllowedStartTime(task, newTaskCollection, oidGen, indexDict);
+                    DateTime maxAllowedStartTime = GetMaxAllowedStartTime(task, newTaskCollection, indexDict);
                     if (newStartTime > maxAllowedStartTime)
                         newStartTime = maxAllowedStartTime;
 
@@ -188,11 +184,11 @@
                         diffQ -= oldQuantity - newTask.GetQuantity(outOfRangePoint.Key);
 
                         //Replace the old task with the new one
-                        long oldTaskId = oidGen.GetId(task, out firstTime);
+                        int oldTaskId = RuntimeHelpers.GetHashCode(task);
                         int index = indexDict[oldTaskId];
                         newTaskCollection[index] = newTask;
                         indexDict.Remove(oldTaskId);
-                        indexDict.Add(oidGen.GetId(newTask, out firstTime), index);
+                        indexDict.Add(RuntimeHelpers.GetHashCode(newTask), index);
 
                         //If overshoot/undershoot quantity is zero then exit loop
                         if (diffQ * sign <= 0)
@@ -255,10 +251,9 @@
             return true;
         }
 
-        private static DateTime GetMaxAllowedStartTime(ITask task, Collection<ITask> taskCollection, ObjectIDGenerator oidGen, IDictionary<long, int> indexDict)
+        private static DateTime GetMaxAllowedStartTime(ITask task, Collection<ITask> taskCollection, IDictionary<int, int> indexDict)
         {
-            bool firstTime;
-            int taskIndex = indexDict[oidGen.GetId(task, out firstTime)];
+            int taskIndex = indexDict[RuntimeHelpers.GetHashCode(task)];
 
             for (int i = taskIndex + 1; i < taskCollection.Count; i++)
             {

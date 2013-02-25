@@ -135,10 +135,19 @@
 				Thread.Sleep(0);
 
 				if (!QueryPerformanceFrequency(out this.m_Frequency))
+#if (SILVERLIGHT)
+                    throw new ExternalException("QueryPerformanceFrequency failed.");
+#else
 					throw new Win32Exception();
+#endif
 
 				if (!QueryPerformanceCounter(out this.m_StartTime))
+#if (SILVERLIGHT)
+                    throw new ExternalException("QueryPerformanceCounter failed.");
+#else
 					throw new Win32Exception();
+#endif
+                    
 			}
 			this.m_StartedCount++;
 		}

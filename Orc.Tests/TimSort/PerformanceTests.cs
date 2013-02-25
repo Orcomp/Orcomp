@@ -36,6 +36,9 @@ namespace Orc.Tests.TimSort
 			return a.CompareTo(b);
 		}
 
+//The following tests cannot pass in Silverlight 
+//because they require elevated trust
+#if (!SILVERLIGHT)
 		[Test]
 		public void RandomTests()
 		{
@@ -83,8 +86,8 @@ namespace Orc.Tests.TimSort
 			Console.WriteLine("Testing...");
 			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
 		}
-
-		[Test]
+	
+        [Test]
 		public void ReversedTests()
 		{
 			Console.WriteLine("<<< Generally descending data >>>");
@@ -132,8 +135,8 @@ namespace Orc.Tests.TimSort
 			Console.WriteLine("Testing...");
 			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
 		}
-
-		[Test]
+		
+        [Test]
 		public void SortedTests_List()
 		{
 			Console.WriteLine("<<< Generally ascending data (buffered List<T>) >>>");
@@ -161,8 +164,8 @@ namespace Orc.Tests.TimSort
 			Console.WriteLine("Testing...");
 			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
 		}
-
-		[Test]
+		
+        [Test]
 		public void ReversedTests_List()
 		{
 			Console.WriteLine("<<< Generally descending data (buffered List<T>) >>>");
@@ -190,8 +193,8 @@ namespace Orc.Tests.TimSort
 			Console.WriteLine("Testing...");
 			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
 		}
-
-		[Test]
+		
+        [Test]
 		public void RandomTests_ListWithMergeBack()
 		{
 			Console.WriteLine("<<< Random data (buffered vs non-buffered List<T>) >>>");
@@ -215,5 +218,6 @@ namespace Orc.Tests.TimSort
 			Console.WriteLine("Testing...");
 			for (int i = 0; i < maxSize; i++) Assert.AreEqual(a[i], b[i]);
 		}
+#endif
 	}
 }

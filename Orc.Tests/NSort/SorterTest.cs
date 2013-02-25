@@ -2,7 +2,9 @@ namespace Orc.Tests.NSort
 {
     using System;
     using System.Collections;
-
+#if (SILVERLIGHT)
+    using C5;
+#endif
     using NUnit.Framework;
 
     using Orc.Algorithms.Sort.Interfaces;
@@ -32,7 +34,11 @@ namespace Orc.Tests.NSort
 		    }
 
 		    // create sorted list
-			var sortedList =new SortedList();
+#if (SILVERLIGHT)
+		    var sortedList = new TreeDictionary<int, object>();
+#else
+			var sortedList = new SortedList();
+#endif
 
 		    foreach (int key in list)
 		    {

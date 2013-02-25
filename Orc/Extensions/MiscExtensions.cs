@@ -4,7 +4,11 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
+#if (SILVERLIGHT)
+    using System.Windows;
+#else
     using System.Windows.Forms;
+#endif
 
     public static class MiscExtensions
     {
@@ -70,7 +74,11 @@
         {
             if ( enabled )
             {
+#if (SILVERLIGHT)
+                MessageBox.Show(str, "Warning", MessageBoxButton.OK);
+#else
                 MessageBox.Show( str, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation );
+#endif
             }
         }
 
@@ -99,7 +107,11 @@
         public static string ToStringDecimal( this double number, int decimalPlaces )
         {
             number = number * Math.Pow( 10, decimalPlaces );
+#if (SILVERLIGHT)
+            number = (number >= 0 ? Math.Floor(number) : -Math.Floor(-number));
+#else
             number = Math.Truncate( number );
+#endif
             number = number / Math.Pow( 10, decimalPlaces );
             return string.Format( "{0:N" + Math.Abs( decimalPlaces ) + "}", number );
         }
