@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.Serialization;
+    using System.Runtime.CompilerServices;
 
     using C5;
 
@@ -274,16 +274,16 @@
         /// This class compares object IDs of efficiency intervals 
         /// based on priority, efficiency and object id.
         /// </summary>
-        private class DateIntervalEfficiencyComparer : System.Collections.Generic.Comparer<long>
+        private class DateIntervalEfficiencyComparer : System.Collections.Generic.Comparer<int>
         {
-            private Dictionary<long, DateIntervalEfficiency> dictIntervals;
+            private Dictionary<int, DateIntervalEfficiency> dictIntervals;
 
-            public DateIntervalEfficiencyComparer(Dictionary<long, DateIntervalEfficiency> dictIntervals)
+            public DateIntervalEfficiencyComparer(Dictionary<int, DateIntervalEfficiency> dictIntervals)
             {
                 this.dictIntervals = dictIntervals;
             }
 
-            public override int Compare(long x, long y)
+            public override int Compare(int x, int y)
             {
                 DateIntervalEfficiency intervalx = this.dictIntervals[x];
                 DateIntervalEfficiency intervaly = this.dictIntervals[y];
@@ -317,18 +317,14 @@
 
             DateIntervalCollection intvColl = new DateIntervalCollection(true);
 
-            //We use this id generator for creating unique ID's to use 
-            //as keys in a dictionary
-            ObjectIDGenerator idGenerator = new ObjectIDGenerator();
-            bool firstTime;
-            Dictionary<long, DateIntervalEfficiency> dictIntervals = new Dictionary<long, DateIntervalEfficiency>();
+            Dictionary<int, DateIntervalEfficiency> dictIntervals = new Dictionary<int, DateIntervalEfficiency>();
 
             //Add efficiency intervals in a collection to sort their edges
             //Also create a dictionary of unique IDs to intervals
             foreach (DateIntervalEfficiency eff in dateIntervalEfficiencies)
             {
                 intvColl.Add(eff);
-                dictIntervals.Add(idGenerator.GetId(eff, out firstTime), eff);
+                dictIntervals.Add(RuntimeHelpers.GetHashCode(eff), eff);
             }
 
             //In this list we will store the resulting efficiency intervals
@@ -338,7 +334,11 @@
             DateIntervalEfficiencyComparer comparer = new DateIntervalEfficiencyComparer(dictIntervals);
 
             //We add and remove intervals in this dictionary as they come and go 
-            SortedDictionary<long, DateIntervalEfficiency> currentIntervals = new SortedDictionary<long, DateIntervalEfficiency>(comparer);
+#if (SILVERLIGHT)
+            TreeDictionary<int, DateIntervalEfficiency> currentIntervals = new TreeDictionary<int, DateIntervalEfficiency>(comparer);
+#else
+            SortedDictionary<int, DateIntervalEfficiency> currentIntervals = new SortedDictionary<int, DateIntervalEfficiency>(comparer);
+#endif
 
             //This is the interval to use for efficiency calculation
             DateIntervalEfficiency priorityInterval = null;
@@ -358,7 +358,7 @@
                 while (currentEdge < numEdges && intvColl.DateEdges[currentEdge].Value == currentTime)
                 {
                     IEndPoint<DateTime> currentEndPoint = intvColl.DateEdges[currentEdge];
-                    long intervalID = idGenerator.GetId(currentEndPoint.Interval, out firstTime);
+                    int intervalID = RuntimeHelpers.GetHashCode(currentEndPoint.Interval);
 
                     if (currentEndPoint.IsMin)
                         //This interval starts, so add it to the sorted dictionary
@@ -503,16 +503,16 @@
         /// This class compares object IDs of efficiency intervals 
         /// based on priority, efficiency and object id.
         /// </summary>
-        private class DateIntervalEfficiencyComparer4 : System.Collections.Generic.Comparer<long>
+        private class DateIntervalEfficiencyComparer4 : System.Collections.Generic.Comparer<int>
         {
-            private Dictionary<long, DateIntervalEfficiency> dictIntervals;
+            private Dictionary<int, DateIntervalEfficiency> dictIntervals;
 
-            public DateIntervalEfficiencyComparer4(Dictionary<long, DateIntervalEfficiency> dictIntervals)
+            public DateIntervalEfficiencyComparer4(Dictionary<int, DateIntervalEfficiency> dictIntervals)
             {
                 this.dictIntervals = dictIntervals;
             }
 
-            public override int Compare(long x, long y)
+            public override int Compare(int x, int y)
             {
                 DateIntervalEfficiency intervalx = dictIntervals[x];
                 DateIntervalEfficiency intervaly = dictIntervals[y];
@@ -546,11 +546,7 @@
 
             List<IEndPoint<DateTime>> dateEdges = new List<IEndPoint<DateTime>>(2 * dateIntervalEfficiencies.Count);
 
-            //We use this id generator for creating unique ID's to use 
-            //as keys in a dictionary
-            ObjectIDGenerator idGenerator = new ObjectIDGenerator();
-            bool firstTime;
-            Dictionary<long, DateIntervalEfficiency> dictIntervals = new Dictionary<long, DateIntervalEfficiency>(dateIntervalEfficiencies.Count);
+            Dictionary<int, DateIntervalEfficiency> dictIntervals = new Dictionary<int, DateIntervalEfficiency>(dateIntervalEfficiencies.Count);
 
             //Add the min and max of each interval in a list to sort them
             //Also create a dictionary of unique IDs to intervals
@@ -562,7 +558,7 @@
                 {
                     dateEdges.Add(eff.Min);
                     dateEdges.Add(eff.Max);
-                    dictIntervals.Add(idGenerator.GetId(eff, out firstTime), eff);
+                    dictIntervals.Add(RuntimeHelpers.GetHashCode(eff), eff);
                 }
             }
 
@@ -573,7 +569,11 @@
             DateIntervalEfficiencyComparer4 comparer = new DateIntervalEfficiencyComparer4(dictIntervals);
 
             //We add and remove intervals in this dictionary as they come and go 
-            SortedDictionary<long, DateIntervalEfficiency> currentIntervals = new SortedDictionary<long, DateIntervalEfficiency>(comparer);
+#if (SILVERLIGHT)
+            TreeDictionary<int, DateIntervalEfficiency> currentIntervals = new TreeDictionary<int, DateIntervalEfficiency>(comparer);
+#else
+            SortedDictionary<int, DateIntervalEfficiency> currentIntervals = new SortedDictionary<int, DateIntervalEfficiency>(comparer);
+#endif
 
             //This is the interval having greatest priority or least efficiency
             DateIntervalEfficiency priorityInterval = null;
@@ -668,7 +668,7 @@
                         (dateEdges[currentEdge].Value == currentEdgeDate))
                 {
                     IEndPoint<DateTime> currentEndPoint = dateEdges[currentEdge];
-                    long intervalID = idGenerator.GetId(currentEndPoint.Interval, out firstTime);
+                    int intervalID = RuntimeHelpers.GetHashCode(currentEndPoint.Interval);
 
                     if ((sign > 0 && currentEndPoint.IsMin) ||
                          (sign < 0 && !currentEndPoint.IsMin))

@@ -48,7 +48,7 @@ namespace Orc.DataStructures
                 // there might already be duplicates.
                 if (this.Count > 1 && this._allowDupes)
                 {
-                    throw new ApplicationException("Cannot restrict duplicates because duplicates might already exist.");
+                    throw new Exception("Cannot restrict duplicates because duplicates might already exist.");
                 }
                 this._allowDupes = value;
             }
@@ -240,7 +240,7 @@ namespace Orc.DataStructures
             T rslt;
             if (!this.TryDeleteMin(out rslt))
             {
-                throw new ApplicationException("The Skiplist is empty.");
+                throw new Exception("The Skiplist is empty.");
             }
             return rslt;
         }
@@ -275,7 +275,7 @@ namespace Orc.DataStructures
             T rslt;
             if (!this.TryPeek(out rslt))
             {
-                throw new ApplicationException("The Skiplist is empty.");
+                throw new Exception("The Skiplist is empty.");
             }
             return rslt;
         }
