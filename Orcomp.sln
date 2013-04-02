@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D77A13B3-C446-4FF6-A775-4C2AFC95C545}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Submissions", "Silverlight\Orc.Submissions\Orc.Submissions.csproj", "{AFD1DB96-45FC-4BD5-99F0-A38BDCE5F22A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Tests", "Silverlight\Orc.Tests\Orc.Tests.csproj", "{24537BEF-2892-4FC4-A53F-83C4925D5D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPerf.Fixture.AList", "NPerf.Fixture.AList\NPerf.Fixture.AList.csproj", "{05B419C2-A805-44AC-9C70-2EF1362FE80D}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -180,6 +182,16 @@ Global
 		{24537BEF-2892-4FC4-A53F-83C4925D5D0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{24537BEF-2892-4FC4-A53F-83C4925D5D0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{24537BEF-2892-4FC4-A53F-83C4925D5D0F}.Release|x86.ActiveCfg = Release|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{05B419C2-A805-44AC-9C70-2EF1362FE80D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

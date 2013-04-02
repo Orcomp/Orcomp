@@ -38,9 +38,87 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\ListWeaver.cs" />
+    <Compile Include="DataStructures\AList\BaseClasses\IterableBase.cs" />
+    <Compile Include="DataStructures\AList\BaseClasses\ListExBase.cs" />
+    <Compile Include="DataStructures\AList\BaseClasses\ListSourceBase.cs" />
+    <Compile Include="DataStructures\AList\BaseClasses\SourceBase.cs" />
+    <Compile Include="DataStructures\AList\CollectionDebugView.cs" />
+    <Compile Include="DataStructures\AList\ExtensionMethods\Iterable.cs" />
+    <Compile Include="DataStructures\AList\ExtensionMethods\Iterator.cs" />
+    <Compile Include="DataStructures\AList\ExtensionMethods\LCExtensions.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\CollectionAsSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\EmptyEnumerator.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\EmptyList.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\EnumerableAsIterable.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\IteratorEnumerator.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\IteratorFactory.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\KeyCollection.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ListAsListSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ListSlice.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ListSourceAsList.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ListSourceSlice.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\NegList.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\NegListSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\RepeatedValueList.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ReversedListSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\SelectListSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\SelectNegLists.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\SelectNegListSources.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\SourceAsCollection.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ValueCollection.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListBase.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListIndexer.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListInner.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListInnerBase.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListLeaf.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListNode.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListNodeObserver.cs" />
+    <Compile Include="DataStructures\AList\Implementations\ArrayOf4.cs" />
+    <Compile Include="DataStructures\AList\Implementations\BList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\BListBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\BListInner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\BListLeaf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\BMultiMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\DList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\IAListTreeObserver.cs" />
+    <Compile Include="DataStructures\AList\Implementations\IndexedAList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\InternalDList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\InternalList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\ListChangeInfo.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\IAutoCreatePool.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\ICount.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\IIterable.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\IListSource.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\INegListSource.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\INotifyListChanging.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\ISource.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\Iterator.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\Queue interfaces.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\Read-write interfaces.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\Sink interfaces.cs" />
+    <Compile Include="DataStructures\AList\Math\Interfaces.cs" />
+    <Compile Include="DataStructures\AList\Math\MathEx.cs" />
+    <Compile Include="DataStructures\AList\Utilities\Exceptions.cs" />
+    <Compile Include="DataStructures\AList\Utilities\Extensions.cs" />
+    <Compile Include="DataStructures\AList\Utilities\ICloneable.cs" />
+    <Compile Include="DataStructures\AList\Utilities\MemoizedTypeName.cs" />
+    <Compile Include="DataStructures\AList\Utilities\Pair.cs" />
+    <Compile Include="DataStructures\AList\Utilities\WrapperBase.cs" />
     <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISorter.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISwap.cs" />
@@ -133,6 +211,7 @@
     <Compile Include="Utilities\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DataStructures\AList\Implementations\AList.cd" />
     <None Include="Docs\Interval.md" />
     <None Include="Docs\Links.md" />
     <None Include="Interval\Interval.cd" />

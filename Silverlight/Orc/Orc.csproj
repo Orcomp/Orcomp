@@ -330,7 +330,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DataStructures\AList\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Orc\Algorithms\Sort\Interfaces\LICENSE.txt">
       <Link>Algorithms\Sort\Interfaces\LICENSE.txt</Link>

@@ -46,6 +46,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -56,6 +57,14 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AList\AListTestBase.cs" />
+    <Compile Include="AList\AListTests.cs" />
+    <Compile Include="AList\BListTests.cs" />
+    <Compile Include="AList\DequeTests.cs" />
+    <Compile Include="AList\ListCollectionTests.cs" />
+    <Compile Include="AList\ListRangeTests.cs" />
+    <Compile Include="AList\ListTests.cs" />
+    <Compile Include="AList\TestHelpers.cs" />
     <Compile Include="DateEndPointTest.cs" />
     <Compile Include="DateIntervalCollectionExtensionsTest.cs" />
     <Compile Include="DateIntervalCollectionTestBase.cs" />
