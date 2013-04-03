@@ -90,3 +90,4 @@ http://bioinformatics.oxfordjournals.org/content/23/11/1386.full
 
 ## Other useful references
 - C++ Segment Trees http://code.google.com/p/multidimalgorithm/
+- http://bioinformatics.oxfordjournals.org/content/29/1/1.full.pdf+html
