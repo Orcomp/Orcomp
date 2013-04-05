@@ -25,7 +25,7 @@
 
         protected DateTime inThreeHours;
 
-        protected abstract IIntervalContainer<DateTime> CreateIntervalContainer();
+        protected abstract IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<IInterval<DateTime>> intervals = null);
 
         [SetUp]
         public void Setup()
@@ -415,15 +415,15 @@
             CollectionAssert.AreEquivalent(expectedResult, intersections);
         }
 
-        private IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<Interval<DateTime>> intervals)
-        {
-            IIntervalContainer<DateTime> intervalContainer = CreateIntervalContainer();
-            foreach (var interval in intervals)
-            {
-                intervalContainer.Add(interval);
-            }
-            return intervalContainer;
-        }
+        //private IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<Interval<DateTime>> intervals)
+        //{
+        //    IIntervalContainer<DateTime> intervalContainer = CreateIntervalContainer(intervals);
+        //    //foreach (var interval in intervals)
+        //    //{
+        //    //    intervalContainer.Add(interval);
+        //    //}
+        //    return intervalContainer;
+        //}
 
         private static Interval<DateTime> ToDateTimeInterval(DateTime startTime, int leftEdgeMinutes, int rightEdgeMinutes, bool includeEdges = true)
         {

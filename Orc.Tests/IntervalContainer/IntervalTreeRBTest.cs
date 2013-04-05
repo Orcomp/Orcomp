@@ -13,9 +13,9 @@
     [TestFixture, Ignore]
     public class IntervalTreeRBTest : DateIntervalContainerTestBase
     {
-        protected override IIntervalContainer<DateTime> CreateIntervalContainer()
+        protected override IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<IInterval<DateTime>> intervals)
         {
-            return new IntervalTree<DateTime>();
+            return new IntervalTree<DateTime>(intervals);
         }
 
         [Test]

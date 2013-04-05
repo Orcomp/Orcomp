@@ -75,7 +75,9 @@
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase1.cs" />
     <Compile Include="IntervalContainer\IntervalTreeAVLTest.cs" />
     <Compile Include="IntervalContainer\IntervalTreeRBTest.cs" />
+    <Compile Include="IntervalContainer\NcListTest.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
+    <Compile Include="IntervalContainer\StaticIntervalTree.cs" />
     <Compile Include="MiscExtensionsTest.cs" />
     <Compile Include="ListWeaverTest.cs" />
     <Compile Include="NSort\SorterTest.cs" />

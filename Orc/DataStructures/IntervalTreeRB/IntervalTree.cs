@@ -30,6 +30,14 @@
             this.Root.Parent = Sentinel;
         }
 
+        public IntervalTree(IEnumerable<IInterval<T>> intervals) : this()
+        {
+            foreach (var interval in intervals)
+            {
+                this.Add(interval);
+            }
+        }
+
         #region Tree searching
         /// <summary>
         /// Search interval tree for a given point

@@ -16,7 +16,7 @@
         [Category("Benchmark")]
         public void Query_BenchmarkIncludedOneIntoAnotherIntervals_Test()
         {
-            const int numberOfIntervals = 100000;
+            const int numberOfIntervals = 1000000;
 
             var intervals = GetDateRangesAllDescendingEndTimes(now, numberOfIntervals).ToList();
 

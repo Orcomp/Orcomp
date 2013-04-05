@@ -31,7 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5">
+    <Reference Include="C5, Version=1.1.1.0, Culture=neutral, PublicKeyToken=06a1b38866503b69, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\C5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -41,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\ListWeaver.cs" />
+    <Compile Include="DataStructures\C5\Interfaces.cs" />
+    <Compile Include="DataStructures\C5\IntervalNCList\NcList.cs" />
+    <Compile Include="DataStructures\C5\IntervalStaticTree\StaticIntervalTree.cs" />
     <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISorter.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISwap.cs" />

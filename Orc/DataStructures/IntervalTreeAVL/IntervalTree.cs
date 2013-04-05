@@ -46,13 +46,13 @@ namespace Orc.DataStructures.IntervalTreeAVL
         /// Initializes a new instance of the <see cref="IntervalTree&lt;T,  IInterval<T>&gt;"/> class.
         /// </summary>
         /// <param name="elems">The elems.</param>
-        public IntervalTree(IEnumerable<KeyValuePair<Interval<T>, IInterval<T>>> elems)
+        public IntervalTree(IEnumerable<IInterval<T>> elems)
         {
             if (elems != null)
             {
                 foreach (var elem in elems)
                 {
-                    this.Add(elem.Key);
+                    this.Add(elem);
                 }
             }
             this.comparer = ComparerUtil.GetComparer();
