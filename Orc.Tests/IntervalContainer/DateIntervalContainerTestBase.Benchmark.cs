@@ -14,9 +14,9 @@
     {
         [Test]
         [Category("Benchmark")]
-        public void Query_BenchmarkIncludedOneIntoAnotherIntervals_Test()
+        public void Query_BenchmarkContainmentIntervals_Test()
         {
-            const int numberOfIntervals = 1000000;
+            const int numberOfIntervals = 1000;
 
             var intervals = GetDateRangesAllDescendingEndTimes(now, numberOfIntervals).ToList();
 
@@ -42,6 +42,10 @@
             Debug.WriteLine(timeElapsedSummary);
         }
 
+        //     |-|
+        //    |---|
+        //   |-----|
+        //  |-------|
         private static IEnumerable<Interval<DateTime>> GetDateRangesAllDescendingEndTimes(DateTime date, int count)
         {
             var dateRanges = new Interval<DateTime>[count];
@@ -58,7 +62,7 @@
         [Category("Benchmark")]
         public void Query_BenchmarkSequentialIntervals_Test()
         {
-            const int numberOfIntervals = 100000;
+            const int numberOfIntervals = 1000000;
             const int intervalLength = 5;
             const int spaceLength = 1;
             const int intervalAndSpaceLength = intervalLength + spaceLength;

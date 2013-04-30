@@ -9,12 +9,12 @@
     using Orc.DataStructures.RangeTree;
     using Orc.Interval.Interface;
 
-    //[TestFixture]
-    //public class NCList : DateIntervalContainerTestBase
-    //{
-    //    protected override IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<IInterval<DateTime>> intervals)
-    //    {
-    //        return new NestedContainmentList<DateTime>(intervals);
-    //    }
-    //}
+    [TestFixture]
+    public class NCList : DateIntervalContainerTestBase
+    {
+        protected override IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<IInterval<DateTime>> intervals)
+        {
+            return new NestedContainmentList<DateTime>(intervals);
+        }
+    }
 }
