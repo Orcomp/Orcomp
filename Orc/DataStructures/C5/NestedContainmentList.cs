@@ -1,24 +1,22 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using SCG = System.Collections.Generic;
-using C5;
-
-namespace Orc.DataStructures.IntervalNCList
+﻿namespace Orc.DataStructures.C5
 {
+    using System;
     using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    using Orc.DataStructures.C5;
     using Orc.Interval;
     using Orc.Interval.Interface;
 
-    public class NestedContainmentList<T> : IIntervalContainer<T>, SCG.IEnumerable<IInterval<T>>
+    using global::C5;
+
+    public class NestedContainmentList<T> : IIntervalContainer<T>, IEnumerable<IInterval<T>>
         where T : struct, IComparable<T>
     {
-        private IList<Node> _list;
+        private global::C5.IList<Node> _list;
         private IInterval<T> _span;
 
-        private SCG.IList<IInterval<T>> _intervals;
+        private System.Collections.Generic.IList<IInterval<T>> _intervals;
         private bool _isInSync;
 
         #region Node nested classes
@@ -26,20 +24,20 @@ namespace Orc.DataStructures.IntervalNCList
         struct Node
         {
             internal IInterval<T> Interval { get; private set; }
-            internal IList<Node> Sublist { get; private set; }
+            internal global::C5.IList<Node> Sublist { get; private set; }
             internal int NodesBefore { get; private set; }
             internal int NodesInSublist { get; private set; }
 
-            internal Node(IInterval<T> interval, IList<Node> sublist, int nodesBefore, int nodesInSublist)
+            internal Node(IInterval<T> interval, global::C5.IList<Node> sublist, int nodesBefore, int nodesInSublist)
                 : this()
             {
-                Interval = interval;
+                this.Interval = interval;
 
                 if (sublist != null && !sublist.IsEmpty)
-                    Sublist = sublist;
+                    this.Sublist = sublist;
 
-                NodesBefore = nodesBefore;
-                NodesInSublist = nodesInSublist;
+                this.NodesBefore = nodesBefore;
+                this.NodesInSublist = nodesInSublist;
             }
         }
 
@@ -52,11 +50,11 @@ namespace Orc.DataStructures.IntervalNCList
         /// </summary>
         /// <param name="intervals">Sorted intervals</param>
         /// <returns>A list of nodes</returns>
-        private static IList<Node> createList(SCG.IEnumerable<IInterval<T>> intervals)
+        private static global::C5.IList<Node> createList(System.Collections.Generic.IEnumerable<IInterval<T>> intervals)
         {
             // TODO: Make an in-place version
             // List to hold the nodes
-            IList<Node> list = new ArrayList<Node>(); // TODO: Null and then init in if?
+            global::C5.IList<Node> list = new ArrayList<Node>(); // TODO: Null and then init in if?
             // Remember the number of nodes before the current node to allow fast count operation
             var nodesBefore = 0;
 
@@ -66,7 +64,7 @@ namespace Orc.DataStructures.IntervalNCList
             {
                 // Remember the previous node so we can check if the next nodes are contained in it
                 var previous = enumerator.Current;
-                IList<IInterval<T>> sublist = new ArrayList<IInterval<T>>();
+                global::C5.IList<IInterval<T>> sublist = new ArrayList<IInterval<T>>();
 
                 // Loop through intervals
                 while (enumerator.MoveNext())
@@ -102,47 +100,47 @@ namespace Orc.DataStructures.IntervalNCList
 
         public NestedContainmentList()
         {
-            _intervals = new SCG.List<IInterval<T>>();
-            _isInSync = false;
+            this._intervals = new System.Collections.Generic.List<IInterval<T>>();
+            this._isInSync = false;
         }
 
         /// <summary>
         /// Create a Nested Containment List with a enumerable of intervals
         /// </summary>
         /// <param name="intervals">A collection of intervals in arbitrary order</param>
-        public NestedContainmentList(SCG.IEnumerable<IInterval<T>> intervals)
+        public NestedContainmentList(System.Collections.Generic.IEnumerable<IInterval<T>> intervals)
         {
-            _intervals = intervals.ToList();
-            _isInSync = false;
+            this._intervals = intervals.ToList();
+            this._isInSync = false;
 
             this.BuildTree();
         }
 
         private void BuildTree()
         {
-            _list = null;
-            _span = null;
+            this._list = null;
+            this._span = null;
 
-            if (_intervals == null || !_intervals.Any())
+            if (this._intervals == null || !this._intervals.Any())
                 return;
 
             // Sort intervals using IntervalComparer
             var sortedIntervals = new TreeBag<IInterval<T>>();
 
-            foreach (var interval in _intervals)
+            foreach (var interval in this._intervals)
                 sortedIntervals.Add(interval);
 
             // Build nested containment list recursively and save the upper-most list in the class
-            _list = createList(sortedIntervals);
+            this._list = createList(sortedIntervals);
 
             // Use count from sorted intervals (constant speed)
-            Count = sortedIntervals.Count;
+            this.Count = sortedIntervals.Count;
 
             // Save span to allow for constant speeds on later requests
-            IInterval<T> i = _list.First.Interval, j = _list.Last.Interval;
-            Span = new Interval<T>(i.Min.Value, i.Max.Value, i.Min.IsInclusive, i.Max.IsInclusive);
+            IInterval<T> i = this._list.First.Interval, j = this._list.Last.Interval;
+            this.Span = new Interval<T>(i.Min.Value, i.Max.Value, i.Min.IsInclusive, i.Max.IsInclusive);
 
-            _isInSync = true;
+            this._isInSync = true;
         }
 
         #endregion
@@ -151,7 +149,7 @@ namespace Orc.DataStructures.IntervalNCList
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         // TODO: Test the order is still the same as when sorted with IntervalComparer. This should be that case!
@@ -160,12 +158,12 @@ namespace Orc.DataStructures.IntervalNCList
         /// </summary>
         /// <returns>Enumerator</returns>
         // TODO: Test the order is still the same as when sorted with IntervalComparer. This should be that case!
-        public SCG.IEnumerator<IInterval<T>> GetEnumerator()
+        public System.Collections.Generic.IEnumerator<IInterval<T>> GetEnumerator()
         {
-            return getEnumerator(_list);
+            return this.getEnumerator(this._list);
         }
 
-        private SCG.IEnumerator<IInterval<T>> getEnumerator(SCG.IEnumerable<Node> list)
+        private System.Collections.Generic.IEnumerator<IInterval<T>> getEnumerator(System.Collections.Generic.IEnumerable<Node> list)
         {
             // Just for good measures
             if (list == null)
@@ -178,7 +176,7 @@ namespace Orc.DataStructures.IntervalNCList
 
                 if (node.Sublist != null)
                 {
-                    var child = getEnumerator(node.Sublist);
+                    var child = this.getEnumerator(node.Sublist);
 
                     while (child.MoveNext())
                         yield return child.Current;
@@ -193,7 +191,7 @@ namespace Orc.DataStructures.IntervalNCList
         public string ToString(string format, IFormatProvider formatProvider)
         {
             // TODO: Correct implementation?
-            return _list.ToString();
+            return this._list.ToString();
         }
 
         #region IShowable
@@ -212,7 +210,7 @@ namespace Orc.DataStructures.IntervalNCList
         #region Events
 
         // The structure is static and has therefore no meaningful events
-        public SCG.IEnumerable<IInterval<T>> Filter(Fun<IInterval<T>, bool> filter)
+        public System.Collections.Generic.IEnumerable<IInterval<T>> Filter(Fun<IInterval<T>, bool> filter)
         {
             throw new NotImplementedException();
         }
@@ -229,13 +227,13 @@ namespace Orc.DataStructures.IntervalNCList
 
         #endregion
 
-        public bool IsEmpty { get { return Count == 0; } }
+        public bool IsEmpty { get { return this.Count == 0; } }
         public int Count { get; private set; }
         public Speed CountSpeed { get { return Speed.Constant; } }
 
         public void CopyTo(IInterval<T>[] array, int index)
         {
-            if (index < 0 || index + Count > array.Length)
+            if (index < 0 || index + this.Count > array.Length)
                 throw new ArgumentOutOfRangeException();
 
             foreach (var item in this)
@@ -244,7 +242,7 @@ namespace Orc.DataStructures.IntervalNCList
 
         public IInterval<T>[] ToArray()
         {
-            var res = new IInterval<T>[Count];
+            var res = new IInterval<T>[this.Count];
             var i = 0;
 
             foreach (var item in this)
@@ -282,13 +280,13 @@ namespace Orc.DataStructures.IntervalNCList
 
         public IInterval<T> Choose()
         {
-            if (Count > 0)
-                return _list.First.Interval;
+            if (this.Count > 0)
+                return this._list.First.Interval;
 
             throw new NoSuchItemException();
         }
 
-        public SCG.IEnumerable<IInterval<T>> Filter(Func<IInterval<T>, bool> filter)
+        public System.Collections.Generic.IEnumerable<IInterval<T>> Filter(Func<IInterval<T>, bool> filter)
         {
             return this.Where(filter);
         }
@@ -302,25 +300,25 @@ namespace Orc.DataStructures.IntervalNCList
             get
             {
                 // TODO: Use a better exception? Return null for empty collection?
-                if (IsEmpty)
+                if (this.IsEmpty)
                     throw new InvalidOperationException("An empty collection has no span");
 
-                return _span;
+                return this._span;
             }
 
-            private set { _span = value; }
+            private set { this._span = value; }
         }
 
         public Speed SpanSpeed { get { return Speed.Constant; } }
 
-        public SCG.IEnumerable<IInterval<T>> Overlap(T query)
+        public System.Collections.Generic.IEnumerable<IInterval<T>> Overlap(T query)
         {
 
-            return overlap(_list, new Interval<T>(query, query));
+            return overlap(this._list, new Interval<T>(query, query));
         }
 
         // TODO: Test speed difference between version that takes overlap-loop and upper and low bound loop
-        private static SCG.IEnumerable<IInterval<T>> overlap(IList<Node> list, IInterval<T> query)
+        private static System.Collections.Generic.IEnumerable<IInterval<T>> overlap(global::C5.IList<Node> list, IInterval<T> query)
         {
             if (list == null)
                 yield break;
@@ -350,7 +348,7 @@ namespace Orc.DataStructures.IntervalNCList
         /// <param name="list"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        private static int searchHighInLows(IList<Node> list, IInterval<T> query)
+        private static int searchHighInLows(global::C5.IList<Node> list, IInterval<T> query)
         {
             if (query == null || list.Count == 0)
                 return -1;
@@ -388,7 +386,7 @@ namespace Orc.DataStructures.IntervalNCList
             return min;
         }
 
-        private static int searchLowInHighs(IList<Node> list, IInterval<T> query)
+        private static int searchLowInHighs(global::C5.IList<Node> list, IInterval<T> query)
         {
             if (query == null)
                 return -1;
@@ -425,12 +423,12 @@ namespace Orc.DataStructures.IntervalNCList
             return max;
         }
 
-        public SCG.IEnumerable<IInterval<T>> Overlap(IInterval<T> query)
+        public System.Collections.Generic.IEnumerable<IInterval<T>> Overlap(IInterval<T> query)
         {
             if (query == null)
                 throw new NullReferenceException("Query can't be null");
 
-            return overlap(_list, query);
+            return overlap(this._list, query);
         }
 
         public bool OverlapExists(IInterval<T> query)
@@ -439,14 +437,14 @@ namespace Orc.DataStructures.IntervalNCList
                 throw new NullReferenceException("Query can't be null");
 
             // Check if query overlaps the collection at all
-            if (_list == null || !query.Overlaps(Span))
+            if (this._list == null || !query.Overlaps(this.Span))
                 return false;
 
             // Find first overlap
-            var i = searchHighInLows(_list, query);
+            var i = searchHighInLows(this._list, query);
 
             // Check if index is in bound and if the interval overlaps the query
-            return 0 <= i && i < _list.Count && _list[i].Interval.Overlaps(query);
+            return 0 <= i && i < this._list.Count && this._list[i].Interval.Overlaps(query);
         }
 
         #region Static Intervaled
@@ -459,10 +457,10 @@ namespace Orc.DataStructures.IntervalNCList
 
             // The number of overlaps is the difference between the number of nodes not after the last overlap
             // and the number of nodes before the first overlap
-            return countNotAfter(_list, query) - countBefore(_list, query);
+            return countNotAfter(this._list, query) - countBefore(this._list, query);
         }
 
-        private static int countBefore(IList<Node> list, IInterval<T> query)
+        private static int countBefore(global::C5.IList<Node> list, IInterval<T> query)
         {
             // Return 0 if list is empty
             if (list == null || list.IsEmpty)
@@ -486,7 +484,7 @@ namespace Orc.DataStructures.IntervalNCList
             return list[i].NodesBefore;
         }
 
-        private static int countNotAfter(IList<Node> list, IInterval<T> query)
+        private static int countNotAfter(global::C5.IList<Node> list, IInterval<T> query)
         {
             // Return 0 if list is empty
             if (list == null || list.IsEmpty)
@@ -509,7 +507,7 @@ namespace Orc.DataStructures.IntervalNCList
             return list[i].NodesBefore + 1 + countNotAfter(list[i].Sublist, query);
         }
 
-        private static int nodesInList(IList<Node> list)
+        private static int nodesInList(global::C5.IList<Node> list)
         {
             return nodesBeforeNext(list.Last);
         }
@@ -526,19 +524,19 @@ namespace Orc.DataStructures.IntervalNCList
 
         public void Add(IInterval<T> interval)
         {
-            _isInSync = false;
+            this._isInSync = false;
 
-            _intervals.Add(interval);
+            this._intervals.Add(interval);
         }
 
         public void Remove(IInterval<T> interval)
         {
-            _isInSync = false;
+            this._isInSync = false;
 
-            _intervals.Remove(interval);
+            this._intervals.Remove(interval);
         }
 
-        public SCG.IEnumerable<IInterval<T>> Query(IInterval<T> interval)
+        public System.Collections.Generic.IEnumerable<IInterval<T>> Query(IInterval<T> interval)
         {
             if (interval == null)
             {
@@ -551,7 +549,7 @@ namespace Orc.DataStructures.IntervalNCList
             return this.Overlap(interval);
         }
 
-        public SCG.IEnumerable<IInterval<T>> Query(T value)
+        public System.Collections.Generic.IEnumerable<IInterval<T>> Query(T value)
         {
             if (!this._isInSync)
                 this.BuildTree();

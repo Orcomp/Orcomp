@@ -5,16 +5,15 @@
 
     using NUnit.Framework;
 
-    using Orc.DataStructures.IntervalNCList;
-    using Orc.DataStructures.RangeTree;
+    using Orc.DataStructures.C5;
     using Orc.Interval.Interface;
 
     [TestFixture]
-    public class NCList : DateIntervalContainerTestBase
+    public class NestedContainmentListPlus : DateIntervalContainerTestBase
     {
         protected override IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<IInterval<DateTime>> intervals)
         {
-            return new NestedContainmentList<DateTime>(intervals);
+            return new NestedContainmentListPlus<DateTime>(intervals);
         }
     }
 }

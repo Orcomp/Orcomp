@@ -48,7 +48,7 @@
                 "startToStartOffset must be greater or equal to zero and smaller than duration.");
             Debug.Assert(count > 0, "count must be greater than zero.");
 
-            foreach (var number in Enumerable.Range(0, count - 1))
+            foreach (var number in Enumerable.Range(0, count))
             {
                 var start = startDate.Add(TimeSpan.FromTicks(startToStartOffset.Ticks * number));
                 var end = start.Add(duration);

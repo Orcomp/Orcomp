@@ -12,11 +12,15 @@
 
     public partial class DateIntervalContainerTestBase
     {
+        //     |-|
+        //    |---|
+        //   |-----|
+        //  |-------|
         [Test]
         [Category("Benchmark")]
         public void Query_BenchmarkContainmentIntervals_Test()
         {
-            const int numberOfIntervals = 1000;
+            const int numberOfIntervals = 2000;
 
             var intervals = GetDateRangesAllDescendingEndTimes(now, numberOfIntervals).ToList();
 
@@ -42,10 +46,6 @@
             Debug.WriteLine(timeElapsedSummary);
         }
 
-        //     |-|
-        //    |---|
-        //   |-----|
-        //  |-------|
         private static IEnumerable<Interval<DateTime>> GetDateRangesAllDescendingEndTimes(DateTime date, int count)
         {
             var dateRanges = new Interval<DateTime>[count];
@@ -58,6 +58,7 @@
             return new List<Interval<DateTime>>(dateRanges).OrderBy(x => x.Min.Value);
         }
 
+        // |---| |---| |---| |---|
         [Test]
         [Category("Benchmark")]
         public void Query_BenchmarkSequentialIntervals_Test()
@@ -71,7 +72,34 @@
 
             var intervalContainer = RunIntervalContainerBuild(intervals);
 
-            RunQueryBenchmarkTestsForSquentialInterval(intervalContainer, intervalLength, intervalAndSpaceLength, numberOfIntervals);
+            this.RunQueryBenchmarkTestsForSquentialIntervals(intervalContainer, intervalLength, intervalAndSpaceLength, numberOfIntervals);
+
+            var timeElapsedSummary = timeEllapsedReport.ToString();
+            Debug.WriteLine(timeElapsedSummary);
+        }
+
+        /// |-------------------|
+        ///     |-------------------|
+        ///          |-------------------|
+        ///                |-------------------|
+        [Test]
+        [Category("Benchmark")]
+        public void Query_BenchmarkOverlappingIntervals_Test()
+        {
+            const int numberOfIntervals = 1000000;
+            const int intervalLength = 10;
+            const int startToStartLength = 1;
+
+            Debug.Assert(numberOfIntervals % 2 == 0, "The number of intervals must be even.");
+            Debug.Assert(intervalLength % startToStartLength == 0, "The interval length number must be wholely divisible by startToStartLength");
+            Debug.Assert(numberOfIntervals / intervalLength > 2, "The number of intervals must be at least twice the the interval length value.");
+
+            var intervals = DateIntervalCollectionGenerator.OverlapsWithConstantDuration(
+                now, TimeSpan.FromMinutes(intervalLength), TimeSpan.FromMinutes(startToStartLength), numberOfIntervals);
+
+            var intervalContainer = this.RunIntervalContainerBuild(intervals);
+
+            this.RunQueryBenchmarkTestsForOverlappingIntervals(intervalContainer, intervalLength, startToStartLength, numberOfIntervals);
 
             var timeElapsedSummary = timeEllapsedReport.ToString();
             Debug.WriteLine(timeElapsedSummary);
@@ -91,16 +119,16 @@
 
             var intervalContainer = RunIntervalContainerBuild(intervals);
 
-            RunQueryBenchmarkTestsForSquentialInterval(intervalContainer, intervalLength, intervalAndSpaceLength, numberOfIntervals);
+            this.RunQueryBenchmarkTestsForSquentialIntervals(intervalContainer, intervalLength, intervalAndSpaceLength, numberOfIntervals);
 
             RemoveHalfOfIntervals(intervalContainer, intervals);
 
             const int halfNumberOfIntervals = numberOfIntervals / 2;
-            RunQueryBenchmarkTestsForSquentialInterval(intervalContainer, intervalLength, intervalAndSpaceLength, halfNumberOfIntervals);
+            this.RunQueryBenchmarkTestsForSquentialIntervals(intervalContainer, intervalLength, intervalAndSpaceLength, halfNumberOfIntervals);
 
             AddRemovedIntervals(intervalContainer, intervals);
 
-            RunQueryBenchmarkTestsForSquentialInterval(intervalContainer, intervalLength, intervalAndSpaceLength, numberOfIntervals);
+            this.RunQueryBenchmarkTestsForSquentialIntervals(intervalContainer, intervalLength, intervalAndSpaceLength, numberOfIntervals);
 
             var timeElapsedSummary = timeEllapsedReport.ToString();
             Debug.WriteLine(timeElapsedSummary);
@@ -171,7 +199,7 @@
             return intervalContainer;
         }
 
-        private void RunQueryBenchmarkTestsForSquentialInterval(IIntervalContainer<DateTime> intervalContainer, int intervalLength, int intervalAndSpaceLength, int numberOfIntervals)
+        private void RunQueryBenchmarkTestsForSquentialIntervals(IIntervalContainer<DateTime> intervalContainer, int intervalLength, int intervalAndSpaceLength, int numberOfIntervals)
         {
             var beforeBeginnigResult = TestQueryForInterval(
                 ToDateTimeInterval(now, -2 * intervalLength, -intervalLength), 
@@ -179,20 +207,35 @@
                 "Before The Beginning");
 
             var atTheBeginnigResult = TestQueryForInterval(
-                ToDateTimeInterval(now, -1, 1), 
+                ToDateTimeInterval(now, -1, 0), 
                 intervalContainer, 
                 "At The Beginning");
 
             int middleIntervalIndex = numberOfIntervals / 2;
+            var fromTheBeginnigToMiddleResult = TestQueryForInterval(
+                ToDateTimeInterval(now, 0, (middleIntervalIndex) * intervalAndSpaceLength - 1),
+                intervalContainer,
+                "From The Beginning To The Middle");
+
             var inTheMiddleResult = TestQueryForInterval(
-                ToDateTimeInterval(now, (middleIntervalIndex) * intervalAndSpaceLength, ((middleIntervalIndex) + 1) * intervalAndSpaceLength - 1),
+                ToDateTimeInterval(now, (middleIntervalIndex) * intervalAndSpaceLength, (middleIntervalIndex + 1) * intervalAndSpaceLength - 1),
                 intervalContainer,
                 "In The Middle");
+
+            var fromTheMiddleToEndResult = TestQueryForInterval(
+               ToDateTimeInterval(now, (middleIntervalIndex + 1) * intervalAndSpaceLength - 1, (numberOfIntervals + 1) * intervalAndSpaceLength),
+               intervalContainer,
+               "From The Middle To The End");
 
             var atTheEndResult = TestQueryForInterval(
                 ToDateTimeInterval(now, (numberOfIntervals - 1) * intervalAndSpaceLength, numberOfIntervals * intervalAndSpaceLength),
                 intervalContainer,
                 "At The End");
+
+            var fromTheBeginningToEndResult = TestQueryForInterval(
+               ToDateTimeInterval(now, 0, (numberOfIntervals + 1) * intervalAndSpaceLength),
+               intervalContainer,
+               "From The Beginning To The End");
 
             var afterTheEndResult = TestQueryForInterval(
                 ToDateTimeInterval(now, (numberOfIntervals + 1) * intervalAndSpaceLength, (numberOfIntervals + 2) * intervalAndSpaceLength),
@@ -203,9 +246,77 @@
 
             Assert.AreEqual(1, atTheBeginnigResult.Count());
 
+            Assert.AreEqual(middleIntervalIndex, fromTheBeginnigToMiddleResult.Count());
+
             Assert.AreEqual(1, inTheMiddleResult.Count());
 
+            Assert.AreEqual(middleIntervalIndex, fromTheMiddleToEndResult.Count());
+
             Assert.AreEqual(1, atTheEndResult.Count());
+
+            Assert.AreEqual(numberOfIntervals, fromTheBeginningToEndResult.Count());
+
+            Assert.AreEqual(0, afterTheEndResult.Count());
+        }
+
+
+        private void RunQueryBenchmarkTestsForOverlappingIntervals(IIntervalContainer<DateTime> intervalContainer, int intervalLength, int startToStartLength, int numberOfIntervals)
+        {
+            var beforeBeginnigResult = TestQueryForInterval(
+                ToDateTimeInterval(now, -2 * intervalLength, -intervalLength),
+                intervalContainer,
+                "Before The Beginning");
+
+            var atTheBeginnigResult = TestQueryForInterval(
+                ToDateTimeInterval(now, -1, 0),
+                intervalContainer,
+                "At The Beginning");
+
+            int middleIntervalIndex = numberOfIntervals / 2;
+            var fromTheBeginnigToMiddleResult = TestQueryForInterval(
+                ToDateTimeInterval(now, 0, startToStartLength * (middleIntervalIndex - 1)),
+                intervalContainer,
+                "From The Beginning To The Middle");
+
+            var inTheMiddleResult = TestQueryForInterval(
+                ToDateTimeInterval(now, startToStartLength * middleIntervalIndex, startToStartLength * middleIntervalIndex + intervalLength),
+                intervalContainer,
+                "In The Middle");
+
+            // From the end of the middle interval to the end of the last interval
+            var fromTheMiddleToEndResult = TestQueryForInterval(
+               ToDateTimeInterval(now, startToStartLength * middleIntervalIndex + intervalLength, startToStartLength * numberOfIntervals + intervalLength),
+               intervalContainer,
+               "From The Middle To The End");
+
+            var atTheEndResult = TestQueryForInterval(
+                ToDateTimeInterval(now, startToStartLength * (numberOfIntervals - 1) + intervalLength - 1, startToStartLength * (numberOfIntervals - 1) + intervalLength),
+                intervalContainer,
+                "At The End");
+
+            var fromTheBeginningToEndResult = TestQueryForInterval(
+               ToDateTimeInterval(now, 0, startToStartLength * (numberOfIntervals - 1) + intervalLength),
+               intervalContainer,
+               "From The Beginning To The End");
+
+            var afterTheEndResult = TestQueryForInterval(
+                ToDateTimeInterval(now, startToStartLength * (numberOfIntervals - 1) + intervalLength + 1, startToStartLength * numberOfIntervals + intervalLength + 2),
+                intervalContainer,
+                "After The End");
+
+            Assert.AreEqual(0, beforeBeginnigResult.Count());
+
+            Assert.AreEqual(1, atTheBeginnigResult.Count());
+
+            Assert.AreEqual(middleIntervalIndex, fromTheBeginnigToMiddleResult.Count());
+
+            Assert.AreEqual(2 * (intervalLength / startToStartLength), inTheMiddleResult.Count());
+
+            Assert.AreEqual(middleIntervalIndex - 1, fromTheMiddleToEndResult.Count());
+
+            Assert.AreEqual(1, atTheEndResult.Count());
+
+            Assert.AreEqual(numberOfIntervals, fromTheBeginningToEndResult.Count());
 
             Assert.AreEqual(0, afterTheEndResult.Count());
         }

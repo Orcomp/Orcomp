@@ -43,8 +43,12 @@
   <ItemGroup>
     <Compile Include="Algorithms\ListWeaver.cs" />
     <Compile Include="DataStructures\C5\Interfaces.cs" />
-    <Compile Include="DataStructures\C5\IntervalNCList\NcList.cs" />
-    <Compile Include="DataStructures\C5\IntervalStaticTree\StaticIntervalTree.cs" />
+    <Compile Include="DataStructures\C5\IntervalBinarySearchTree.cs" />
+    <Compile Include="DataStructures\C5\LayeredContainmentList.cs" />
+    <Compile Include="DataStructures\C5\NestedContainmentListPlus.cs" />
+    <Compile Include="DataStructures\C5\NestedContainmentList.cs" />
+    <Compile Include="DataStructures\C5\StaticIntervalTree.cs" />
+    <Compile Include="DataStructures\C5\StaticIntervalTreePlus.cs" />
     <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISorter.cs" />
     <Compile Include="Algorithms\Sort\Interfaces\ISwap.cs" />

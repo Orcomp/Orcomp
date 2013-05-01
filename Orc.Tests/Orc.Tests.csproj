@@ -73,11 +73,15 @@
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase2.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.cs" />
     <Compile Include="IntervalContainer\DateIntervalContainerTestBase.TestCase1.cs" />
+    <Compile Include="IntervalContainer\IntervalBinarySearchTreeTest.cs" />
     <Compile Include="IntervalContainer\IntervalTreeAVLTest.cs" />
     <Compile Include="IntervalContainer\IntervalTreeRBTest.cs" />
-    <Compile Include="IntervalContainer\NcListTest.cs" />
+    <Compile Include="IntervalContainer\LayeredContainmentListTest.cs" />
+    <Compile Include="IntervalContainer\NestedContainmentListPlus.cs" />
+    <Compile Include="IntervalContainer\NestedContainmentList.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
     <Compile Include="IntervalContainer\StaticIntervalTree.cs" />
+    <Compile Include="IntervalContainer\StaticIntervalTreePlus.cs" />
     <Compile Include="MiscExtensionsTest.cs" />
     <Compile Include="ListWeaverTest.cs" />
     <Compile Include="NSort\SorterTest.cs" />

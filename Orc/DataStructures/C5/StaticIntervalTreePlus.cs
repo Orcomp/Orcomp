@@ -1,51 +1,74 @@
-﻿using System;
-using System.Linq;
-using System.Collections;
-using SCG = System.Collections.Generic;
-using System.Text;
-using C5;
-
-namespace Orc.DataStructures.C5.IntervalStaticTree
+﻿namespace Orc.DataStructures.C5
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using SCG = System.Collections.Generic;
+
     using Orc.Interval;
     using Orc.Interval.Interface;
 
+    using global::C5;
+
+    //TODO: Find another class for these methods
     public static class Utils
     {
+        public static void Shuffle<T>(SCG.IList<T> list)
+        {
+            var random = new Random();
+            var n = list.Count;
+            while (--n > 0)
+                list.Swap(random.Next(n + 1), n);
+        }
+
+        public static void Swap<T>(this SCG.IList<T> list, int i, int j)
+        {
+            var tmp = list[i];
+            list[i] = list[j];
+            list[j] = tmp;
+        }
+
         public static bool IsEmpty<T>(this SCG.IEnumerable<T> collection)
+        {
+            return collection == null || !collection.Any();
+        }
+
+        public static bool IsEmpty<T>(this SCG.IList<T> collection)
         {
             return collection == null || !collection.Any();
         }
     }
 
+
     // TODO: Duplicates?
-    public class StaticIntervalTree<T> : IIntervalContainer<T>, SCG.IEnumerable<IInterval<T>> where T : IComparable<T>
+    public class StaticIntervalTreePlus<T> : IIntervalContainer<T>, IEnumerable<IInterval<T>> where T : IComparable<T>
     {
-        private Node _root;
-        // TODO: Does it make sence that _span is static? What if we have more than one collection?!
+        private  Node _root;
         private IInterval<T> _span;
+
+        private System.Collections.Generic.IList<IInterval<T>> _intervals;
+        private bool _isInSync;
 
         #region Node nested classes
 
         class Node
         {
-            public T Key { get; private set; }
+            internal T Key { get; private set; }
             // Left and right subtree
-            public Node Left { get; private set; }
-            public Node Right { get; private set; }
+            internal Node Left { get; private set; }
+            internal Node Right { get; private set; }
             // Left and right list of intersecting intervals for Key
-            public ListNode LeftList { get; private set; }
-            public ListNode RightList { get; private set; }
+            internal ListNode LeftList { get; private set; }
+            internal ListNode RightList { get; private set; }
 
-            public Node(SCG.IEnumerable<IInterval<T>> intervals, StaticIntervalTree<T> parent)
+            internal Node(IInterval<T>[] intervals, ref IInterval<T> span)
             {
-                // If interval set is empty return empty leaf
-                if (intervals.IsEmpty())
-                    return;
+                Key = getKey(intervals);
 
-                Key = GetKey(intervals);
-
-                IList<IInterval<T>>
+                SCG.IList<IInterval<T>>
                     keyIntersections = new ArrayList<IInterval<T>>(),
                     lefts = new ArrayList<IInterval<T>>(),
                     rights = new ArrayList<IInterval<T>>();
@@ -95,39 +118,34 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
                     previous = node;
                 }
 
-                // Set span
-                if (LeftList != null)
-                {
-                    var interval = LeftList.Interval;
-                    // If the left most interval in the node has a lower Low than the current _span, update _span
-                    if (interval.Min.Value.CompareTo(parent.Span.Min.Value) < 0
-                        || (interval.Min.Value.CompareTo(parent.Span.Min.Value) == 0 && !parent.Span.Min.IsInclusive && interval.Min.IsInclusive))
-                    {
-                        parent.Span = new Orc.Interval.Interval<T>(interval.Min.Value, parent.Span.Max.Value, interval.Min.IsInclusive, parent.Span.Max.IsInclusive);
-                    }
-                }
 
                 // Set span
-                if (RightList != null)
-                {
-                    var interval = RightList.Interval;
-                    // If the right most interval in the node has a higher High than the current Span, update Span
-                    if (parent.Span.Max.Value.CompareTo(interval.Max.Value) < 0
-                        || (parent.Span.Max.Value.CompareTo(interval.Max.Value) == 0 && !parent.Span.Max.IsInclusive && interval.Max.IsInclusive))
-                    {
-                        parent.Span = new Orc.Interval.Interval<T>(parent.Span.Min.Value, interval.Max.Value, parent.Span.Min.IsInclusive, interval.Max.IsInclusive);
-                    }
-                }
+                var lowestInterval = LeftList.Interval;
+                var lowCompare = lowestInterval.Min.Value.CompareTo(span.Min.Value);
+                // If the left most interval in the node has a lower Low than the current _span, update _span
+                if (lowCompare < 0 || (lowCompare == 0 && !span.Min.IsInclusive && lowestInterval.Min.IsInclusive))
+                    span = new Interval<T>(lowestInterval.Min.Value, span.Max.Value);
+
+                // Set span
+                var highestInterval = RightList.Interval;
+                var highCompare = span.Max.Value.CompareTo(highestInterval.Max.Value);
+                // If the right most interval in the node has a higher High than the current Span, update Span
+                if (highCompare < 0 || (highCompare == 0 && !span.Max.IsInclusive && highestInterval.Max.IsInclusive))
+                    span = new Interval<T>(span.Min.Value, highestInterval.Max.Value);
+
 
                 // Construct interval tree recursively for Left and Right subtrees
-                Left = new Node(lefts, parent);
-                Right = new Node(rights, parent);
+                if (!lefts.IsEmpty())
+                    Left = new Node(lefts.ToArray(), ref span);
+
+                if (!rights.IsEmpty())
+                    Right = new Node(rights.ToArray(), ref span);
             }
         }
 
         class ListNode
         {
-            public ListNode Next { get; set; }
+            public ListNode Next { get; internal set; }
             public IInterval<T> Interval { get; private set; }
 
             public ListNode(IInterval<T> interval)
@@ -140,79 +158,59 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
 
         #region Constructors
 
-
-        private SCG.IList<IInterval<T>> _intervals;
-        private bool _isInSync;
-
-        public StaticIntervalTree()
+        public StaticIntervalTreePlus(SCG.IEnumerable<IInterval<T>> intervals)
         {
-            _intervals = new SCG.List<IInterval<T>>();
-            _isInSync = false;
-        }
+            this._intervals = intervals.ToList();
+            this._isInSync = false;
 
-        /// <summary>
-        /// Create a Nested Containment List with a enumerable of intervals
-        /// </summary>
-        /// <param name="intervals">A collection of intervals in arbitrary order</param>
-        public StaticIntervalTree(SCG.IEnumerable<IInterval<T>> intervals)
-        {
-            _intervals = intervals == null ? new SCG.List<IInterval<T>>() : intervals.ToList();
-            _isInSync = false;
-
-            this.BuildTree();
+           this.BuildTree();
         }
 
         private void BuildTree()
         {
-            _root = null;
-            _span = null;
+            var intervalArray = _intervals as IInterval<T>[] ?? _intervals.ToArray();
 
-            if (!_intervals.IsEmpty())
+            if (!intervalArray.IsEmpty())
             {
-                // TODO: Counted twice as it is also counted inside Node() constructor
-                Count = _intervals.Count();
+                Count = intervalArray.Count();
 
-                var i = _intervals.First();
-                Span = new Interval<T>(i.Min.Value, i.Max.Value, i.Min.IsInclusive, i.Max.IsInclusive);
+                IInterval<T> span = new Interval<T>(intervalArray.First().Min.Value, intervalArray.First().Max.Value);
+
+                // TODO: Figure out how Orcomp does it
+                // MaximumOverlap = IntervaledHelper<T>.MaximumOverlap(intervalArray);
+
+                _root = new Node(intervalArray, ref span);
+
+                Span = span;
             }
-
-            // TODO: Fix span - sample100
-            _root = new Node(_intervals, this);
-
-            _isInSync = true;
         }
 
-        #region Median
 
-        private static T GetKey(SCG.IEnumerable<IInterval<T>> list)
+    #region Median
+
+        private static T getKey(IInterval<T>[] list)
         {
-            IList<T> endpoints = new ArrayList<T>();
+            SCG.IList<T> endpoints = new ArrayList<T>();
 
-            var n = 0;
             foreach (var interval in list)
             {
-                // Count intervals to avoid going through collection too many times
-                n++;
-
                 // Add both endpoints
                 endpoints.Add(interval.Min.Value);
                 endpoints.Add(interval.Max.Value);
             }
 
-            return GetK(endpoints, n - 1);
+            return getK(endpoints, list.Count() - 1);
         }
 
-        private static T GetK(IList<T> list, int k)
+        private static T getK(SCG.IList<T> list, int k)
         {
-            if (k < 0 || list.Count < k)
-                throw new ArgumentOutOfRangeException();
+            Utils.Shuffle(list);
 
-            list = scramble(list);
             int low = 0, high = list.Count - 1;
 
             while (high > low)
             {
-                int j = partition(list, low, high);
+                var j = partition(list, low, high);
 
                 if (j > k)
                     high = j - 1;
@@ -225,20 +223,8 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
             return list[k];
         }
 
-        private static IList<T> scramble(IList<T> endpoints)
-        {
-            var random = new Random();
-            var n = endpoints.Count;
-            for (var i = 0; i < n; i++)
-            {
-                var randomNumber = random.Next(0, n);
-                swap(endpoints, randomNumber, i);
-            }
 
-            return endpoints;
-        }
-
-        private static int partition(IList<T> list, int low, int high)
+        private static int partition(SCG.IList<T> list, int low, int high)
         {
             int i = low, j = high + 1;
             var v = list[low];
@@ -254,19 +240,12 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
                 if (i >= j)
                     break;
 
-                swap(list, i, j);
+                list.Swap(i, j);
             }
 
-            swap(list, low, j);
+            list.Swap(low, j);
 
             return j;
-        }
-
-        private static void swap(IList<T> list, int i, int j)
-        {
-            var tmp = list[i];
-            list[i] = list[j];
-            list[j] = tmp;
         }
 
         #endregion
@@ -275,7 +254,7 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
 
         #region IEnumerable
 
-        public int OverlapCount(IInterval<T> query)
+        public int CountOverlaps(IInterval<T> query)
         {
             throw new NotImplementedException();
         }
@@ -417,7 +396,7 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
 
         #endregion
 
-        public bool IsEmpty { get { return Count == 0; } }
+        public bool IsEmpty { get { return _root == null; } }
         public int Count { get; private set; }
         public Speed CountSpeed { get { return Speed.Constant; } }
 
@@ -468,10 +447,10 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
 
         public IInterval<T> Choose()
         {
-            if (Count > 0)
-                return _root.LeftList.Interval;
+            if (_root == null)
+                throw new NoSuchItemException();
 
-            throw new NoSuchItemException();
+            return _root.LeftList.Interval;
         }
 
         public SCG.IEnumerable<IInterval<T>> Filter(Func<IInterval<T>, bool> filter)
@@ -483,18 +462,18 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
 
         #region IIntervaled
 
-        public SCG.IEnumerable<IInterval<T>> Overlap(T query)
+        public SCG.IEnumerable<IInterval<T>> FindOverlaps(T query)
         {
-            if (query == null)
-                throw new NullReferenceException("Query can't be null");
+            if (ReferenceEquals(query, null))
+                return Enumerable.Empty<IInterval<T>>();
 
-            return overlap(_root, query);
+            return findOverlap(_root, query);
         }
 
-        private SCG.IEnumerable<IInterval<T>> overlap(Node root, T query)
+        private SCG.IEnumerable<IInterval<T>> findOverlap(Node root, T query)
         {
             // Don't search empty leaves
-            if (root == null || root.LeftList == null) yield break;
+            if (root == null) yield break;
 
             // If query matches root key, we just yield all intervals in root and stop our search
             if (query.CompareTo(root.Key) == 0)
@@ -524,7 +503,7 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
                 }
 
                 // Recurse Left
-                foreach (var interval in overlap(root.Left, query))
+                foreach (var interval in findOverlap(root.Left, query))
                 {
                     yield return interval;
                 }
@@ -543,23 +522,20 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
                 }
 
                 // Recurse Right
-                foreach (var interval in overlap(root.Right, query))
+                foreach (var interval in findOverlap(root.Right, query))
                 {
                     yield return interval;
                 }
             }
         }
 
-        public SCG.IEnumerable<IInterval<T>> Overlap(IInterval<T> query)
+        public SCG.IEnumerable<IInterval<T>> FindOverlaps(IInterval<T> query)
         {
-            if (query == null)
-                throw new NullReferenceException("Query can't be null");
+            if (ReferenceEquals(query, null))
+                yield break;
 
-            // Break if collection is empty
-            if (IsEmpty) yield break;
-
-            // Break if query is outside the collections span
-            if (!Span.Overlaps(query))
+            // Break if collection is empty or the query is outside the collections span
+            if (IsEmpty || !Span.Overlaps(query))
                 yield break;
 
             var splitNode = _root;
@@ -579,10 +555,12 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
         public bool OverlapExists(IInterval<T> query)
         {
             if (query == null)
-                throw new NullReferenceException("Query can't be null");
+                return false;
 
-            throw new NotImplementedException();
+            return FindOverlaps(query).GetEnumerator().MoveNext();
         }
+
+        public int MaximumOverlap { get; private set; }
 
         /// <summary>
         /// Create an enumerable, enumerating all intersecting intervals on the path to the split node. Returns the split node in splitNode.
@@ -605,9 +583,7 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
 
                 // Recursively travese left subtree
                 foreach (var interval in findSplitNode(root.Left, query, splitNode))
-                {
                     yield return interval;
-                }
             }
             // Interval is higher than root, go right
             else if (root.Key.CompareTo(query.Min.Value) < 0)
@@ -621,9 +597,7 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
 
                 // Recursively travese right subtree
                 foreach (var interval in findSplitNode(root.Right, query, splitNode))
-                {
                     yield return interval;
-                }
             }
             // Otherwise add overlapping nodes in split node
             else
@@ -634,9 +608,7 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
                 {
                     // TODO: A better way to go through them? What if query is [a:b] and splitnode is b, but all intervals are (b:c]?
                     if (query.Overlaps(node.Interval))
-                    {
                         yield return node.Interval;
-                    }
 
                     node = node.Next;
                 }
@@ -801,19 +773,19 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
                 throw new ArgumentNullException();
             }
 
-            _isInSync = false;
+            this._isInSync = false;
 
-            _intervals.Add(interval);
+            this._intervals.Add(interval);
         }
 
         public void Remove(IInterval<T> interval)
         {
-            _isInSync = false;
+            this._isInSync = false;
 
-            _intervals.Remove(interval);
+            this._intervals.Remove(interval);
         }
 
-        public SCG.IEnumerable<IInterval<T>> Query(IInterval<T> interval)
+        public System.Collections.Generic.IEnumerable<IInterval<T>> Query(IInterval<T> interval)
         {
             if (interval == null)
             {
@@ -823,15 +795,15 @@ namespace Orc.DataStructures.C5.IntervalStaticTree
             if (!this._isInSync)
                 this.BuildTree();
 
-            return this.Overlap(interval);
+            return this.FindOverlaps(interval);
         }
 
-        public SCG.IEnumerable<IInterval<T>> Query(T value)
+        public System.Collections.Generic.IEnumerable<IInterval<T>> Query(T value)
         {
             if (!this._isInSync)
                 this.BuildTree();
 
-            return this.Overlap(value);
+            return this.FindOverlaps(value);
         }
     }
 }

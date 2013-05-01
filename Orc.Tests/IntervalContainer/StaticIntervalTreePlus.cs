@@ -9,11 +9,11 @@
     using Orc.Interval.Interface;
 
     [TestFixture]
-    public class StaticIntervalTree : DateIntervalContainerTestBase
+    public class StaticIntervalTreePlus : DateIntervalContainerTestBase
     {
         protected override IIntervalContainer<DateTime> CreateIntervalContainer(IEnumerable<IInterval<DateTime>> intervals)
         {
-            return new StaticIntervalTree<DateTime>(intervals);
+            return new StaticIntervalTreePlus<DateTime>(intervals);
         }
     }
 }
