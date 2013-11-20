@@ -135,7 +135,6 @@
   <ItemGroup>
     <None Include="Docs\Interval.md" />
     <None Include="Docs\Links.md" />
-    <None Include="Interval\Interval.cd" />
     <None Include="DataStructures\RangeTree\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
