@@ -86,14 +86,9 @@
     <Compile Include="IntervalContainer\IntervalTreeRBTest.cs" />
     <Compile Include="IntervalContainer\RangeTreeTest.cs" />
     <Compile Include="MiscExtensionsTest.cs" />
-    <Compile Include="ListWeaverTest.cs" />
-    <Compile Include="NSort\SorterTest.cs" />
-    <Compile Include="NSort\SwapSorterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskCollectionExtensionTest.cs" />
     <Compile Include="TaskTest.cs" />
-    <Compile Include="TimSort\PerformanceTests.cs" />
-    <Compile Include="TimSort\PerformanceTimer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
