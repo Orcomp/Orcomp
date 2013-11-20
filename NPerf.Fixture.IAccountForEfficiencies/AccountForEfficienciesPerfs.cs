@@ -1,12 +1,12 @@
-﻿namespace NPerf.Fixture.IAccountForEfficiencies
+﻿namespace Nperf.Fixture.IAccountForEfficiencies
 {
     using System;
     using System.Linq;
 
     using NPerf.Framework;
 
-    using Orc.Interval;
     using Orc.Interface;
+    using Orc.Interval;
 
     [PerfTester(typeof(IAccountForEfficiencies), 2, Description = "Date Interval AccountForEfficiencies() method tests", FeatureDescription = "Intervals count")]
     public class AccountForEfficienciesPerfs

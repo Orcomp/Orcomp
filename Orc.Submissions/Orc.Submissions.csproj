@@ -43,6 +43,7 @@
     <Compile Include="AccountForEfficiencies\SpecialIntervalTree\IntervalNode.cs" />
     <Compile Include="AccountForEfficiencies\SpecialIntervalTree\IntervalTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GetSortedDateTimes\GetSortedDateTimes.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Orc\Orc.csproj">

@@ -22,7 +22,7 @@ namespace Orc.Tests
     /// <summary>
     /// The date interval collection extensions test.
     /// </summary>
-    [TestFixture]
+    [TestFixture, Ignore]
     public class DateIntervalCollectionExtensionsTest : DateIntervalCollectionTestBase
     {
         [Test]

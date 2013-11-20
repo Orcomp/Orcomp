@@ -63,10 +63,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Orc.Submissions\Orc.Submissions.csproj">
-      <Project>{afd1db96-45fc-4bd5-99f0-a38bdce5f22a}</Project>
-      <Name>Orc.Submissions %28Silverlight\Orc.Submissions%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Orc\Orc.csproj">
       <Project>{628b699c-ab33-492f-8f7b-3ca34ce2dd3e}</Project>
       <Name>Orc %28Silverlight\Orc%29</Name>

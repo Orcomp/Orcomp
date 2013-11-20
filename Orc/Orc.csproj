@@ -161,10 +161,7 @@
     <Compile Include="Interval\Interface\IEndPoint.cs" />
     <Compile Include="Interval\Interface\IInterval.cs" />
     <Compile Include="Interval\Interface\IIntervalContainer.cs" />
-    <Compile Include="NPerfGenericWrappers\IIntervalContainerDateTimeWrapper.cs" />
-    <Compile Include="NPerfGenericWrappers\ISorterIntWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Submissions\GetSortedDateTimes.cs" />
     <Compile Include="Utilities\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>

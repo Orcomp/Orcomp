@@ -8,9 +8,10 @@ namespace Orc.Tests.DateIntervalExtensionsAccountForEfficiencies
     using NUnit.Framework;
 
     using Orc.Interval;
-    //using Orc.Interval.Extensions;
-    using Orc.Competitions.AccountForEfficiencies;
+    using Orc.Interval.Extensions;
 
+    [TestFixture]
+    [Ignore]
     public class AccountForEfficienciesBenchmark
     {
         private DateTime now;

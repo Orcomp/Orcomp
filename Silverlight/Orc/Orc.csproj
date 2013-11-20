@@ -58,135 +58,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Orc\Algorithms\ListWeaver.cs">
-      <Link>Algorithms\ListWeaver.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\Interfaces\ISorter.cs">
-      <Link>Algorithms\Sort\Interfaces\ISorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\Interfaces\ISwap.cs">
-      <Link>Algorithms\Sort\Interfaces\ISwap.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\BidirectionalBubbleSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\BidirectionalBubbleSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\BubbleSorter.cs">
-      <Link>Algorithms\Sort\NSort.Generic\BubbleSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ComboSort11.cs">
-      <Link>Algorithms\Sort\NSort.Generic\ComboSort11.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ComparableComparer.cs">
-      <Link>Algorithms\Sort\NSort.Generic\ComparableComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\DefaultSwap.cs">
-      <Link>Algorithms\Sort\NSort.Generic\DefaultSwap.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\DoubleStorageMergeSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\DoubleStorageMergeSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\FastQuickSorter.cs">
-      <Link>Algorithms\Sort\NSort.Generic\FastQuickSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\HeapSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\HeapSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\InPlaceMergeSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\InPlaceMergeSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\InsertionSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\InsertionSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\OddEvenTransportSorter.cs">
-      <Link>Algorithms\Sort\NSort.Generic\OddEvenTransportSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\QuickSorter.cs">
-      <Link>Algorithms\Sort\NSort.Generic\QuickSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\QuickSortWithBubbleSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\QuickSortWithBubbleSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\SelectionSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\SelectionSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ShakerSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\ShakerSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ShearSorter.cs">
-      <Link>Algorithms\Sort\NSort.Generic\ShearSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\ShellSort.cs">
-      <Link>Algorithms\Sort\NSort.Generic\ShellSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort.Generic\SwapSorter.cs">
-      <Link>Algorithms\Sort\NSort.Generic\SwapSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\BidirectionalBubbleSort.cs">
-      <Link>Algorithms\Sort\NSort\BidirectionalBubbleSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\BubbleSorter.cs">
-      <Link>Algorithms\Sort\NSort\BubbleSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ComboSort11.cs">
-      <Link>Algorithms\Sort\NSort\ComboSort11.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ComparableComparer.cs">
-      <Link>Algorithms\Sort\NSort\ComparableComparer.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\DefaultSwap.cs">
-      <Link>Algorithms\Sort\NSort\DefaultSwap.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\DoubleStorageMergeSort.cs">
-      <Link>Algorithms\Sort\NSort\DoubleStorageMergeSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\FastQuickSorter.cs">
-      <Link>Algorithms\Sort\NSort\FastQuickSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\HeapSort.cs">
-      <Link>Algorithms\Sort\NSort\HeapSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\InPlaceMergeSort.cs">
-      <Link>Algorithms\Sort\NSort\InPlaceMergeSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\InsertionSort.cs">
-      <Link>Algorithms\Sort\NSort\InsertionSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\OddEvenTransportSorter.cs">
-      <Link>Algorithms\Sort\NSort\OddEvenTransportSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\QuickSorter.cs">
-      <Link>Algorithms\Sort\NSort\QuickSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\QuickSortWithBubbleSort.cs">
-      <Link>Algorithms\Sort\NSort\QuickSortWithBubbleSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\SelectionSort.cs">
-      <Link>Algorithms\Sort\NSort\SelectionSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ShakerSort.cs">
-      <Link>Algorithms\Sort\NSort\ShakerSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ShearSorter.cs">
-      <Link>Algorithms\Sort\NSort\ShearSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\ShellSort.cs">
-      <Link>Algorithms\Sort\NSort\ShellSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\NSort\SwapSorter.cs">
-      <Link>Algorithms\Sort\NSort\SwapSorter.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\QuickSortBaseClass.cs">
-      <Link>Algorithms\Sort\QuickSortBaseClass.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\TimSort\ArrayTimSort.cs">
-      <Link>Algorithms\Sort\TimSort\ArrayTimSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\TimSort\ListTimSort.cs">
-      <Link>Algorithms\Sort\TimSort\ListTimSort.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Algorithms\Sort\TimSort\TimSortExtensions.cs">
-      <Link>Algorithms\Sort\TimSort\TimSortExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\..\Orc\DataStructures\IntervalSkipList\IntervalNode.cs">
       <Link>DataStructures\IntervalSkipList\IntervalNode.cs</Link>
     </Compile>
@@ -316,45 +187,16 @@
     <Compile Include="..\..\Orc\Interval\Point.cs">
       <Link>Interval\Point.cs</Link>
     </Compile>
-    <Compile Include="..\..\Orc\NPerfGenericWrappers\IIntervalContainerDateTimeWrapper.cs">
-      <Link>NPerfGenericWrappers\IIntervalContainerDateTimeWrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\NPerfGenericWrappers\ISorterIntWrapper.cs">
-      <Link>NPerfGenericWrappers\ISorterIntWrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc\Submissions\GetSortedDateTimes.cs">
-      <Link>Submissions\GetSortedDateTimes.cs</Link>
-    </Compile>
     <Compile Include="..\..\Orc\Utilities\MathUtils.cs">
       <Link>Utilities\MathUtils.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Algorithms\" />
     <Folder Include="DataStructures\AList\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\Orc\Algorithms\Sort\Interfaces\LICENSE.txt">
-      <Link>Algorithms\Sort\Interfaces\LICENSE.txt</Link>
-    </Content>
-    <Content Include="..\..\Orc\Algorithms\Sort\Interfaces\README.txt">
-      <Link>Algorithms\Sort\Interfaces\README.txt</Link>
-    </Content>
-    <Content Include="..\..\Orc\Algorithms\Sort\NSort.Generic\LICENSE.txt">
-      <Link>Algorithms\Sort\NSort.Generic\LICENSE.txt</Link>
-    </Content>
-    <Content Include="..\..\Orc\Algorithms\Sort\NSort.Generic\README.txt">
-      <Link>Algorithms\Sort\NSort.Generic\README.txt</Link>
-    </Content>
-    <Content Include="..\..\Orc\Algorithms\Sort\NSort\LICENSE.txt">
-      <Link>Algorithms\Sort\NSort\LICENSE.txt</Link>
-    </Content>
-    <Content Include="..\..\Orc\Algorithms\Sort\NSort\README.txt">
-      <Link>Algorithms\Sort\NSort\README.txt</Link>
-    </Content>
-    <Content Include="..\..\Orc\Algorithms\Sort\TimSort\License.txt">
-      <Link>Algorithms\Sort\TimSort\License.txt</Link>
-    </Content>
     <Content Include="..\..\Orc\DataStructures\RangeTree\LICENSE.txt">
       <Link>DataStructures\RangeTree\LICENSE.txt</Link>
     </Content>
@@ -371,9 +213,6 @@
     </None>
     <None Include="..\..\Orc\Docs\Links.md">
       <Link>Docs\Links.md</Link>
-    </None>
-    <None Include="..\..\Orc\Interval\Interval.cd">
-      <Link>Interval\Interval.cd</Link>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

@@ -138,17 +138,8 @@
     <Compile Include="..\..\Orc.Tests\IntervalContainer\RangeTreeTest.cs">
       <Link>IntervalContainer\RangeTreeTest.cs</Link>
     </Compile>
-    <Compile Include="..\..\Orc.Tests\ListWeaverTest.cs">
-      <Link>ListWeaverTest.cs</Link>
-    </Compile>
     <Compile Include="..\..\Orc.Tests\MiscExtensionsTest.cs">
       <Link>MiscExtensionsTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc.Tests\NSort\SorterTest.cs">
-      <Link>NSort\SorterTest.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc.Tests\NSort\SwapSorterTest.cs">
-      <Link>NSort\SwapSorterTest.cs</Link>
     </Compile>
     <Compile Include="..\..\Orc.Tests\TaskCollectionExtensionTest.cs">
       <Link>TaskCollectionExtensionTest.cs</Link>
@@ -156,20 +147,10 @@
     <Compile Include="..\..\Orc.Tests\TaskTest.cs">
       <Link>TaskTest.cs</Link>
     </Compile>
-    <Compile Include="..\..\Orc.Tests\TimSort\PerformanceTests.cs">
-      <Link>TimSort\PerformanceTests.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Orc.Tests\TimSort\PerformanceTimer.cs">
-      <Link>TimSort\PerformanceTimer.cs</Link>
-    </Compile>
     <Compile Include="Stopwatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Orc.Competitions\Orc.Competitions.csproj">
-      <Project>{b08b5858-8801-4723-87c6-e47375530fea}</Project>
-      <Name>Orc.Competitions %28Silverlight\Orc.Competitions%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Orc\Orc.csproj">
       <Project>{628b699c-ab33-492f-8f7b-3ca34ce2dd3e}</Project>
       <Name>Orc %28Silverlight\Orc%29</Name>
