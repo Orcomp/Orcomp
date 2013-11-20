@@ -27,9 +27,10 @@ namespace Orc.Interval.Extensions
         /// <returns>
         /// The <see cref="IEnumerable{T}"/>.
         /// </returns>
-        public static IEnumerable<IEndPoint<DateTime>> GetEndPoints(this IInterval<DateTime> source)
+        public static IEnumerable<IEndPoint<T>> GetEndPoints<T>(this IInterval<T> source)
+            where T : IComparable<T>
         {
-            return new List<IEndPoint<DateTime>> { source.Min, source.Max };
+            return new List<IEndPoint<T>> { source.Min, source.Max };
         }
     }
 }
