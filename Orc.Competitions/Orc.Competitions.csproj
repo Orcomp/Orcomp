@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountForEfficiencies\DateIntervalExtensions.cs" />
+    <Compile Include="ListWeaver\ListWeaver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -90,6 +90,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Orc.Competitions\Orc.Competitions.csproj">
+      <Project>{ee970d10-607f-4508-bee8-a7a9b0123fdb}</Project>
+      <Name>Orc.Competitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orc.Submissions\Orc.Submissions.csproj">
+      <Project>{b3ae465f-5ff3-4512-8d2c-262c9bca060e}</Project>
+      <Name>Orc.Submissions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orc\Orc.csproj">
       <Project>{71f9cf8b-53a6-4626-bc89-ce4862d234a8}</Project>
       <Name>Orc</Name>

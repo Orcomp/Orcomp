@@ -43,6 +43,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Orc.Benchmarks\Orc.Benchmarks.csproj">
+      <Project>{7199db15-c366-4e55-97ab-b5166932f45c}</Project>
+      <Name>Orc.Benchmarks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orc.Submissions\Orc.Submissions.csproj">
+      <Project>{b3ae465f-5ff3-4512-8d2c-262c9bca060e}</Project>
+      <Name>Orc.Submissions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Orc\Orc.csproj">
       <Project>{71f9cf8b-53a6-4626-bc89-ce4862d234a8}</Project>
       <Name>Orc</Name>

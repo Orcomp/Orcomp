@@ -6,11 +6,10 @@ using System.Linq;
 
 namespace Orc.Benchmarks
 {
-    using Orc.Algorithms;
+    using Orc.Competitions.ListWeaver;
 
     public static class ListWeaverBenchmark
     {
-
         public static  void Run()
         {
             const int finalSequenceLength = 10000;

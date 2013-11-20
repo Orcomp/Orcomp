@@ -1,4 +1,4 @@
-﻿namespace Orc.Submissions.GetSortedDateTimes
+﻿namespace Orc.Submissions
 {
     using System;
     using System.Collections.Generic;
