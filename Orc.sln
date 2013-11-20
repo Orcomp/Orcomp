@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D77A13B3-C446-4FF6-A775-4C2AFC95C545}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
-		Orcomp.vsmdi = Orcomp.vsmdi
 		README.md = README.md
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
@@ -28,9 +27,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Benchmarks", "Orc.Benchmarks\Orc.Benchmarks.csproj", "{7199DB15-C366-4E55-97AB-B5166932F45C}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Orcomp.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
