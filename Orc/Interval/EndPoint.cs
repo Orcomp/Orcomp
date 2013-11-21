@@ -195,7 +195,14 @@ namespace Orc.Interval
                 {
                     if (this.IsMin == !other.IsMin)
                     {
-                        result = this.IsMin ? + 1 : -1;
+                        if (ReferenceEquals(this.interval, other.Interval))
+                        {
+                            result = this.isMin ? -1 : 1;
+                        }
+                        else
+                        {
+                            result = this.IsMin ? +1 : -1;
+                        }
                     }
                     else if(this.isMin)
                     {
@@ -213,7 +220,14 @@ namespace Orc.Interval
                     // Both end points are exclusive
                     if (this.IsMin == !other.IsMin)
                     {
-                        result = this.IsMin ? +1 : -1;
+                        if (ReferenceEquals(this.interval, other.Interval))
+                        {
+                            result = this.isMin ? -1 : 1;
+                        }
+                        else
+                        {
+                            result = this.IsMin ? +1 : -1;
+                        }
                     }
                 }
             }
