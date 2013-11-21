@@ -242,6 +242,14 @@ namespace Orc.Tests
             Assert.AreEqual(+1, interval.Max.CompareTo(interval.Min));
         }
 
+        [Test]
+        public void CompareTo_Equal_Inclusive()
+        {
+            var interval = new DateInterval(inOneHour, inOneHour, true, true);
+            Assert.AreEqual(-1, interval.Min.CompareTo(interval.Max));
+            Assert.AreEqual(+1, interval.Max.CompareTo(interval.Min));
+        }
+
         #endregion
     }
 }

@@ -191,18 +191,18 @@ namespace Orc.Interval
 
             if (result == 0)
             {
-                if (this.IsInclusive != other.IsInclusive)
+                if (ReferenceEquals(this.interval, other.Interval))
+                {
+                    if (this.IsMin != other.IsMin)
+                    {
+                        result = this.IsMin ? -1 : 1;
+                    }
+                }
+                else if (this.IsInclusive != other.IsInclusive)
                 {
                     if (this.IsMin == !other.IsMin)
                     {
-                        if (ReferenceEquals(this.interval, other.Interval))
-                        {
-                            result = this.isMin ? -1 : 1;
-                        }
-                        else
-                        {
-                            result = this.IsMin ? +1 : -1;
-                        }
+                        result = this.IsMin ? +1 : -1;
                     }
                     else if(this.isMin)
                     {
