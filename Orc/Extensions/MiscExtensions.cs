@@ -115,5 +115,60 @@
             number = number / Math.Pow( 10, decimalPlaces );
             return string.Format( "{0:N" + Math.Abs( decimalPlaces ) + "}", number );
         }
+
+        public static IEnumerable<T> MergeOrderedCollections<T>(IEnumerable<T> orderedCollection1, IEnumerable<T> orderedCollection2) where T : IComparable<T>
+        {
+            var result = new List<T>();
+
+            var orderedList1 = new List<T>();
+            var orderedList2 = new List<T>();
+
+            if(orderedCollection1 is List<T>)
+            {
+                orderedList1 = orderedCollection1 as List<T>;
+            }
+            else
+            {
+                orderedList1 = new List<T>(orderedCollection1);
+            }
+
+
+            if (orderedCollection2 is List<T>)
+            {
+                orderedList2 = orderedCollection2 as List<T>;
+            }
+            else
+            {
+                orderedList2 = new List<T>(orderedCollection2);
+            }
+            
+
+            int i = 0;
+            int j = 0;
+
+            while (i < orderedList1.Count && j < orderedList2.Count)
+            {
+                if (orderedList1[i].CompareTo(orderedList2[j]) != 1)
+                {
+                    result.Add(orderedList1[i++]);
+                }
+                else
+                {
+                    result.Add(orderedList2[j++]);
+                }
+            }
+
+            while (i < orderedList1.Count)
+            {
+                result.Add(orderedList1[i++]);
+            }
+
+            while (j < orderedList2.Count)
+            {
+                result.Add(orderedList2[j++]);
+            }
+
+            return result;
+        }
     }
 }
