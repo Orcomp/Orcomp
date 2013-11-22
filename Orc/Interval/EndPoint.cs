@@ -170,10 +170,19 @@ namespace Orc.Interval
         }
 
         /// <summary>
-        /// Compare two EndPoints with each other.
-        /// When sorting if two end points have the same value and are inclusive and you
-        /// want the min to come after max then use EndPointMinFirstComparer
+        ///     Compare two EndPoints with each other.
+        ///     When sorting if two end points have the same value and are inclusive and you
+        ///     want the min to come after max then use EndPointMinFirstComparer.
         /// </summary>
+        /// <example>
+        ///     [2 3][3 4]
+        /// 
+        ///     When comparing the max end point from the first interval with the min end point from the second interval.
+        ///     Since both end points are inclusive and have the same value, the max end point will come first because it is 
+        ///     in the *first* interval.
+        /// 
+        ///    NOTE: May need to revisit this later to see if we can change this behaviour, so start always comes before end.
+        /// </example>
         /// <param name="other">
         /// The other.
         /// </param>

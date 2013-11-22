@@ -43,6 +43,7 @@ namespace Orc.Interval
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Interval{T}"/> class.
+        /// Intervals such is (2 2), [2 2) and (2 2] are not permitted. i.e. intervals with the same value end points where one or both are exclusive.
         /// </summary>
         /// <param name="minValue">
         /// The minValue.
@@ -63,9 +64,15 @@ namespace Orc.Interval
         {
             if (this.comparer.Compare(minValue, maxValue) > 0)
             {
-                // NOTE: We are not interested in moments in time. I.e intervals with the same end point values with different inclusiveness
                 throw new ArgumentException(string.Format("Min value: {0} can't be greater than Max value: {1}", minValue, maxValue));
             }
+
+            // NOTE: Uncomment when all tests pass.
+            //if (this.comparer.Compare(minValue, maxValue) == 0 && (isMinInclusive & isMaxInclusive) == false)
+            //{
+            //    // NOTE: We are not interested in moments in time. I.e intervals with the same end point values with different inclusiveness
+            //    throw new ArgumentException(string.Format("Min and Max end points have the same value {0}, but one (or both) values are exclusive", minValue, maxValue));
+            //}
 
             // NOTE: Should not really be leaking "this" in the constructor, if we really want this class to be completely immutable.
             // See the reference in the header.
