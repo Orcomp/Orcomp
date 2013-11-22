@@ -116,59 +116,40 @@
             return string.Format( "{0:N" + Math.Abs( decimalPlaces ) + "}", number );
         }
 
-        public static IEnumerable<T> MergeOrderedCollections<T>(IEnumerable<T> orderedCollection1, IEnumerable<T> orderedCollection2) where T : IComparable<T>
+        public static IEnumerable<T> MergeOrderedCollections<T>(IEnumerable<T> orderedCollection1, IEnumerable<T> orderedCollection2)
+            where T : IComparable<T>
         {
-            var result = new List<T>();
+            var enumerator1 = orderedCollection1.GetEnumerator();
+            var enumerator2 = orderedCollection2.GetEnumerator();
 
-            var orderedList1 = new List<T>();
-            var orderedList2 = new List<T>();
+            var hasNext1 = enumerator1.MoveNext();
+            var hasNext2 = enumerator2.MoveNext();
 
-            if(orderedCollection1 is List<T>)
+            while (hasNext1 && hasNext2)
             {
-                orderedList1 = orderedCollection1 as List<T>;
-            }
-            else
-            {
-                orderedList1 = new List<T>(orderedCollection1);
-            }
-
-
-            if (orderedCollection2 is List<T>)
-            {
-                orderedList2 = orderedCollection2 as List<T>;
-            }
-            else
-            {
-                orderedList2 = new List<T>(orderedCollection2);
-            }
-            
-
-            int i = 0;
-            int j = 0;
-
-            while (i < orderedList1.Count && j < orderedList2.Count)
-            {
-                if (orderedList1[i].CompareTo(orderedList2[j]) != 1)
+                if (enumerator1.Current.CompareTo(enumerator2.Current) <= 0)
                 {
-                    result.Add(orderedList1[i++]);
+                    yield return enumerator1.Current;
+                    hasNext1 = enumerator1.MoveNext();
                 }
                 else
                 {
-                    result.Add(orderedList2[j++]);
+                    yield return enumerator2.Current;
+                    hasNext2 = enumerator2.MoveNext();
                 }
             }
 
-            while (i < orderedList1.Count)
+            while (hasNext1)
             {
-                result.Add(orderedList1[i++]);
+                yield return enumerator1.Current;
+                hasNext1 = enumerator1.MoveNext();
             }
 
-            while (j < orderedList2.Count)
+            while (hasNext2)
             {
-                result.Add(orderedList2[j++]);
+                yield return enumerator2.Current;
+                hasNext2 = enumerator2.MoveNext();
             }
-
-            return result;
         }
     }
 }
