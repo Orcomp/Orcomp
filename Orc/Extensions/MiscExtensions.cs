@@ -116,7 +116,7 @@
             return string.Format( "{0:N" + Math.Abs( decimalPlaces ) + "}", number );
         }
 
-        public static IEnumerable<T> MergeOrderedCollections<T>(IEnumerable<T> orderedCollection1, IEnumerable<T> orderedCollection2)
+        public static IEnumerable<T> MergeOrderedCollections<T>(IEnumerable<T> orderedCollection1, IEnumerable<T> orderedCollection2, IComparer<T> comparer=null)
             where T : IComparable<T>
         {
             var enumerator1 = orderedCollection1.GetEnumerator();
@@ -125,9 +125,14 @@
             var hasNext1 = enumerator1.MoveNext();
             var hasNext2 = enumerator2.MoveNext();
 
+            if (comparer == null)
+            {
+                comparer = Comparer<T>.Default;
+            }
+
             while (hasNext1 && hasNext2)
             {
-                if (enumerator1.Current.CompareTo(enumerator2.Current) <= 0)
+                if (comparer.Compare(enumerator1.Current, enumerator2.Current) <= 0)
                 {
                     yield return enumerator1.Current;
                     hasNext1 = enumerator1.MoveNext();
