@@ -117,14 +117,14 @@
         }
 
         /// <summary>
-        /// This function will take 2 ordered collections and merge them together, preserving the order.
+        /// This function will take 2 sorted collections and merge them together, preserving their order.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="orderedCollection1"></param>
         /// <param name="orderedCollection2"></param>
         /// <param name="comparer">Optional comparer for T</param>
         /// <returns></returns>
-        public static IEnumerable<T> MergeOrderedCollections<T>(IEnumerable<T> orderedCollection1, IEnumerable<T> orderedCollection2, IComparer<T> comparer=null)
+        public static IEnumerable<T> MergeSorted<T>(IEnumerable<T> orderedCollection1, IEnumerable<T> orderedCollection2, IComparer<T> comparer=null)
             where T : IComparable<T>
         {
             var enumerator1 = orderedCollection1.GetEnumerator();

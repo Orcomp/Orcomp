@@ -36,7 +36,7 @@ namespace Orc.Interval.Extensions
         /// <summary>
         /// Returns a sorted collection of end points from a collection of sorted intervals
         /// </summary>
-        /// <param name="orderedIntervals">
+        /// <param name="sortedIntervals">
         /// The ordered intervals.
         /// </param>
         /// <typeparam name="T">
@@ -44,7 +44,7 @@ namespace Orc.Interval.Extensions
         /// <returns>
         /// The <see cref="IEnumerable"/>.
         /// </returns>
-        public static IEnumerable<IEndPoint<T>> GetSortedEndPoints<T>(this IEnumerable<IInterval<T>> orderedIntervals) where T : IComparable<T>
+        public static IEnumerable<IEndPoint<T>> GetSortedEndPoints<T>(this IEnumerable<IInterval<T>> sortedIntervals) where T : IComparable<T>
         {
             var minEndPoints = new List<IEndPoint<T>>();
             var maxEndPoints = new List<IEndPoint<T>>();
@@ -53,7 +53,7 @@ namespace Orc.Interval.Extensions
 
             IEndPoint<T> previousMaxEndPoint = new EndPoint<T>(default(T), EndPointType.Max, false, null);
 
-            foreach(var interval in orderedIntervals)
+            foreach(var interval in sortedIntervals)
             {
                 var maxEndPoint = interval.Max;
 
@@ -74,7 +74,7 @@ namespace Orc.Interval.Extensions
                 maxEndPoints.Sort();
             }
 
-            return Orc.Extensions.MiscExtensions.MergeOrderedCollections(minEndPoints, maxEndPoints);
+            return Orc.Extensions.MiscExtensions.MergeSorted(minEndPoints, maxEndPoints);
         }
     }
 }
