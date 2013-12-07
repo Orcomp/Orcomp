@@ -335,18 +335,24 @@ namespace Orc.Interval
             {
                 if (this.IsInclusive)
                 {
-                    return "[" + this.Value;
+                    return "  [" + this.Value + "  ";
                 }
-
-                return "]" + this.Value;
+                else
+                {
+                    return "  (" + this.Value + "  ";
+                }
             }
-
-            if (this.IsInclusive)
+            else
             {
-                return this.Value + "]";
+                if (this.IsInclusive)
+                {
+                    return "  " + this.Value + "] ";
+                }
+                else
+                {
+                    return "  " + this.Value + ") ";
+                }
             }
-
-            return this.Value + "[";
         }
     }
 }
