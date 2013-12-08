@@ -61,28 +61,41 @@ namespace Orc.Interval.Extensions
             var minEndPoints = new List<IEndPoint<T>>();
             var maxEndPoints = new List<IEndPoint<T>>();
 
+            bool areMinEndPointsSorted = true;
             bool areMaxEndPointsSorted = true;
 
+            IEndPoint<T> previousMinEndPoint = new EndPoint<T>(default(T), EndPointType.Min, false, null);
             IEndPoint<T> previousMaxEndPoint = new EndPoint<T>(default(T), EndPointType.Max, false, null);
 
             foreach(var interval in sortedIntervals)
             {
+                var minEndPoint = interval.Min;
                 var maxEndPoint = interval.Max;
 
                 minEndPoints.Add(interval.Min);
                 maxEndPoints.Add(interval.Max);
+
+                if (areMinEndPointsSorted && (comparer.Compare(previousMinEndPoint, minEndPoint) == +1))
+                {
+                    areMinEndPointsSorted = false;
+                }
 
                 if (areMaxEndPointsSorted && (comparer.Compare(previousMaxEndPoint, maxEndPoint) == +1))
                 {
                     areMaxEndPointsSorted = false;
                 }
 
+                previousMinEndPoint = minEndPoint;
                 previousMaxEndPoint = maxEndPoint;
+            }
+
+            if (!areMinEndPointsSorted)
+            {
+                minEndPoints.Sort(comparer);
             }
 
             if (!areMaxEndPointsSorted)
             {
-                // Replace with TimSort
                 maxEndPoints.Sort(comparer);
             }
 
