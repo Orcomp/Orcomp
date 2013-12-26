@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>Orc</id>
+    <version>@build.number@</version>
+	<title>Orc</title>
+    <authors>sidlovskyy,bawr,thcristo,ziez,Orcomp</authors>
+    <owners>sidlovskyy,bawr,thcristo,ziez,Orcomp</owners>
+
+	<description>
+	  The Orcomp library is used to support competitions on the Operations Research Competition blog (http://orcomps.blogspot.com.au/) as well as provide a structured playground for experimenting with new algorithms and data structures.
+	</description>
+	<summary>
+	</summary>
+	
+	<tags>wpf silverlight orcomp competitions</tags>
+	<language>en-US</language>
+	<projectUrl>https://github.com/Orcomp/Orc</projectUrl>
+  </metadata>
+</package>
