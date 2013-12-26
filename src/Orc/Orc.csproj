@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{71F9CF8B-53A6-4626-BC89-CE4862D234A8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Orc</RootNamespace>
+    <AssemblyName>Orc</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\output\debug\NET35\Orc\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\output\release\NET35\Orc\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\output\release\NET35\Orc\Orc.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>Libs\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="DataStructures\AList\BaseClasses\IterableBase.cs" />
+    <Compile Include="DataStructures\AList\BaseClasses\ListExBase.cs" />
+    <Compile Include="DataStructures\AList\BaseClasses\ListSourceBase.cs" />
+    <Compile Include="DataStructures\AList\BaseClasses\SourceBase.cs" />
+    <Compile Include="DataStructures\AList\CollectionDebugView.cs" />
+    <Compile Include="DataStructures\AList\ExtensionMethods\Iterable.cs" />
+    <Compile Include="DataStructures\AList\ExtensionMethods\Iterator.cs" />
+    <Compile Include="DataStructures\AList\ExtensionMethods\LCExtensions.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\CollectionAsSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\EmptyEnumerator.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\EmptyList.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\EnumerableAsIterable.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\IteratorEnumerator.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\IteratorFactory.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\KeyCollection.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ListAsListSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ListSlice.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ListSourceAsList.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ListSourceSlice.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\NegList.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\NegListSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\RepeatedValueList.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ReversedListSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\SelectListSource.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\SelectNegLists.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\SelectNegListSources.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\SourceAsCollection.cs" />
+    <Compile Include="DataStructures\AList\HelperClasses\ValueCollection.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListBase.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListIndexer.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListInner.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListInnerBase.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListLeaf.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListNode.cs" />
+    <Compile Include="DataStructures\AList\Implementations\AListNodeObserver.cs" />
+    <Compile Include="DataStructures\AList\Implementations\ArrayOf4.cs" />
+    <Compile Include="DataStructures\AList\Implementations\BList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\BListBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\BListInner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\BListLeaf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\BMultiMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataStructures\AList\Implementations\DList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\IAListTreeObserver.cs" />
+    <Compile Include="DataStructures\AList\Implementations\IndexedAList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\InternalDList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\InternalList.cs" />
+    <Compile Include="DataStructures\AList\Implementations\ListChangeInfo.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\IAutoCreatePool.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\ICount.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\IIterable.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\IListSource.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\INegListSource.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\INotifyListChanging.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\ISource.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\Iterator.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\Queue interfaces.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\Read-write interfaces.cs" />
+    <Compile Include="DataStructures\AList\Interfaces\Sink interfaces.cs" />
+    <Compile Include="DataStructures\AList\Math\Interfaces.cs" />
+    <Compile Include="DataStructures\AList\Math\MathEx.cs" />
+    <Compile Include="DataStructures\AList\Utilities\Exceptions.cs" />
+    <Compile Include="DataStructures\AList\Utilities\Extensions.cs" />
+    <Compile Include="DataStructures\AList\Utilities\ICloneable.cs" />
+    <Compile Include="DataStructures\AList\Utilities\MemoizedTypeName.cs" />
+    <Compile Include="DataStructures\AList\Utilities\Pair.cs" />
+    <Compile Include="DataStructures\AList\Utilities\WrapperBase.cs" />
+    <Compile Include="Entities\DateIntervalCollectionGenerator.cs" />
+    <Compile Include="Entities\Constraint.cs" />
+    <Compile Include="Entities\Interface\ITask.cs" />
+    <Compile Include="Entities\LevelIndicator.cs" />
+    <Compile Include="Entities\Task.cs" />
+    <Compile Include="Entities\TaskType.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\MiscExtensions.cs" />
+    <Compile Include="Extensions\TaskCollectionExtensions.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Interface\IAccountForEfficiencies.cs" />
+    <Compile Include="Interval\DateIntervalCollectionGenerator.cs" />
+    <Compile Include="Interval\EndPointMinFirstComparer.cs" />
+    <Compile Include="DataStructures\IntervalSkipList\IntervalSkipList.cs" />
+    <Compile Include="DataStructures\IntervalTreeAVL\IntervalTree.cs" />
+    <Compile Include="DataStructures\IntervalTreeRB\IntervalNode.cs" />
+    <Compile Include="DataStructures\IntervalTreeRB\IntervalTree.cs" />
+    <Compile Include="DataStructures\RangeTree\RangeTree.cs" />
+    <Compile Include="DataStructures\RangeTree\RangeTreeNode.cs" />
+    <Compile Include="DataStructures\SkipList.cs" />
+    <Compile Include="DataStructures\IntervalSkipList\SkipList\BDSkipList.cs" />
+    <Compile Include="Interval\DateEndPoint.cs" />
+    <Compile Include="Interval\DateInterval.cs" />
+    <Compile Include="Interval\DateIntervalCollection.cs" />
+    <Compile Include="Interval\DateIntervalEfficiency.cs" />
+    <Compile Include="Interval\EndPoint.cs" />
+    <Compile Include="Interval\EndPointType.cs" />
+    <Compile Include="Interval\EndPointWithIntervalEqualityComparer.cs" />
+    <Compile Include="Interval\FixedEndPoint.cs" />
+    <Compile Include="Interval\Interval.cs" />
+    <Compile Include="DataStructures\IntervalSkipList\IntervalNode.cs" />
+    <Compile Include="DataStructures\IntervalSkipList\SkipList\IScannable.cs" />
+    <Compile Include="DataStructures\IntervalSkipList\SkipList\IScannableDictionary.cs" />
+    <Compile Include="DataStructures\IntervalSkipList\SkipList\IScanner.cs" />
+    <Compile Include="Interval\Point.cs" />
+    <Compile Include="DataStructures\IntervalSkipList\SkipList\ScanRange.cs" />
+    <Compile Include="Interval\Extensions\DateIntervalCollectionExtensions.cs" />
+    <Compile Include="Interval\Extensions\DateIntervalExtensions.cs" />
+    <Compile Include="Interval\Extensions\IntervalExtensions.cs" />
+    <Compile Include="Interval\Interface\IDateInterval.cs" />
+    <Compile Include="Interval\Interface\IEndPoint.cs" />
+    <Compile Include="Interval\Interface\IInterval.cs" />
+    <Compile Include="Interval\Interface\IIntervalContainer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\MathUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DataStructures\AList\Implementations\AList.cd" />
+    <None Include="Docs\Interval.md" />
+    <None Include="Docs\Links.md" />
+    <None Include="DataStructures\RangeTree\README.md" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DataStructures\IntervalTreeRB\README.md" />
+    <Content Include="DataStructures\RangeTree\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Algorithms\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
