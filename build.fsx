@@ -77,7 +77,9 @@ Target "DeleteOutputDirectories" (fun _ ->
 
 Target "RestorePackagesManually" (fun _ ->
       !! "./**/packages.config"
-      |> Seq.iter (RestorePackage (fun p -> { p with ToolPath = nugetExePath }))
+      |> Seq.iter (RestorePackage (fun p -> { p with
+                                                 ToolPath = nugetExePath
+                                                 OutputPath = nugetRepositoryDir}))
 )
 
 Target "UpdateAssemblyVersion" (fun _ ->
@@ -181,7 +183,7 @@ Target "Clean" DoNothing
 "CleanPackagesDirectory" ==> "DeleteOutputFiles" ==> "DeleteOutputDirectories" ==> "Clean"
 
 Target "Build" DoNothing
-"UpdateAssemblyVersion" ==> "BuildOtherProjects" ==> "Build"
+"UpdateAssemblyVersion" ==> "RestorePackagesManually" ==> "BuildOtherProjects" ==> "Build"
 
 Target "Tests" DoNothing
 "BuildTests" ==> "RunTests" ==> "Tests"
