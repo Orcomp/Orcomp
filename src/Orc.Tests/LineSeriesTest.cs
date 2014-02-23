@@ -10,12 +10,16 @@ namespace Orc.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Design;
     using System.Linq;
+    using System.Security.Cryptography.X509Certificates;
 
     using NUnit.Framework;
 
     using System.Windows;
 
+    using Orc.DataStructures.AList;
+    using Orc.Linq;
     using Orc.Utilities;
 
     [TestFixture]
@@ -53,8 +57,28 @@ namespace Orc.Tests
 
             var lineSeries = new LineSeries(points);
 
-            var result = lineSeries.Interpolate(Enumerable.Range(1, 999999).Select(x => x * 1.0));
+            var result = lineSeries.Interpolate(Enumerable.Range(1, 999999).Select(x => x * 1.0)).ToList();
         }
-         
+
+        [Test]
+        public void InterpolatePerformance2()
+        {
+            var xValues = new List<double>();
+            var evenPoints = new List<Point>();
+
+            foreach (var value in Enumerable.Range(0, 1000000).Select(x => x * 1.0))
+            {
+                if (value % 2 == 0)
+                {
+                    evenPoints.Add(new Point(value, value));
+                }
+
+                xValues.Add(value);
+            }
+
+            var lineSeries = new LineSeries(evenPoints);
+
+            var result = lineSeries.Interpolate(xValues).ToList();
+        }
     }
 }
