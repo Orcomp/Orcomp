@@ -32,8 +32,6 @@ namespace Orc.Tests
 
             var lineSeries = new LineSeries(points);
 
-            var data = new int[] { 1, 2, 3 };
-
             var result = lineSeries.Interpolate(new Double[] { 0, 5, 10, 15, 20, 25, 35, 40, 45 });
 
             var expectedResult = new List<Point>()
@@ -50,20 +48,6 @@ namespace Orc.Tests
                                      };
 
             CollectionAssert.AreEqual(expectedResult, result);
-        }
-
-        [TestCase(LineSeries.SearchType.Best)]
-        [TestCase(LineSeries.SearchType.Binary)]
-        [TestCase(LineSeries.SearchType.Linear)]
-        public void InterpolatePerformance2(LineSeries.SearchType search_type)
-        {
-            var valueGroups = Enumerable.Range(0, 1000001).Select(x => x * 1.0).ToLookup(x => ((int)x) % 2);
-
-            var interPoints = valueGroups[1].ToList();
-            var valuePoints = valueGroups[0].Select(x => new Point(x, x)).ToList();
-
-            var series = new LineSeries(valuePoints);
-            var result = series.Interpolate(interPoints, search_type).ToList();
         }
 
         [TestCase(LineSeries.SearchType.Best)]
