@@ -55,14 +55,20 @@ namespace Orc.Tests
         [TestCase(LineSeries.SearchType.Linear)]
         public void InterpolatePerformance1(LineSeries.SearchType search_type)
         {
+            var size = 1000000;
+
             var valuePoints = new List<Point>() {
                 new Point(0, 0),
-                new Point(1000000, 1000000),
+                new Point(size, size),
             };
-            var interPoints = Enumerable.Range(1, 999999).Select(x => x * 1.0).ToList();
+            var interPoints = Enumerable.Range(0, size).Select(x => x * 1.0).ToList();
 
             var series = new LineSeries(valuePoints);
             var result = series.Interpolate(interPoints, search_type).ToList();
+
+            var expected = Enumerable.Range(0, size).Select(x => new Point(x, x)).ToList();
+
+            CollectionAssert.AreEqual(expected, result);
         }
 
         [TestCase(LineSeries.SearchType.Best)]
