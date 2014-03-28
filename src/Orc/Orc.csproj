@@ -165,7 +165,10 @@
     <Compile Include="Interval\Interface\IEndPoint.cs" />
     <Compile Include="Interval\Interface\IInterval.cs" />
     <Compile Include="Interval\Interface\IIntervalContainer.cs" />
+    <Compile Include="Linq\Allocator.cs" />
+    <Compile Include="Linq\Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\LineSeries.cs" />
     <Compile Include="Utilities\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
