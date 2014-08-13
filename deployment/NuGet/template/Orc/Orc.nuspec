@@ -1,0 +1,30 @@
+﻿<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Orc</id>
+    <version>[VERSION]</version>
+    <title>Orc</title>
+    <authors>OrchestraDevs,sidlovskyy,bawr,thcristo,ziez,Orcomp</authors>
+    <owners>OrchestraDevs,sidlovskyy,bawr,thcristo,ziez,Orcomp</owners>
+
+	<description>
+	  The Orcomp library is used to support competitions on the Operations Research Competition blog (http://orcomps.blogspot.com.au/) as well as provide a structured playground for experimenting with new algorithms and data structures.
+	</description>
+	<summary>
+	</summary>
+
+	<tags>wpf silverlight orcomp competitions orc</tags>
+
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright Orchestra team 2010 - 2014</copyright>
+
+	<language>en-US</language>
+	<projectUrl>https://github.com/Orcomp/Orcomp</projectUrl>
+	<!--<licenseUrl>http://catel.codeplex.com/license</licenseUrl>-->
+	<!--<iconUrl>http://www.catenalogic.com/catel.png</iconUrl>-->
+    
+    <dependencies>
+      <dependency id="C5" version="[replaced]" />
+    </dependencies>    
+  </metadata>
+</package>

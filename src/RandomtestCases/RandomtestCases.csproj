@@ -36,32 +36,40 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\..\lib\C5.2.1.4492.18142\lib\net40\C5.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Orc.Benchmarks\Orc.Benchmarks.csproj">
-      <Project>{7199db15-c366-4e55-97ab-b5166932f45c}</Project>
-      <Name>Orc.Benchmarks</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Orc.Submissions\Orc.Submissions.csproj">
-      <Project>{b3ae465f-5ff3-4512-8d2c-262c9bca060e}</Project>
-      <Name>Orc.Submissions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Orc\Orc.csproj">
-      <Project>{71f9cf8b-53a6-4626-bc89-ce4862d234a8}</Project>
-      <Name>Orc</Name>
-    </ProjectReference>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <ProjectReference Include="..\Orc.Benchmarks\Orc.Benchmarks.NET40\Orc.Benchmarks.NET40.csproj">
+      <Project>{7199db15-c366-4e55-97ab-b5166932f45c}</Project>
+      <Name>Orc.Benchmarks.NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orc.Competitions\Orc.Competitions.NET40\Orc.Competitions.NET40.csproj">
+      <Project>{ee970d10-607f-4508-bee8-a7a9b0123fdb}</Project>
+      <Name>Orc.Competitions.NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orc.Submissions\Orc.Submissions.NET40\Orc.Submissions.NET40.csproj">
+      <Project>{b3ae465f-5ff3-4512-8d2c-262c9bca060e}</Project>
+      <Name>Orc.Submissions.NET40</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orc\Orc.NET40\Orc.NET40.csproj">
+      <Project>{71f9cf8b-53a6-4626-bc89-ce4862d234a8}</Project>
+      <Name>Orc.NET40</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

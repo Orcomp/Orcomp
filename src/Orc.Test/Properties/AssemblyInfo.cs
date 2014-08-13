@@ -9,9 +9,9 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Orc.RandomtestCases")]
-[assembly: AssemblyProduct("Orc.RandomtestCases")]
-[assembly: AssemblyDescription("Orc.RandomtestCases program")]
+[assembly: AssemblyTitle("Orc.Test")]
+[assembly: AssemblyProduct("Orc.Test")]
+[assembly: AssemblyDescription("Orc.Test library")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 

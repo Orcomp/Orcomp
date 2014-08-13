@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{628B699C-AB33-492F-8F7B-3CA34CE2DD3E}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Orc</RootNamespace>
+    <AssemblyName>Orc</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\output\debug\SL5\Orc\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\output\debug\SL5\Orc\Orc.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\output\release\SL5\Orc\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\..\output\release\SL5\Orc\Orc.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>..\..\..\lib\C5.2.1.4492.18142\lib\sl50\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core">
+      <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalSkipList\IntervalNode.cs">
+      <Link>DataStructures\IntervalSkipList\IntervalNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalSkipList\IntervalSkipList.cs">
+      <Link>DataStructures\IntervalSkipList\IntervalSkipList.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalSkipList\SkipList\BDSkipList.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\BDSkipList.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalSkipList\SkipList\IScannable.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\IScannable.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalSkipList\SkipList\IScannableDictionary.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\IScannableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalSkipList\SkipList\IScanner.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\IScanner.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalSkipList\SkipList\ScanRange.cs">
+      <Link>DataStructures\IntervalSkipList\SkipList\ScanRange.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalTreeAVL\IntervalTree.cs">
+      <Link>DataStructures\IntervalTreeAVL\IntervalTree.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalTreeRB\IntervalNode.cs">
+      <Link>DataStructures\IntervalTreeRB\IntervalNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\IntervalTreeRB\IntervalTree.cs">
+      <Link>DataStructures\IntervalTreeRB\IntervalTree.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\RangeTree\RangeTree.cs">
+      <Link>DataStructures\RangeTree\RangeTree.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\RangeTree\RangeTreeNode.cs">
+      <Link>DataStructures\RangeTree\RangeTreeNode.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\DataStructures\SkipList.cs">
+      <Link>DataStructures\SkipList.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Entities\Constraint.cs">
+      <Link>Entities\Constraint.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Entities\DateIntervalCollectionGenerator.cs">
+      <Link>Entities\DateIntervalCollectionGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Entities\Interface\ITask.cs">
+      <Link>Entities\Interface\ITask.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Entities\LevelIndicator.cs">
+      <Link>Entities\LevelIndicator.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Entities\Task.cs">
+      <Link>Entities\Task.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Entities\TaskType.cs">
+      <Link>Entities\TaskType.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Extensions\DateTimeExtensions.cs">
+      <Link>Extensions\DateTimeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Extensions\MiscExtensions.cs">
+      <Link>Extensions\MiscExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Extensions\TaskCollectionExtensions.cs">
+      <Link>Extensions\TaskCollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Extensions\TaskExtensions.cs">
+      <Link>Extensions\TaskExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interface\IAccountForEfficiencies.cs">
+      <Link>Interface\IAccountForEfficiencies.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\DateEndPoint.cs">
+      <Link>Interval\DateEndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\DateInterval.cs">
+      <Link>Interval\DateInterval.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\DateIntervalCollection.cs">
+      <Link>Interval\DateIntervalCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\DateIntervalCollectionGenerator.cs">
+      <Link>Interval\DateIntervalCollectionGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\DateIntervalEfficiency.cs">
+      <Link>Interval\DateIntervalEfficiency.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\EndPoint.cs">
+      <Link>Interval\EndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\EndPointMinFirstComparer.cs">
+      <Link>Interval\EndPointMinFirstComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\EndPointType.cs">
+      <Link>Interval\EndPointType.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\EndPointWithIntervalEqualityComparer.cs">
+      <Link>Interval\EndPointWithIntervalEqualityComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Extensions\DateIntervalCollectionExtensions.cs">
+      <Link>Interval\Extensions\DateIntervalCollectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Extensions\DateIntervalExtensions.cs">
+      <Link>Interval\Extensions\DateIntervalExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Extensions\IntervalExtensions.cs">
+      <Link>Interval\Extensions\IntervalExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\FixedEndPoint.cs">
+      <Link>Interval\FixedEndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Interface\IDateInterval.cs">
+      <Link>Interval\Interface\IDateInterval.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Interface\IEndPoint.cs">
+      <Link>Interval\Interface\IEndPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Interface\IInterval.cs">
+      <Link>Interval\Interface\IInterval.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Interface\IIntervalContainer.cs">
+      <Link>Interval\Interface\IIntervalContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Interval.cs">
+      <Link>Interval\Interval.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Interval\Point.cs">
+      <Link>Interval\Point.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Linq\Allocator.cs">
+      <Link>Linq\Allocator.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Linq\Extensions.cs">
+      <Link>Linq\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Utilities\LineSeries.cs">
+      <Link>Utilities\LineSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.NET40\Utilities\MathUtils.cs">
+      <Link>Utilities\MathUtils.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Orc.NET40\DataStructures\RangeTree\LICENSE.txt">
+      <Link>DataStructures\RangeTree\LICENSE.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Orc.NET40\DataStructures\IntervalTreeRB\README.md">
+      <Link>DataStructures\IntervalTreeRB\README.md</Link>
+    </None>
+    <None Include="..\Orc.NET40\DataStructures\RangeTree\README.md">
+      <Link>DataStructures\RangeTree\README.md</Link>
+    </None>
+    <None Include="..\Orc.NET40\Docs\Interval.md">
+      <Link>Docs\Interval.md</Link>
+    </None>
+    <None Include="..\Orc.NET40\Docs\Links.md">
+      <Link>Docs\Links.md</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Algorithms\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
