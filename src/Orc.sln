@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Submissions.NET40", "Or
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Submissions.SL5", "Orc.Submissions\Orc.Submissions.SL5\Orc.Submissions.SL5.csproj", "{AFD1DB96-45FC-4BD5-99F0-A38BDCE5F22A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Test", "Orc.Test\Orc.Test.csproj", "{516B24CC-58B4-494A-A06B-584AC1172187}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orc.Tests", "Orc.Tests\Orc.Tests.csproj", "{516B24CC-58B4-494A-A06B-584AC1172187}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
